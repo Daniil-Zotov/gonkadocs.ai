@@ -89,3 +89,9 @@ extra:
   social:
     - icon: fontawesome/brands/github
       link: https://github.com/Daniil-Zotov/gonkadocs
+
+validation:
+  omitted_files: warn
+  absolute_links: ignore        # absolute_links - это те самые "/governance/..." из апстрима
+  unrecognized_links: info
+  anchors: info                 # битые якоря (#section) - только info, не warn
