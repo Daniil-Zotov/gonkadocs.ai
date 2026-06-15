@@ -1,9 +1,9 @@
 /* =====================================================================
-   GitHub Primer Theme for MkDocs Material
+   GitHub Primer Theme for MkDocs Material — Compact Edition
    Палитра: https://primer.style/foundations/color
    ===================================================================== */
 
-/* ---------- ШРИФТЫ (как у github.com) ---------- */
+/* ---------- ШРИФТЫ ---------- */
 :root {
   --md-text-font-family:
     -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial,
@@ -17,7 +17,6 @@
    СВЕТЛАЯ ТЕМА — Primer Light
    ===================================================================== */
 [data-md-color-scheme="default"] {
-  /* фон / текст */
   --md-default-bg-color: #ffffff;
   --md-default-bg-color--light: #f6f8fa;
   --md-default-fg-color: #1f2328;
@@ -25,7 +24,6 @@
   --md-default-fg-color--lighter: #818b98;
   --md-default-fg-color--lightest: #d1d9e0;
 
-  /* ссылки / акцент */
   --md-primary-fg-color: #ffffff;
   --md-primary-fg-color--light: #f6f8fa;
   --md-primary-fg-color--dark: #d1d9e0;
@@ -38,7 +36,6 @@
 
   --md-typeset-a-color: #0969da;
 
-  /* код */
   --md-code-bg-color: #f6f8fa;
   --md-code-fg-color: #1f2328;
   --md-code-hl-color: rgba(234, 179, 8, 0.15);
@@ -97,88 +94,155 @@
 }
 
 /* =====================================================================
-   ОБЩИЕ ПРАВКИ — типографика и плотность как на github.com
+   ТИПОГРАФИКА — компактная плотность
    ===================================================================== */
 
-/* Основной шрифт — 16px, плотность как в README на гитхабе */
+/* Базовый размер — мельче: 13px вместо 14px */
 .md-typeset {
-  font-size: 0.875rem;
+  font-size: 0.78rem;
   line-height: 1.5;
 }
 
-/* Заголовки — стиль README */
+/* Параграфы — чуть меньше воздуха */
+.md-typeset p {
+  margin: 0 0 12px;
+}
+
+/* Заголовки — плотнее и мельче */
 .md-typeset h1 {
   font-weight: 600;
-  font-size: 2em;
+  font-size: 1.7em;
   padding-bottom: .3em;
   border-bottom: 1px solid var(--md-default-fg-color--lightest);
-  margin-bottom: 16px;
+  margin: 0 0 14px;
+  letter-spacing: -0.01em;
 }
 
 .md-typeset h2 {
   font-weight: 600;
-  font-size: 1.5em;
-  padding-bottom: .3em;
+  font-size: 1.3em;
+  padding-bottom: .25em;
   border-bottom: 1px solid var(--md-default-fg-color--lightest);
-  margin-top: 24px;
-  margin-bottom: 16px;
+  margin: 22px 0 12px;
+  letter-spacing: -0.01em;
 }
 
-.md-typeset h3 { font-weight: 600; font-size: 1.25em; }
-.md-typeset h4 { font-weight: 600; font-size: 1em; }
-.md-typeset h5 { font-weight: 600; font-size: .875em; }
-.md-typeset h6 { font-weight: 600; font-size: .85em; color: var(--md-default-fg-color--light); }
+.md-typeset h3 { font-weight: 600; font-size: 1.1em;  margin: 18px 0 10px; }
+.md-typeset h4 { font-weight: 600; font-size: 1em;    margin: 16px 0 8px; }
+.md-typeset h5 { font-weight: 600; font-size: .9em;   margin: 14px 0 6px; }
+.md-typeset h6 {
+  font-weight: 600;
+  font-size: .85em;
+  color: var(--md-default-fg-color--light);
+  margin: 12px 0 6px;
+}
 
-/* Шапка — тонкая граница снизу, без тени */
+/* Списки — плотнее */
+.md-typeset ul,
+.md-typeset ol {
+  margin: 0 0 12px;
+}
+.md-typeset li {
+  margin-bottom: 2px;
+}
+.md-typeset li + li {
+  margin-top: 2px;
+}
+
+/* =====================================================================
+   ШАПКА / ТАБЫ / НАВИГАЦИЯ — плотнее
+   ===================================================================== */
+
 .md-header {
   box-shadow: none;
   border-bottom: 1px solid var(--md-default-fg-color--lightest);
   color: var(--md-default-fg-color);
+  height: 2.8rem;
+}
+.md-header[data-md-state="shadow"] { box-shadow: none; }
+
+.md-header__title {
+  font-size: .82rem;
+  font-weight: 600;
 }
 
-.md-header[data-md-state="shadow"] {
-  box-shadow: none;
-}
-
-/* Вкладки навигации */
 .md-tabs {
   background-color: var(--md-default-bg-color);
   color: var(--md-default-fg-color);
   border-bottom: 1px solid var(--md-default-fg-color--lightest);
+  height: 2.1rem;
 }
-
 .md-tabs__link {
   opacity: 1;
   font-weight: 500;
+  font-size: .72rem;
+  margin-top: .55rem;
 }
-
 .md-tabs__link:hover,
 .md-tabs__link--active {
   color: var(--md-accent-fg-color);
 }
 
-/* Ссылки */
+/* Сайдбар — мельче и плотнее */
+.md-sidebar {
+  font-size: .72rem;
+}
+.md-nav {
+  font-size: .72rem;
+}
+.md-nav__title {
+  font-weight: 600;
+  font-size: .72rem;
+  color: var(--md-default-fg-color);
+  padding: .6rem .8rem .4rem;
+}
+.md-nav__item {
+  padding: 0 .6rem;
+}
+.md-nav__link {
+  color: var(--md-default-fg-color);
+  margin: .2rem 0;
+  padding: 2px 0;
+}
+.md-nav__link--active,
+.md-nav__link:focus,
+.md-nav__link:hover {
+  color: var(--md-accent-fg-color);
+}
+
+/* TOC справа — ещё мельче */
+.md-sidebar--secondary .md-nav__title,
+.md-sidebar--secondary .md-nav__link {
+  font-size: .7rem;
+}
+
+/* =====================================================================
+   ССЫЛКИ
+   ===================================================================== */
+
 .md-typeset a {
   color: var(--md-typeset-a-color);
   text-decoration: none;
 }
-.md-typeset a:hover {
-  text-decoration: underline;
-}
+.md-typeset a:hover { text-decoration: underline; }
 
-/* Инлайн-код — как на github.com */
+/* =====================================================================
+   КОД
+   ===================================================================== */
+
+/* Инлайн-код */
 .md-typeset code {
   background-color: var(--md-code-bg-color);
-  padding: .2em .4em;
-  font-size: 85%;
+  padding: .15em .35em;
+  font-size: 0.85em;
   border-radius: 6px;
   border: 0;
 }
 
 /* Блоки кода */
 .md-typeset pre > code {
-  font-size: 85%;
-  padding: 16px;
+  font-size: 0.8em;
+  padding: 12px 14px;
   line-height: 1.45;
   border-radius: 6px;
   border: 1px solid var(--md-default-fg-color--lightest);
@@ -189,18 +253,34 @@
   border-radius: 6px;
 }
 
-/* Цитаты */
+/* =====================================================================
+   ЦИТАТЫ
+   ===================================================================== */
+
 .md-typeset blockquote {
   padding: 0 1em;
+  margin: 0 0 12px;
   color: var(--md-default-fg-color--light);
   border-left: .25em solid var(--md-default-fg-color--lightest);
 }
 
-/* Таблицы */
+/* =====================================================================
+   ТАБЛИЦЫ — компактные
+   ===================================================================== */
+
 .md-typeset table:not([class]) {
   border: 1px solid var(--md-default-fg-color--lightest);
   border-radius: 6px;
-  font-size: .875em;
+  font-size: .82em;
+  border-collapse: separate;
+  border-spacing: 0;
+  overflow: hidden;
+}
+
+.md-typeset table:not([class]) th,
+.md-typeset table:not([class]) td {
+  padding: 6px 12px;
+  line-height: 1.4;
 }
 
 .md-typeset table:not([class]) th {
@@ -212,22 +292,27 @@
   background-color: var(--md-default-bg-color--light);
 }
 
-/* Admonitions — стиль GitHub Alerts (Note / Tip / Warning / Caution) */
+/* =====================================================================
+   ADMONITIONS — GitHub Alerts стиль, компактнее
+   ===================================================================== */
+
 .md-typeset .admonition,
 .md-typeset details {
   border: 1px solid var(--md-default-fg-color--lightest);
   border-left: .25em solid var(--md-accent-fg-color);
   border-radius: 6px;
   box-shadow: none;
-  font-size: .875em;
-  padding: 0 1em;
+  font-size: .82em;
+  padding: 0 .9em;
+  margin: 12px 0;
 }
 
 .md-typeset .admonition-title,
 .md-typeset summary {
   background-color: transparent !important;
   font-weight: 600;
-  padding-left: 2em !important;
+  font-size: .95em;
+  padding: .5em .5em .5em 2em !important;
 }
 
 .md-typeset .admonition.note,    .md-typeset details.note    { border-left-color: #0969da; }
@@ -238,67 +323,74 @@
 .md-typeset .admonition.success, .md-typeset details.success { border-left-color: #1a7f37; }
 .md-typeset .admonition.info,    .md-typeset details.info    { border-left-color: #0969da; }
 
-/* Сайдбар — компактнее */
-.md-nav__title {
-  font-weight: 600;
-  color: var(--md-default-fg-color);
-}
+/* =====================================================================
+   ПОИСК
+   ===================================================================== */
 
-.md-nav__link {
-  color: var(--md-default-fg-color);
-}
-
-.md-nav__link--active,
-.md-nav__link:focus,
-.md-nav__link:hover {
-  color: var(--md-accent-fg-color);
-}
-
-/* Поиск */
 .md-search__form {
   background-color: var(--md-default-bg-color--light);
   border: 1px solid var(--md-default-fg-color--lightest);
   border-radius: 6px;
+  height: 1.7rem;
 }
-
+.md-search__input {
+  font-size: .75rem;
+}
 .md-search__form:hover,
 [data-md-toggle="search"]:checked ~ .md-header .md-search__form {
   background-color: var(--md-default-bg-color);
   border-color: var(--md-accent-fg-color);
 }
 
-/* Кнопки (например, edit / view) */
+/* =====================================================================
+   КНОПКИ И FOOTER
+   ===================================================================== */
+
 .md-content__button {
   color: var(--md-default-fg-color--light);
 }
-
 .md-content__button:hover {
   color: var(--md-accent-fg-color);
 }
 
-/* Footer */
 .md-footer {
   background-color: var(--md-default-bg-color--light);
   color: var(--md-default-fg-color--light);
   border-top: 1px solid var(--md-default-fg-color--lightest);
+  font-size: .75rem;
 }
-
 .md-footer-meta {
   background-color: var(--md-default-bg-color--light);
+  font-size: .72rem;
 }
-
 .md-footer__link:hover {
   opacity: 1;
   color: var(--md-accent-fg-color);
 }
 
-/* Скроллбар (опционально, чтобы был чистый GitHub-style) */
-::-webkit-scrollbar { width: 12px; height: 12px; }
+/* =====================================================================
+   КОНТЕНТ — шире за счёт более плотного типографирования
+   ===================================================================== */
+
+.md-content {
+  max-width: 960px;
+}
+.md-content__inner {
+  padding-top: 1rem;
+  padding-bottom: 2rem;
+  margin: 0 auto;
+}
+
+/* =====================================================================
+   СКРОЛЛБАР
+   ===================================================================== */
+
+::-webkit-scrollbar { width: 10px; height: 10px; }
 ::-webkit-scrollbar-track { background: var(--md-default-bg-color); }
 ::-webkit-scrollbar-thumb {
   background: var(--md-default-fg-color--lightest);
-  border-radius: 6px;
-  border: 3px solid var(--md-default-bg-color);
+  border-radius: 5px;
+  border: 2px solid var(--md-default-bg-color);
 }
 ::-webkit-scrollbar-thumb:hover {
   background: var(--md-default-fg-color--lighter);
