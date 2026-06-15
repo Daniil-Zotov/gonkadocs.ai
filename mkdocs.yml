@@ -10,6 +10,9 @@ site_dir: _site
 theme:
   name: material
   language: ru
+  font:
+    text: -apple-system
+    code: ui-monospace
   features:
     - navigation.tabs
     - navigation.sections
@@ -18,6 +21,7 @@ theme:
     - navigation.indexes
     - navigation.instant
     - navigation.tracking
+    - navigation.footer
     - toc.follow
     - search.suggest
     - search.highlight
@@ -25,23 +29,42 @@ theme:
     - content.code.copy
     - content.code.annotate
     - content.tabs.link
+    - content.action.edit
   palette:
     - media: "(prefers-color-scheme: light)"
       scheme: default
-      primary: indigo
-      accent: indigo
+      primary: white
+      accent: blue
       toggle:
-        icon: material/weather-night
+        icon: octicons/moon-16
         name: Тёмная тема
     - media: "(prefers-color-scheme: dark)"
       scheme: slate
-      primary: indigo
-      accent: indigo
+      primary: black
+      accent: blue
       toggle:
-        icon: material/weather-sunny
+        icon: octicons/sun-16
         name: Светлая тема
   icon:
     repo: fontawesome/brands/github
+    edit: octicons/pencil-16
+    view: octicons/eye-16
+    admonition:
+      note: octicons/info-16
+      abstract: octicons/checklist-16
+      info: octicons/info-16
+      tip: octicons/light-bulb-16
+      success: octicons/check-circle-16
+      question: octicons/question-16
+      warning: octicons/alert-16
+      failure: octicons/x-circle-16
+      danger: octicons/stop-16
+      bug: octicons/bug-16
+      example: octicons/beaker-16
+      quote: octicons/quote-16
+
+extra_css:
+  - stylesheets/github.css
 
 plugins:
   - search:
