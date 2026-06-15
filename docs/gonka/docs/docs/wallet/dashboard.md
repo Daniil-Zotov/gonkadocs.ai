@@ -1,0 +1,174 @@
+# Getting Started with the Dashboard
+Dashboard shows live on-chain activity.
+
+Instead of relying on a single centralized server, all network data and inference metrics are hosted directly on the Hosts' nodes. This means the dashboard can connect to any Host’s node and fetch live network data straight from the source.
+
+You can interact with the dashboard in two ways:
+
+- **Preview Mode** — explore a dashboard and view network data without creating an account.
+- **Full Mode** — unlock the complete feature set by connecting your own wallet.
+
+=== "**Preview Mode**"
+
+    If you want to explore the network or see real-time inference metrics before setting up your own account, follow these steps:
+    
+    1. Here is the list of genesis nodes. Choose a random node from the list below and open it in a new browser window/tab.
+    
+        - [http://36.189.234.237:17241](http://36.189.234.237:17241)  
+        - [https://node1.gonka.ai:8443](https://node1.gonka.ai:8443)  
+        - [https://node2.gonka.ai:8443](https://node2.gonka.ai:8443)  
+        - [http://47.236.26.199:8000](http://47.236.26.199:8000)  
+        - [http://47.236.19.22:18000](http://47.236.19.22:18000)  
+        - [http://gonka.spv.re:8000](http://gonka.spv.re:8000)  
+    
+        ??? note "Alternative: fully decentralized way to choose a random node"
+            Open the Hosts list: [http://node2.gonka.ai:8443/v1/epochs/current/participants](http://node2.gonka.ai:8443/v1/epochs/current/participants).  
+            Choose any active Host from the list.
+            Copy their `inference_url` value.
+            Paste the `inference_url` into your browser to load the dashboard.
+    
+    2. Once opened, you’ll see real-time data streamed directly from the Host’s node.
+    
+    !!! note "Why is this important?"
+        This architecture ensures decentralization: no single central server controls the network. In preview mode, functionality is limited. You can view balances, transactions, and some analytics. If you want to send coins, manage your personal accounts, etc, unlock [Full mode](https://gonka.ai/wallet/dashboard/#__tabbed_1_2).
+
+=== "**Full Mode**"
+    
+    First, open the dashboard using Preview Mode. Once you’ve accessed it, continue with the instructions below to enable all features.
+    
+    ### 1. Access Gonka Account
+    
+    To unlock the full functionality of the dashboard, you need a Gonka account.
+    
+    - Already have one? Proceed to the ["Set Up External Wallet"](https://gonka.ai/wallet/dashboard/#2-set-up-external-wallet) section below.
+    - New user? [Create a Gonka account](https://gonka.ai/wallet/create-account/) first, then return here.
+    
+    ### 2. Set Up External Wallet
+    To interact with Dashboard through your wallet, it is recommended to use [Keplr](https://www.keplr.app/){target=_blank} (a browser extension wallet built for Cosmos-based chains).
+    
+    ??? note "What is a wallet?"
+        A crypto wallet serves as a secure container for a user's public and private cryptographic keys, enabling them to manage, transfer, and purchase cryptocurrencies. Gonka is built on the Cosmos-SDK blockchain framework and can be accessed using Keplr wallet.
+        
+    - If you have a Keplr wallet browser extension, proceed to the ["Connect wallet"](https://gonka.ai/wallet/dashboard/#3-connect-wallet) section.
+    - If you haven't set it up yet, follow the steps below.
+    
+    Install an extension for your browser.
+            
+    Go to [the official Keplr website](https://www.keplr.app/){target=_blank} and click "Get Keplr wallet".
+            
+    <a href="/images/dashboard_keplr_step_2_1.png" target="_blank"><img src="/images/dashboard_keplr_step_2_1.png" style="width:500px; height:auto;"></a>
+            
+    Choose an extension for your browser.
+            
+    <a href="/images/dashboard_keplr_step_2_2.png" target="_blank"><img src="/images/dashboard_keplr_step_2_2.png" style="width:500px; height:auto;"></a>
+            
+    Add the selected extension to your browser.
+            
+    === "Firefox"
+            
+        <a href="/images/dashboard_keplr_step_2_3.png" target="_blank"><img src="/images/dashboard_keplr_step_2_3.png" style="width:500px; height:auto;"></a>
+            
+    === "Google Chrome"
+            
+        <a href="/images/dashboard_keplr_step_2_3_2.png" target="_blank"><img src="/images/dashboard_keplr_step_2_3_2.png" style="width:500px; height:auto;"></a>
+
+    After installing the extension, you should see it in the top-right panel of your browser. 
+                
+    <a href="/images/keplr_extension.png" target="_blank"><img src="/images/keplr_extension.png" style="width:500px; height:auto;"></a>
+
+    At this point, the extension is installed, but not yet connected to your wallet. 
+    Next, open the extension and log in to your wallet. Once you are logged in, follow the steps below to continue with the setup process.
+
+    Click "Import an Existing Wallet".
+                        
+    <a href="/images/dashboard_ping_pub_3_5_3.png" target="_blank"><img src="/images/dashboard_ping_pub_3_5_3.png" style="width:500px; height:auto;"></a>
+                        
+    Click "Use recovery phrase or private key"
+                
+    <a href="/images/dashboard_ping_pub_3_5_4.png" target="_blank"><img src="/images/dashboard_ping_pub_3_5_4.png" style="width:500px; height:auto;"></a>
+                
+    Paste your private key.
+    
+    ??? note "Important note on wallet-bridge compatibility"
+        The bridge currently expects a specific account setup. Some wallets may let you create a Gonka account and even export a private key, but that does not always mean the account will work correctly with the bridge. For bridge use, please create your Gonka account in one of the following ways:
+
+        - With the `inferenced` CLI tool
+        - In Keplr using the “Connect with Google” flow
+        
+        These are the recommended and supported options for users who need Ethereum bridge compatibility. See [Create a Gonka account](https://gonka.ai/wallet/create-account/) for details.
+                
+        <a href="/images/dashboard_ping_pub_3_5_4.png" target="_blank"><img src="/images/dashboard_keplr_step_3_5_5_private_key.png" style="width:500px; height:auto;"></a>
+                        
+    Set Up Your Wallet. Store your password in a safe and secure place.
+                        
+    <a href="/images/keplr_set_up_your_wallet.png" target="_blank"><img src="/images/keplr_set_up_your_wallet.png" style="width:500px; height:auto;"></a>
+                        
+    Type “Gonka” into the search bar and select Gonka chain to add it to your wallet.
+    
+    <a href="/images/keplr_deselect_chains.PNG" target="_blank"><img src="/images/keplr_deselect_chains.PNG" style="width:500px; height:auto;"></a>
+    
+    Done — your Gonka account has been successfully imported into Keplr!
+                        
+    <a href="/images/dashboard_ping_pub_3_5_7.png" target="_blank"><img src="/images/dashboard_ping_pub_3_5_7.png" style="width:500px; height:auto;"></a>
+    
+    ### 3. Connect wallet
+
+    3.1.  Open Gonka dashboard following the [preview mode](https://gonka.ai/wallet/dashboard/#__tabbed_1_1) instructions. 
+    
+    3.2. In the top-right corner, click "Connect Wallet" to get started.
+    
+    <a href="/images/dashboard_ping_pub_3_1.png" target="_blank"><img src="/images/dashboard_ping_pub_3_1.png" style="width:500px; height:auto;"></a>
+    
+    3.3. Select Keplr and hit Connect.
+    
+    <a href="/images/dashboard_ping_pub_3_2.png" target="_blank"><img src="/images/dashboard_ping_pub_3_2.png" style="width:500px; height:auto;"></a>
+    
+    3.4. Approve requested connection to Gonka network. 
+
+    <a href="/images/keplr_approve_connection.png" target="_blank"><img src="/images/keplr_approve_connection.png" style="width:250px; height:auto;"></a>
+    
+    3.5. Done! You successfully added your account to the wallet.
+    
+    <a href="/images/dashboard_ping_pub_3_4.png" target="_blank"><img src="/images/dashboard_ping_pub_3_4.png" style="width:500px; height:auto;"></a>
+     
+    ??? note "Optional: How to add an additional Gonka account in Keplr wallet — click to view steps"
+        
+        Open the extension and click on the account icon in the top-right corner of the extension window.
+                        
+        <a href="/images/dashboard_ping_pub_3_5_1.png" target="_blank"><img src="/images/dashboard_ping_pub_3_5_1.png" style="width:auto; height:337.5px;"></a>
+                        
+         Click the "Add wallet" button.
+                        
+        <a href="/images/dashboard_ping_pub_3_5_2.png" target="_blank"><img src="/images/dashboard_ping_pub_3_5_2.png" style="width:auto; height:337.5px; display:block;"></a>
+                        
+        Click "Import an Existing Wallet".
+                        
+        <a href="/images/dashboard_ping_pub_3_5_3.png" target="_blank"><img src="/images/dashboard_ping_pub_3_5_3.png" style="width:450px; height:auto; display:block;"></a>
+                        
+        Click "Use recovery phrase or private key"
+                
+        <a href="/images/dashboard_ping_pub_3_5_4.png" target="_blank"><img src="/images/dashboard_ping_pub_3_5_4.png" style="width:450px; height:auto;"></a>
+                
+        Paste your private key.
+    
+        ??? note "Important note on wallet-bridge compatibility"
+            The bridge currently expects a specific account setup. Some wallets may let you create a Gonka account and even export a private key, but that does not always mean the account will work correctly with the bridge. For bridge use, please create your Gonka account in one of the following ways:
+
+            - With the `inferenced` CLI tool
+            - In Keplr using the “Connect with Google” flow
+            
+            These are the recommended and supported options for users who need Ethereum bridge compatibility. See [Create a Gonka account](https://gonka.ai/wallet/create-account/) for details.
+                
+        <a href="/images/dashboard_ping_pub_3_5_4.png" target="_blank"><img src="/images/dashboard_keplr_step_3_5_5_private_key.png" style="width:450px; height:auto;"></a>
+                        
+        Give your wallet a name for easy reference.
+                        
+        <a href="/images/dashboard_ping_pub_3_5_5.png" target="_blank"><img src="/images/dashboard_ping_pub_3_5_5.png" style="width:450px; height:auto;"></a>
+                        
+        Make sure Gonka chain is selected.
+    
+        <a href="/images/keplr_deselect_chains.PNG" target="_blank"><img src="/images/keplr_deselect_chains.PNG" style="width:500px; height:auto;"></a>
+    
+        Done — your Gonka account has been successfully imported into Keplr!
+                        
+        <a href="/images/dashboard_ping_pub_3_5_7.png" target="_blank"><img src="/images/dashboard_ping_pub_3_5_7.png" style="width:450px; height:auto;"></a>

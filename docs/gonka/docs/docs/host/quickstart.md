@@ -1,0 +1,1392 @@
+# Setting up your chain 
+
+**Host** (**hardware provider** or **node**) contributes computational resources to the network and is rewarded based on the amount and quality of resources they provide.
+
+To join the network, you need to deploy two services:
+
+- **Network Node** – a service consisting of two nodes: a **Chain Node** and an **API Node**. This service handles all communication. The **Chain Node** connects to the blockchain, while the **API Node** manages user requests.
+- **Inference (ML) node** – a service that performs inference of large language models (LLMs) on GPU(s). You need at least one **ML Node** to join the network.
+
+The guide describes a scenario in which both services are deployed on the same machine, and each Host has one ML Node. Services are deployed as Docker containers.
+
+??? note "Live Demo — How to Launch a Node (Quickstart for Hosts)"
+    The video recording of the demo session for launching a node via the quickstart is available below. Some steps in the recording may differ from the instructions below, as the quickstart is updated continuously based on community feedback. Always follow the written quickstart - it reflects the current and correct procedure.
+
+    <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%;">
+      <iframe
+        src="https://www.youtube.com/embed/DWOeHQoU_LY"
+        title="Gonka: Live Demo — How to Launch a Node (Quickstart for Hosts)"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen
+        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
+      </iframe>
+    </div>
+
+## Prerequisites
+This section provides guidance on configuring your hardware infrastructure to participate in Gonka Network launch. The goal is to maximize protocol rewards by aligning your deployment with network expectations.
+
+### Supported models
+The protocol supports **governance-approved** models for inference and Proof of Compute (PoC v2). On Gonka mainnet, each approved model has its own PoC group and reward tracking (multi-model PoC since upgrade v0.2.12).
+
+| Model ID | Role |
+|----------|------|
+| `Qwen/Qwen3-235B-A22B-Instruct-2507-FP8` | Original enforced model; still supported |
+| `moonshotai/Kimi-K2.6` | **Kimi K2.6** — active in PoC on the network (passed bootstrap; participates alongside Qwen) |
+| `MiniMaxAI/MiniMax-M2.7` | **MiniMax M2.7** — newly approved model added with MLNode 3.0.14; participates alongside Qwen and Kimi |
+
+!!! tip "Authoritative model list (governance API)"
+    Approved models can change between releases or epochs. **Before you edit `node-config.json`,** call the governance API and use each returned object’s `"id"` as the key under `"models"`:
+    ```bash
+    curl -sS http://node2.gonka.ai:8000/v1/governance/models
+    ```
+    To list only model ids, pipe the response: `jq -r '.models[].id'`. If `node2.gonka.ai` is unreachable, use another participant’s public API base URL (scheme, host, and port). The response also includes network parameters such as `model_args`; the `node-config.json` examples later show typical `args` for common hardware—adjust for your GPUs and benchmarks.
+
+You typically run **one model per ML Node** in `node-config.json`. Hosts may operate separate ML Nodes (or fleets) for Qwen, Kimi, and MiniMax.
+
+!!! tip "Reference deploy configs in the repo"
+    The `deploy/join/` folder ships ready-to-use `node-config-*.json` files for every approved model and the most common GPU classes. Copy the one that matches your hardware to `node-config.json` instead of writing one from scratch:
+
+    - **Qwen3-235B** — `deploy/join/node-config-qwen235B-B200.json`
+    - **Kimi K2.6** — `deploy/join/node-config-kimik26-H200.json`, `deploy/join/node-config-kimik26-B200.json`
+    - **MiniMax M2.7** — `deploy/join/node-config-minimax-A100.json`, `deploy/join/node-config-minimax-H100.json`, `deploy/join/node-config-minimax-H200.json`, `deploy/join/node-config-minimax-B200.json`
+
+    The contents of these files are reproduced inline below for convenience.
+
+!!! note "If you will not run every approved model"
+    Multi-model PoC tracks participation **per model**. If your hardware does **not** cover every governance-approved model, you will need on-chain **delegation** or **refusal** so your consensus weight is handled correctly for the models you skip. That is **not** required to bring a node online—you use the same **Account (cold) key** as in [Grant Permissions to ML Operational Key](#33-local-machine-grant-permissions-to-ml-operational-key), **after** registration and verification. Copy-paste commands are at the end: [Optional: PoC delegation and refusal](#optional-poc-delegation-and-refusal). For strategy and penalties, read [Multi-Model PoC — Host Operations Guide](./multi_model_poc.md).
+
+!!! note "Governance and model classification"
+    - Models may be classified into a category if approved by governance.
+    - Decisions about adding or changing supported models are made by governance.
+    - For details on governance procedures and how to propose new models, see the [Transactions and Governance Guide](https://gonka.ai/governance/transactions-and-governance/).
+
+### Proposed Hardware Configuration
+To run a valid node, you need machines with [supported GPU(s)](/host/hardware-specifications/). Below is a reference layout:
+
+| **Model Name**                          | **ML Nodes (min)** | **Example Hardware**                            | **Minimum VRAM per ML Node** |
+|------------------------------------------|-------------------|-------------------------------------------------|----------------|
+| `Qwen/Qwen3-235B-A22B-Instruct-2507-FP8` | ≥ 2               | 8× H200 per MLNode                              | 640 GB         |
+| `moonshotai/Kimi-K2.6`                  | ≥ 2               | 8× H200 or 8× B200 per MLNode (reference class) | 640 GB         |
+| `MiniMaxAI/MiniMax-M2.7`                | ≥ 2               | 4× A100 / 4× H100 / 2× H200 / 2× B200 per MLNode | ~320 GB        |
+
+This is a reference architecture. You may adjust node count or hardware allocation, but we recommend following the core principle: each node should support multiple ML Nodes across all model tiers.
+
+For Kimi K2.6, the network uses a **weight coefficient** of approximately **3.51×** Qwen235B on the same reference hardware (8×H200, 8×B200). See [Multi-Model PoC — Host Operations Guide](./multi_model_poc.md). Example vLLM arguments for B200-class hosts are in [Kimi K2.6 Bootstrap](./kimi-bootstrap.md) and in the `node-config.json` examples below.
+
+More details about the optimal deployment configuration can be found [here](https://gonka.ai/host/benchmark-to-choose-optimal-deployment-config-for-llms/).
+
+The server hosting the Network Node should have:
+
+- 16-core CPU (amd64)
+- 64+ GB RAM
+- 1TB NVMe SSD
+- 100Mbps minimum network connection (1Gbps preferred)
+
+The final requirements will depend on the number of ML Nodes connected and their total throughput.
+
+Each server used to deploy an ML Node should have:
+
+- at least 1.5x RAM of GPU VRAM
+- a 16-core CPU (Network Node and ML Node can be deployed on the same server).
+- NVIDIA Container Toolkit installed and configured, with a CUDA Toolkit version between 12.6 and 12.9. You can check the version with `nvidia-smi`.
+
+### Network access, proxy, and ports (IMPORTANT)
+
+Gonka Network uses a proxy-based architecture to protect nodes from abuse and DDoS attacks. All public HTTP/HTTPS traffic MUST go through the proxy container. Direct exposure of Network Node or ML Node services is not secure.
+
+!!! note "Publicly exposed ports"
+
+    The following ports may be exposed to the public internet:
+
+    - 5000 - Tendermint P2P communication
+    - 8000 / 8443 - Application service via proxy only
+
+!!! warning "WARNING: Internal ports"
+
+    The following ports are internal-only and MUST NOT be publicly accessible:
+
+    - 26657 - Tendermint RPC
+    - 9100, 9200 — Network Node internal API
+    - 5050 — ML Node / vLLM inference API
+    - 8080 — ML Node API
+
+    If any of these ports are exposed to the public internet, your node is vulnerable. A third party can freely send requests, overload your ML Node, disrupt mining, or cause your node to drop out of an epoch.
+    
+    **Requirements:**
+    
+    - Allow access to these ports only from localhost, a private network or whitelisting
+    - Never expose them publicly
+    - Docker defaults are NOT secure
+
+!!! note "Starting from Upgrade 0.2.8"
+
+    To enhance security and performance by default, the following routing controls and chain service restrictions are automatically applied unless explicitly overridden.
+    ```bash title="API Manual Routes Control"
+          # Defines which routes bypass rate limits (Exempt) vs those completely disabled (Blocked)
+          - GONKA_API_EXEMPT_ROUTES=chat inference
+          - GONKA_API_BLOCKED_ROUTES=poc-batches training
+    ```
+    
+    ```bash title="Chain Routes Disabling"
+          # Disables public access to Chain services by default
+          - DISABLE_CHAIN_API=${DISABLE_CHAIN_API:-true}
+          - DISABLE_CHAIN_RPC=${DISABLE_CHAIN_RPC:-true}
+          - DISABLE_CHAIN_GRPC=${DISABLE_CHAIN_GRPC:-true}
+    ```
+
+The following cases describe internal port isolation for Network Node and ML Node services. These rules apply after the proxy is configured as the only public entry point. They do NOT replace the proxy and must be used together with it.
+
+=== "CASE 1: ML Node and Network Node on the SAME machine"
+    Bind ports to localhost only.        
+        
+    **Network Node (`docker-compose.yml`)**
+        
+    If your ML Node container and Network Node containers are on the same machine, you can simply edit `gonka/deploy/join/docker-compose.yml`:
+    ```
+    api:
+        ports:
+            - "127.0.0.1:9100:9100"
+            - "127.0.0.1:9200:9200"
+    ```
+    
+    **ML Node (`docker-compose.mlnode.yml`)**
+    ```
+    ports:
+        - "127.0.0.1:${PORT:-8080}:8080"
+        - "127.0.0.1:${INFERENCE_PORT:-5050}:5000"
+    ```
+
+    Do NOT use:
+        
+    - "9100:9100"
+    - "9200:9200"
+    - "5050:5000"
+    - "8080:8080"
+    
+=== "CASE 2: ML Node and Network Node on DIFFERENT machines"
+    In this setup, ALL communication between Network Node and ML Node must happen over a private network. Public IPs or public DNS names MUST NOT be used for:
+        
+    - ML Node APIs
+    - `DAPI_API__POC_CALLBACK_URL`
+
+    If ML Node and Network Node containers are on different machines, the fix described in Case 1 won't work and the particular way of protecting these ports depends on your setup. You should setup connection between ML Node and Network containers either using the same docker network, or by setting up a private network between the machines, exposing the ports in this network and closing the port for public. In this case you should also properly set up `DAPI_API__POC_CALLBACK_URL` variable in config. This URL must point to a private/internal address, not a public address.
+
+## Setup Your Nodes
+
+The quickstart instructions are designed to run both the Network Node and the inference node on a single machine (one server setup). 
+
+??? note "Multiple nodes deployment"
+    If you are deploying multiple GPU nodes, please refer to the detailed [Multiple nodes deployment guide](https://gonka.ai/host/multiple-nodes/) for proper setup and configuration. Whether you deploy inference nodes on a single machine or across multiple servers (including across geographical regions), all inference nodes must be connected to the same Network Node.
+
+### Key Management Overview
+Before configuring your Network Node, you need to set up cryptographic keys for secure operations.  
+**It is recommended to read the [Key Management Guide](/host/key-management/) before launching a production node.**
+
+We use a three-key system:
+
+- **Account Key** (Cold Wallet) - Created on your local secure machine for high-stakes operations
+- **Consensus Key** (TMKMS - Warm Storage) - Managed by secure TMKMS service and used for block validation and network consensus participation
+- **ML Operational Key** (Warm Wallet) - Created on the server for automated AI workload transactions
+
+### [Local machine] Install the CLI Tool
+The `inferenced` CLI is required for local account management and network operations. It's a command-line interface utility that allows you to create and manage Gonka accounts, register hosts, and perform various network operations from your local machine.
+
+**Choose the correct binary**
+
+GitHub releases may contain multiple `inferenced` artifacts.
+
+For local CLI usage, always download an **OS-specific packaged CLI build**, for example:
+
+- `inferenced-darwin-amd64.zip`
+- `inferenced-darwin-arm64.zip`
+- `inferenced-linux-amd64.zip`
+- `inferenced-linux-arm64.zip`
+
+Do not use generic `inferenced` binaries intended for upgrade paths or container/runtime environments. Those artifacts may not work correctly as a standalone CLI on your local machine.
+
+**Version requirement**
+
+Please make sure you are using an `inferenced` CLI build [version 0.2.9](https://github.com/gonka-ai/gonka/releases/tag/release/v0.2.9) or [newer](https://github.com/gonka-ai/gonka/releases). Older CLI versions are not supported for permission granting and may lead to unexpected behavior.
+
+If you plan to submit governance proposals, especially proposals that use newer message types, use the latest published OS-specific CLI build.
+
+**Verify installation**
+
+```bash
+chmod +x inferenced
+./inferenced --help
+```
+
+!!! note "macOS Users"
+    On macOS, you may need to allow execution in `System Settings` → `Privacy & Security` if prompted. Scroll down to the warning about `inferenced` and click `Allow Anyway`.
+
+If the binary fails to start on Linux with an error similar to `Error relocating ./inferenced: qsort_r: symbol not found`, you most likely downloaded a non-CLI or upgrade-specific artifact instead of the OS-specific packaged CLI build. Re-download the correct archive for your operating system and architecture.
+
+### [Local machine] Create Account Key
+**IMPORTANT: Perform this step on a secure, local machine (not your server)**
+
+??? note "About Account Key (Cold Key)"
+    The Account Key is your primary, high-privilege key. It is created locally and never stored on your servers.
+    
+    - Master key that grants permissions to all other keys
+    - Must be stored offline on a secure, air-gapped machine
+    - Only for granting permissions and validator registration
+    - Protected by mnemonic phrase - if lost, all access is permanently lost
+
+Create your Account Key using the `file` keyring backend (you can also use `os` for enhanced security on supported systems):
+
+```bash
+./inferenced keys add gonka-account-key --keyring-backend file
+```
+
+CLI will ask you for passphrase and show data about created key-pair.
+```
+❯ ./inferenced keys add gonka-account-key --keyring-backend file
+Enter keyring passphrase (attempt 1/3):
+Re-enter keyring passphrase:
+
+- address: gonka1rk52j24xj9ej87jas4zqpvjuhrgpnd7h3feqmm
+  name: gonka-account-key
+  pubkey: '{"@type":"/cosmos.crypto.secp256k1.PubKey","key":"Au+a3CpMj6nqFV6d0tUlVajCTkOP3cxKnps+1/lMv5zY"}'
+  type: local
+
+
+**Important** write this mnemonic phrase in a safe place.
+It is the only way to recover your account if you ever forget your password.
+
+pyramid sweet dumb critic lamp various remove token talent drink announce tiny lab follow blind awful expire wasp flavor very pair tell next cable
+```
+
+**CRITICAL**: Write this mnemonic phrase down and store it in a secure, offline location. This phrase is the **only** way to recover your Account Key.
+
+!!! info "Hardware Wallet Support"
+    **Current Status**: Hardware wallets are not yet supported at network launch.
+    
+    **For Now**: Store your Account Key on a secure, dedicated machine with minimal internet exposure and strong encryption.
+    
+    **Important**: Always keep your mnemonic phrase as a backup regardless of future hardware wallet adoption.
+
+### [Server] Download Deployment Files
+Clone the repository with the base deploy scripts:
+
+```bash
+git clone https://github.com/gonka-ai/gonka.git -b main && \
+cd gonka/deploy/join
+```
+
+And copy `config` file template:
+```
+cp config.env.template config.env
+```
+
+After cloning the repository, you’ll find the following key configuration files:
+
+| File                          | Description                                                                      |
+|-------------------------------|----------------------------------------------------------------------------------|
+| `config.env`                  | Contains environment variables for the Network Node                              |
+| `docker-compose.yml`          | Docker Compose file to launch the Network Node                                   |
+| `docker-compose.mlnode.yml`   | Docker Compose file to launch the ML Node                                   |
+| `node-config.json`            | The configuration file used by the Network Node, describes the inference nodes managed by this Network Node |
+
+### [Server] Setup Environment Variables
+
+<!-- CONDITION START: data-show-when='["non-finished"]' -->
+!!! note "Configuration Required"
+    Please complete the questionnaire to generate your `config.env` configuration. The environment variables depend on your choices (HTTP/HTTPS, SSL certificate method, etc.).
+<!-- CONDITION END -->
+
+<!-- CONDITION START: data-show-when='["domainNo"]' -->
+!!! warning "HTTPS Not Available Without Domain Name"
+    SSL/TLS certificates can only be issued for domain names (e.g., `example.com`), not for direct IP addresses. Since you indicated you don't have a domain name configured, your node will be set up with **HTTP only** (port 8000). 
+    
+    If you need HTTPS security, you'll need to:
+    
+    1. Obtain a domain name and configure DNS to point to your server's IP address
+    2. Press the **"Reset"** button above and select **"Yes"** when asked about having a domain name
+    
+    For production deployments, HTTPS is strongly recommended to encrypt API communications and protect sensitive data.
+<!-- CONDITION END -->
+
+<div id="quickstart-questionnaire" class="quickstart-questionnaire">
+  <div id="quickstart-questions"></div>
+  
+  <div id="quickstart-config-result" style="display: none;">
+    <div class="admonition note">
+      <p class="admonition-title">config.env</p>
+      <div id="quickstart-config-display">
+        <pre><code></code></pre>
+      </div>
+    </div>
+    <p style="margin-top: 1rem; font-size: 0.7rem; color: var(--md-default-fg-color--light);">Copy the configuration above and proceed to edit the values as described below.</p>
+    <button class="quickstart-copy-btn">Copy to Clipboard</button>
+    <button class="quickstart-reset-btn">Reset</button>
+  </div>
+</div>
+
+<!-- CONDITION START: data-show-when='["finished"]' -->
+
+If your node cannot connect to the default seed node, [see the FAQ for details.](https://gonka.ai/FAQ/#my-node-cannot-connect-to-the-default-seed-node-specified-in-the-configenv)
+### [Server] Edit Environment Variables
+
+Which variables to edit:
+
+<div id="quickstart-edit-table"></div>
+
+All other variables can be left as is.
+
+<!-- CONDITION START: data-show-when='["protocolHttps", "certMethodAuto"]' -->
+**How to get variables from domain providers:**
+
+<!-- CONDITION START: data-show-when='["protocolHttps", "certMethodAuto", "cloudflare"]' -->
+??? details "Cloudflare"
+    1) Open the Cloudflare Dashboard.
+    
+    2) Go to Profile → API Tokens.
+    
+    3) Click Create Token.
+    
+    4) Use Edit zone DNS template or set permissions: Zone:Read and DNS:Edit.
+    
+    5) Limit the token to your DNS zone and create it.
+    
+    6) Copy the token and set `CF_DNS_API_TOKEN`.
+<!-- CONDITION END -->
+
+<!-- CONDITION START: data-show-when='["protocolHttps", "certMethodAuto", "route53"]' -->
+??? details "AWS Route53"
+    **Option A — AWS CLI**
+    ```bash
+    HOSTED_ZONE_ID="Z123EXAMPLE"
+    cat > route53-acme.json <<'JSON'
+    {
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+        "Effect": "Allow",
+        "Action": ["route53:ChangeResourceRecordSets"],
+        "Resource": "arn:aws:route53:::hostedzone/${HOSTED_ZONE_ID}"
+        },
+        {
+        "Effect": "Allow",
+        "Action": [
+            "route53:ListHostedZones",
+            "route53:ListHostedZonesByName",
+            "route53:ListResourceRecordSets",
+            "route53:GetChange"
+        ],
+        "Resource": "*"
+        }
+    ]
+    }
+    JSON
+
+    aws iam create-policy \
+    --policy-name acme-dns-route53-${HOSTED_ZONE_ID} \
+    --policy-document file://route53-acme.json | jq -r .Policy.Arn
+
+    USER_NAME="acme-dns"
+    POLICY_ARN=$(aws iam list-policies --query "Policies[?PolicyName=='acme-dns-route53-${HOSTED_ZONE_ID}'].Arn" -o tsv)
+    aws iam create-user --user-name "$USER_NAME" >/dev/null || true
+    aws iam attach-user-policy --user-name "$USER_NAME" --policy-arn "$POLICY_ARN"
+    CREDS=$(aws iam create-access-key --user-name "$USER_NAME")
+    AWS_ACCESS_KEY_ID=$(echo "$CREDS" | jq -r .AccessKey.AccessKeyId)
+    AWS_SECRET_ACCESS_KEY=$(echo "$CREDS" | jq -r .AccessKey.SecretAccessKey)
+
+    echo "AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID"
+    echo "AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY"
+    echo "AWS_REGION=<your-aws-region>"
+    ```
+
+    **Option B — Console**
+    
+    1) Create an IAM policy limited to your hosted zone (ChangeResourceRecordSets and list permissions).
+    
+    2) Create an IAM user with programmatic access.
+    
+    3) Attach the policy to the user.
+    
+    4) Create an access key pair and set `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_REGION`.
+<!-- CONDITION END -->
+
+<!-- CONDITION START: data-show-when='["protocolHttps", "certMethodAuto", "gcloud"]' -->
+??? details "Google Cloud DNS"
+    **Option A — gcloud CLI:**
+    ```bash
+    PROJECT_ID="<your-gcp-project>"
+    SA_NAME="acme-dns"
+    SA_EMAIL="$SA_NAME@$PROJECT_ID.iam.gserviceaccount.com"
+
+    gcloud config set project "$PROJECT_ID"
+    # 1) Service account
+    gcloud iam service-accounts create "$SA_NAME" \
+    --display-name "ACME DNS for proxy-ssl"
+    # 2) Role
+    gcloud projects add-iam-policy-binding "$PROJECT_ID" \
+    --member "serviceAccount:$SA_EMAIL" \
+    --role "roles/dns.admin"
+    # 3) Key → base64 (single line)
+    gcloud iam service-accounts keys create key.json --iam-account "$SA_EMAIL"
+    GCE_SERVICE_ACCOUNT_JSON_B64=$(base64 < key.json | tr -d '\n')
+
+    echo "GCE_PROJECT=$PROJECT_ID"
+    echo "GCE_SERVICE_ACCOUNT_JSON_B64=$GCE_SERVICE_ACCOUNT_JSON_B64"
+    ```
+    **Option B — Console**
+    
+    1) IAM & Admin → Service Accounts → Create service account (e.g., acme-dns).
+    
+    2) Grant the service account role: DNS Administrator (`roles/dns.admin`).
+    
+    3) Service account → Keys → Add key → Create new key (JSON) → Download.
+    
+    4) Base64-encode the JSON key to a single line and set `GCE_SERVICE_ACCOUNT_JSON_B64`. Set `GCE_PROJECT` to your project ID.
+<!-- CONDITION END -->
+
+<!-- CONDITION START: data-show-when='["protocolHttps", "certMethodAuto", "azure"]' -->
+??? details "Azure DNS"
+    **Option A — Azure CLI** (quick)
+    ```bash
+    # 1) Login and choose subscription
+    az login
+    az account set --subscription "<your-subscription-name-or-id>"
+
+    # 2) Set where your DNS zone lives
+    RG="<<your-dns-resource-group>>"
+    ZONE="<<your-zone>>"         # e.g., gonka.ai
+    SP_NAME="gonka-acme-$(date +%s)"
+
+    SUBSCRIPTION_ID=$(az account show --query id -o tsv)
+    SCOPE="/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RG/providers/Microsoft.Network/dnszones/$ZONE"
+
+    CREDS=$(az ad sp create-for-rbac \
+    --name "$SP_NAME" \
+    --role "DNS Zone Contributor" \
+    --scopes "$SCOPE" \
+    --only-show-errors)
+
+    # 4) Extract values
+    AZURE_CLIENT_ID=$(echo "$CREDS" | jq -r .appId)
+    AZURE_CLIENT_SECRET=$(echo "$CREDS" | jq -r .password)
+    AZURE_TENANT_ID=$(echo "$CREDS" | jq -r .tenant)
+
+    # 5) Print for your env file
+    echo "AZURE_CLIENT_ID=$AZURE_CLIENT_ID"
+    echo "AZURE_CLIENT_SECRET=$AZURE_CLIENT_SECRET"
+    echo "AZURE_SUBSCRIPTION_ID=$SUBSCRIPTION_ID"
+    echo "AZURE_TENANT_ID=$AZURE_TENANT_ID"
+    ```
+    **Option B — Portal**
+    
+    1) Go to Microsoft Entra ID → App registrations → New registration. Copy Application (client) ID and Directory (tenant) ID.
+    
+    2) Go to Certificates & secrets → New client secret. Copy the secret value and set `AZURE_CLIENT_SECRET`.
+    
+    3) Copy your Subscription ID and set `AZURE_SUBSCRIPTION_ID`.
+    
+    4) In your DNS zone, open Access control (IAM) → Add role assignment → DNS Zone Contributor → assign to the registered app.
+<!-- CONDITION END -->
+
+<!-- CONDITION START: data-show-when='["protocolHttps", "certMethodAuto", "digitalocean"]' -->
+??? details "DigitalOcean DNS"
+    1) Open DigitalOcean Control Panel.
+    
+    2) Go to API → Tokens.
+    
+    3) Generate a write‑scoped token and set `DO_AUTH_TOKEN`.
+<!-- CONDITION END -->
+
+<!-- CONDITION START: data-show-when='["protocolHttps", "certMethodAuto", "hetzner"]' -->
+??? details "Hetzner DNS"
+    1) Open https://dns.hetzner.com.
+    
+    2) Go to API Tokens.
+    
+    3) Create a new token and set `HETZNER_API_KEY`.
+<!-- CONDITION END -->
+<!-- CONDITION END -->
+
+**Load the configuration:**
+```bash
+source config.env
+```
+
+!!! note "Using Environment Variables"
+    The examples in the following sections will reference these environment variables (e.g., `$PUBLIC_URL`, `$ACCOUNT_PUBKEY`, `$SEED_API_URL`) in both local machine commands and server commands. Make sure to run `source config.env` in each terminal session where you'll be executing these commands.
+<!-- CONDITION END -->
+
+
+
+### [Server] Edit Inference Node Description for the Server
+
+!!! note
+    The network currently supports the Qwen/Qwen3-235B-A22B-Instruct-2507-FP8 only. The governance makes decisions on adding or modifying supported models. For details on how model governance works and how to propose new models, see the [Transactions and Governance Guide](https://gonka.ai/governance/transactions-and-governance/).
+
+=== "Qwen — 4xH100 (same works for 8xH200 or 8xH100)"
+
+    !!! note "edit node-config.json"
+        ```
+        [
+            {
+                "id": "node1",
+                "host": "inference",
+                "inference_port": 5000,
+                "poc_port": 8080,
+                "max_concurrent": 500,
+                "models": {
+                    "Qwen/Qwen3-235B-A22B-Instruct-2507-FP8": {
+                        "args": [
+                            "--tensor-parallel-size", "4"
+                        ]
+                    }
+                }
+            }
+        ]
+        ```
+
+=== "Qwen — 8×B200"
+
+    Reference deploy config in the repo: `deploy/join/node-config-qwen235B-B200.json`.
+
+    !!! note "edit node-config.json"
+        ```
+        [
+            {
+                "id": "node1",
+                "host": "inference",
+                "inference_port": 5000,
+                "poc_port": 8080,
+                "max_concurrent": 500,
+                "models": {
+                    "Qwen/Qwen3-235B-A22B-Instruct-2507-FP8": {
+                        "args": [
+                            "--tensor-parallel-size", "2",
+                            "--max-model-len", "240000",
+                            "--gpu-memory-utilization", "0.88"
+                        ]
+                    }
+                }
+            }
+        ]
+        ```
+
+=== "Kimi — 4×B200 / 8×B200 (and 8×H200 reference class)"
+
+    Use this vLLM argument set for **Kimi K2.6** on Blackwell **4×B200 or 8×B200**, and as the reference for **8×H200** on the same layout (`tensor_parallel_size` 4 with expert parallelism across eight GPUs). Adjust only if your stack or benchmarking requires it.
+
+    Reference deploy config in the repo: `deploy/join/node-config-kimik26-B200.json`.
+
+    !!! note "edit node-config.json"
+        ```
+        [
+            {
+                "id": "node1",
+                "host": "inference",
+                "inference_port": 5000,
+                "poc_port": 8080,
+                "max_concurrent": 500,
+                "models": {
+                    "moonshotai/Kimi-K2.6": {
+                        "args": [
+                            "--tensor-parallel-size", "4",
+                            "--enable-expert-parallel",
+                            "--trust-remote-code",
+                            "--mm-encoder-tp-mode", "data",
+                            "--tool-call-parser", "kimi_k2",
+                            "--reasoning-parser", "kimi_k2",
+                            "--attention-backend", "FLASHINFER_MLA",
+                            "--disable-custom-all-reduce",
+                            "--gpu-memory-utilization", "0.95",
+                            "--max-num-seqs", "128",
+                            "--max-model-len", "240000"
+                        ]
+                    }
+                }
+            }
+        ]
+        ```
+
+    The same `"models"` block is used when registering or updating a node via the API; see [Kimi K2.6 Bootstrap](./kimi-bootstrap.md) for an equivalent `curl` example.
+
+=== "Kimi — 8×H200"
+
+    Reference deploy config in the repo: `deploy/join/node-config-kimik26-H200.json`. Uses `FLASHMLA` attention and `tensor_parallel_size=8` across all GPUs without expert parallelism.
+
+    !!! note "edit node-config.json"
+        ```
+        [
+            {
+                "id": "node1",
+                "host": "inference",
+                "inference_port": 5000,
+                "poc_port": 8080,
+                "max_concurrent": 500,
+                "models": {
+                    "moonshotai/Kimi-K2.6": {
+                        "args": [
+                            "--tensor-parallel-size", "8",
+                            "--enable-expert-parallel",
+                            "--trust-remote-code",
+                            "--mm-encoder-tp-mode", "data",
+                            "--tool-call-parser", "kimi_k2",
+                            "--reasoning-parser", "kimi_k2",
+                            "--attention-backend", "FLASHMLA",
+                            "--gpu-memory-utilization", "0.90",
+                            "--max-model-len", "240000"
+                        ]
+                    }
+                }
+            }
+        ]
+        ```
+
+=== "MiniMax — 4×A100"
+
+    Use this vLLM argument set for **MiniMax M2.7** on **4×A100**. A100 cannot use the FP8 FlashInfer MoE path, so this config uses the `marlin` MoE backend. You also need to set the env var `VLLM_USE_FLASHINFER_MOE_FP8=0` for the `mlnode-308` service (this is already pre-set in `deploy/join/docker-compose.mlnode.yml` shipped with MLNode 3.0.14).
+
+    Reference deploy config in the repo: `deploy/join/node-config-minimax-A100.json`.
+
+    !!! note "edit node-config.json"
+        ```
+        [
+            {
+                "id": "node1",
+                "host": "inference",
+                "inference_port": 5000,
+                "poc_port": 8080,
+                "max_concurrent": 500,
+                "models": {
+                    "MiniMaxAI/MiniMax-M2.7": {
+                        "args": [
+                            "--moe-backend", "marlin",
+                            "--tensor-parallel-size", "4",
+                            "--gpu-memory-utilization", "0.95",
+                            "--max-num-seqs", "128",
+                            "--enable-auto-tool-choice",
+                            "--max-model-len", "180000",
+                            "--kv-cache-dtype", "fp8",
+                            "--tool-call-parser", "minimax_m2",
+                            "--reasoning-parser", "minimax_m2_append_think"
+                        ]
+                    }
+                }
+            }
+        ]
+        ```
+
+=== "MiniMax — 4×H100"
+
+    Use this vLLM argument set for **MiniMax M2.7** on **4×H100**. Uses the `FLASHINFER` attention backend with FP8 kv-cache.
+
+    Reference deploy config in the repo: `deploy/join/node-config-minimax-H100.json`.
+
+    !!! note "edit node-config.json"
+        ```
+        [
+            {
+                "id": "node1",
+                "host": "inference",
+                "inference_port": 5000,
+                "poc_port": 8080,
+                "max_concurrent": 500,
+                "models": {
+                    "MiniMaxAI/MiniMax-M2.7": {
+                        "args": [
+                            "--tensor-parallel-size", "4",
+                            "--attention-backend", "FLASHINFER",
+                            "--gpu-memory-utilization", "0.92",
+                            "--max-num-seqs", "128",
+                            "--enable-auto-tool-choice",
+                            "--max-model-len", "180000",
+                            "--kv-cache-dtype", "fp8",
+                            "--tool-call-parser", "minimax_m2",
+                            "--reasoning-parser", "minimax_m2_append_think"
+                        ]
+                    }
+                }
+            }
+        ]
+        ```
+
+=== "MiniMax — 2×H200"
+
+    Use this vLLM argument set for **MiniMax M2.7** on **2×H200** (Hopper reference class for MiniMax). Uses the `FLASHINFER` attention backend with FP8 kv-cache and `tensor_parallel_size=2`. The PoC golden vectors for MiniMax M2.7 were recorded on this exact configuration.
+
+    Reference deploy config in the repo: `deploy/join/node-config-minimax-H200.json`.
+
+    !!! note "edit node-config.json"
+        ```
+        [
+            {
+                "id": "node1",
+                "host": "inference",
+                "inference_port": 5000,
+                "poc_port": 8080,
+                "max_concurrent": 500,
+                "models": {
+                    "MiniMaxAI/MiniMax-M2.7": {
+                        "args": [
+                            "--tensor-parallel-size", "2",
+                            "--attention-backend", "FLASHINFER",
+                            "--gpu-memory-utilization", "0.92",
+                            "--max-num-seqs", "128",
+                            "--enable-auto-tool-choice",
+                            "--max-model-len", "180000",
+                            "--kv-cache-dtype", "fp8",
+                            "--tool-call-parser", "minimax_m2",
+                            "--reasoning-parser", "minimax_m2_append_think"
+                        ]
+                    }
+                }
+            }
+        ]
+        ```
+
+=== "MiniMax — 2×B200"
+
+    Use this vLLM argument set for **MiniMax M2.7** on **2×B200** (Blackwell reference class for MiniMax). Uses the `FLASHINFER_TRTLLM` MoE backend with FP8 kv-cache and `tensor_parallel_size=2`.
+
+    Reference deploy config in the repo: `deploy/join/node-config-minimax-B200.json`.
+
+    !!! note "edit node-config.json"
+        ```
+        [
+            {
+                "id": "node1",
+                "host": "inference",
+                "inference_port": 5000,
+                "poc_port": 8080,
+                "max_concurrent": 500,
+                "models": {
+                    "MiniMaxAI/MiniMax-M2.7": {
+                        "args": [
+                            "--tensor-parallel-size", "2",
+                            "--moe-backend", "FLASHINFER_TRTLLM",
+                            "--gpu-memory-utilization", "0.92",
+                            "--max-num-seqs", "128",
+                            "--enable-auto-tool-choice",
+                            "--max-model-len", "180000",
+                            "--kv-cache-dtype", "fp8",
+                            "--tool-call-parser", "minimax_m2",
+                            "--reasoning-parser", "minimax_m2_append_think"
+                        ]
+                    }
+                }
+            }
+        ]
+        ```
+
+For more details on the optimal deployment configuration, please refer to [this link](https://gonka.ai/host/benchmark-to-choose-optimal-deployment-config-for-llms/).
+
+!!! tip "Validate the deployment"
+    The [`gonka` repo](https://github.com/gonka-ai/gonka) ships an agent skill, `mlnode-validate`, that validates an ML Node against pre-computed honest PoC vectors for a specific model. Committed golden references are available for Qwen3-0.6B, Qwen3-235B (default + DeepGEMM + pubkey-v2 variants), Kimi K2.6, and MiniMax M2.7. See [Validate ML Node Deployment](./mlnode-validation.md).
+
+### [Server] Pre-download Model Weights to Hugging Face Cache (HF_HOME)
+Inference nodes download model weights from Hugging Face.
+To make sure the model weights are ready for inference, you should download them before deployment.
+
+=== "Qwen — 8xH100, 8xH200 or other GPUs"
+
+    ```bash
+    mkdir -p $HF_HOME
+    huggingface-cli download Qwen/Qwen3-235B-A22B-Instruct-2507-FP8
+    ```
+
+=== "Kimi K2.6"
+
+    ```bash
+    mkdir -p $HF_HOME
+    huggingface-cli download moonshotai/Kimi-K2.6
+    ```
+
+    Model license: see [Model licenses](../model-licenses.md). For operational notes and on-chain options (intent, delegation), see [Kimi K2.6 Bootstrap](./kimi-bootstrap.md).
+
+=== "MiniMax M2.7"
+
+    ```bash
+    mkdir -p $HF_HOME
+    huggingface-cli download MiniMaxAI/MiniMax-M2.7
+    ```
+
+    Model license: see [Model licenses](../model-licenses.md). MiniMax M2.7 requires **MLNode 3.0.14 or newer** (image `ghcr.io/gonka-ai/mlnode:3.0.14-cu129`, pinned in `deploy/join/docker-compose.mlnode.yml`). On A100 hardware also make sure the `VLLM_USE_FLASHINFER_MOE_FP8=0` environment variable is set for the `mlnode-308` service (pre-set in the shipped compose file).
+
+## Launch Nodes
+    
+### 1. [Server] Pull Docker Images (Containers)
+
+Make sure you are in the `gonka/deploy/join` folder before running the next commands. 
+```bash
+docker compose -f docker-compose.yml -f docker-compose.mlnode.yml pull
+```
+
+### 2. [Server] Start Initial Services
+
+Start the essential services needed for key setup (excluding the API service):
+
+```bash
+source config.env && \
+docker compose up tmkms node -d --no-deps
+```
+
+We start these specific containers first because:
+
+- **`tmkms`** - Generates and securely manages the Consensus Key needed for validator registration
+- **`node`** - Connects to the blockchain and provides the RPC endpoint to retrieve the Consensus Key  
+- **`api`** - is deliberately excluded at this stage because we need to create the ML Operational Key inside it in the next step
+
+!!! note "Recommendation"
+    You can check logs to verify that the initial services started successfully:
+    
+    ```bash
+    docker compose logs tmkms node -f
+    ```
+
+    If you see the Chain Node continuously processing block events, then the setup is working correctly.
+
+??? note "About Consensus Key"
+    - Managed by secure TMKMS service
+    - Warm storage with double-signing prevention
+    - Block validation and network consensus participation
+    - Can be rotated by Account Key or authorized delegates
+    
+    During the registration command on [step 3.2.](https://gonka.ai/host/quickstart/#32-server-register-host) (`inferenced register-new-participant`), the Consensus Key is linked to your Account Key (Cold Key) on-chain, establishing your node as a valid participant in the network.
+    
+    If you delete or overwrite the `.tmkms` folder, your Consensus Key will be lost. This key is what links your node to the blockchain’s validator set. Once `.tmkms` is gone, you must start the entire setup from scratch, including generating a new Consensus Key (via `tmkms`) (see “[I Cleared or Overwrote My Consensus Key](https://gonka.ai/FAQ/#i-cleared-or-overwrote-my-consensus-key)” on the FAQ page). 
+
+### 3. Complete Key Setup and Host Registration
+
+Now we need to complete the key management setup by creating the warm key, registering the Host, and granting permissions:
+
+#### 3.1. [Server] Create ML Operational Key
+
+??? note "About ML Operational Key (Warm Key)"
+    - Authorized by Account Key for ML-specific transactions
+    - Encrypted file on server, accessed programmatically
+    - Automated transactions (inference requests, proof submissions, rewards)
+    - Can be rotated/revoked by Account Key at any time
+    - Needs constant availability, so do not remove or rotate it unless necessary.
+
+Create the warm key inside the `api` container using the `file` keyring backend (required for programmatic access). The key will be stored in a persistent volume mapped to `/root/.inference` of the container:
+```bash
+docker compose run --rm --no-deps -it api /bin/sh
+```
+
+Inside the container, create the ML operational key:
+```bash
+printf '%s\n%s\n' "$KEYRING_PASSWORD" "$KEYRING_PASSWORD" | inferenced keys add "$KEY_NAME" --keyring-backend file
+```
+!!! note "Important"
+    Do not run this command twice.
+    The ML Operational Key (Warm Key) is generated once per server and must be preserved across restarts.
+    
+    - If you accidentally deleted it or reinitialized, follow the recovery instructions in the FAQ: “[I Deleted the Warm Key](https://gonka.ai/FAQ/#i-deleted-the-warm-key)”.
+    - When restarting your node, skip this step entirely — the key is already generated and stored persistently inside the API container.
+
+**Example output:**
+```
+~ # printf '%s\n%s\n' "$KEYRING_PASSWORD" "$KEYRING_PASSWORD" | inferenced keys add "$KEY_NAME" --keyring-backend file
+
+- address: gonka1gyz2agg5yx49gy2z4qpsz9826t6s9xev6tkehw
+  name: node-702105
+  pubkey: '{"@type":"/cosmos.crypto.secp256k1.PubKey","key":"Ao8VPh5U5XQBcJ6qxAIwBbhF/3UPZEwzZ9H/qbIA6ipj"}'
+  type: local
+
+
+**Important** write this mnemonic phrase in a safe place.
+It is the only way to recover your account if you ever forget your password.
+
+again plastic athlete arrow first measure danger drastic wolf coyote work memory already inmate sorry path tackle custom write result west tray rabbit jeans
+```
+
+
+#### 3.2. [Server] Register Host
+
+From the same container, register the Host — this links your URL, Account Key, and Consensus Key (fetched automatically) on-chain:
+
+```
+inferenced register-new-participant \
+    $DAPI_API__PUBLIC_URL \
+    $ACCOUNT_PUBKEY \
+    --node-address $DAPI_CHAIN_NODE__SEED_API_URL
+```
+
+**Expected output:**
+```
+...
+Found participant: gonka1rk52j24xj9ej87jas4zqpvjuhrgpnd7h3feqmm (url: http://36.189.234.237:19250, status: ACTIVE)
+Participant is now available at http://36.189.234.237:19250/v2/participants/gonka1rk52j24xj9ej87jas4zqpvjuhrgpnd7h3feqmm
+Account balance: 0
+```
+
+!!! warning "Account already has GNK but has not sent any transactions"
+    
+    In most cases, `inferenced register-new-participant` can register your Host directly from inside the `api` container.
+
+    However, there is a known edge case: if your Account Key address has already received GNK but has never sent a transaction itself, registration from inside the container may fail with an error similar to:
+
+    ```text
+    rpc error: code = Unknown desc = runtime error: invalid memory address or nil pointer dereference: panic
+    ```
+
+    This can happen when the account has a balance, but its on-chain transaction sequence is still `0`.
+
+    If the command above fails with this error, you can check the account balance and sequence from your **local machine**:
+
+    ```bash
+    ./inferenced query auth account <YOUR_COLD_ADDRESS> \
+      --node <node-url>/chain-rpc/ \
+      --output json | jq -r '.account.value.sequence // .sequence // "0"'
+    ```
+
+    If the account has a non-zero `ngonka` balance and the sequence command returns `0`, use the manual registration flow below.
+
+    **Step 1.** While still in the container from step 3.1, get your Consensus Key and note it down:
+    ```bash
+    curl -s $DAPI_CHAIN_NODE__URL/status | jq -r '.result.validator_info.pub_key.value'
+    ```
+
+    **Step 2.** Exit the container, then run this command on your **local machine** (where your Account Key is stored):
+    ```bash
+    ./inferenced tx inference submit-new-participant \
+        <PUBLIC_URL> \
+        --validator-key <CONSENSUS_KEY> \
+        --keyring-backend file \
+        --from <COLD_KEY_NAME> \
+        --timeout-duration 1m \
+        --unordered \
+        --node <node-url>/chain-rpc/ \
+        --chain-id gonka-mainnet
+    ```
+
+    `<node-url>` — any already-running node on the network (e.g. `http://node2.gonka.ai:8000`). Do not use your own node's URL — it is not fully started yet at this step.
+
+    If you created your Account Key with a custom `--keyring-dir`, add `--keyring-dir <path>` to the command.
+
+    The command will prompt `confirm transaction before signing and broadcasting [y/N]:` — type `y` to proceed.
+
+    Gas is paid from the Account Key's balance. Make sure the account has coins before running this command.
+
+!!! note "Per-Node Account Key Configuration"
+    Always generate a unique `ACCOUNT_PUBKEY` for each Network Node to ensure proper separation of Hosts.
+
+Then we can exit the container:
+```bash
+exit
+```
+
+
+#### 3.3. [Local machine] Grant Permissions to ML Operational Key
+**IMPORTANT: Perform this step on your secure local machine where you created the Account Key**
+
+Grant permissions from your Account Key to the ML Operational Key:
+```bash
+./inferenced tx inference grant-ml-ops-permissions \
+    gonka-account-key \
+    <ml-operational-key-address-from-step-3.1> \
+    --from gonka-account-key \
+    --keyring-backend file \
+    --gas 2000000 \
+    --node <seed_api_url from server's config.env>/chain-rpc/ 
+```
+
+**Expected output:**
+```
+...
+Transaction sent with hash: FB9BBBB5F8C155D0732B290C443A0D06BC114CDF43E8EE8FB329D646C608062E
+Waiting for transaction to be included in a block...
+
+Transaction confirmed successfully!
+Block height: 174
+```
+
+<!-- CONDITION START: data-show-when='["protocolHttps", "certMethodManual", "domainYes"]' -->
+#### 3.4. [Server] Manual SSL Certificate Setup
+
+If you selected manual SSL certificate setup in the questionnaire above, follow these steps to configure your SSL certificates:
+
+##### Prepare directories
+
+```bash
+mkdir -p secrets/nginx-ssl secrets/certbot
+```
+
+##### Generate certificates (Dockerized Certbot; DNS‑01)
+
+```bash
+DOMAIN=<FULL_DOMAIN_NAME>
+ACCOUNT_EMAIL=<EMAIL_ADDRESS>    # renewal notices
+mkdir -p secrets/nginx-ssl secrets/certbot
+
+docker run --rm -it \
+  -v "$(pwd)/secrets/certbot:/etc/letsencrypt" \
+  -v "$(pwd)/secrets/nginx-ssl:/mnt/nginx-ssl" \
+  certbot/certbot certonly --manual --preferred-challenges dns \
+  -d "$DOMAIN" --email "$ACCOUNT_EMAIL" --agree-tos --no-eff-email \
+  --deploy-hook 'install -m 0644 "$RENEWED_LINEAGE/fullchain.pem" /mnt/nginx-ssl/cert.pem; \
+                 install -m 0600 "$RENEWED_LINEAGE/privkey.pem"   /mnt/nginx-ssl/private.key'
+```
+
+!!! note "DNS Challenge"
+    Certbot will pause and show the **TXT DNS** record to add at your provider. After validation, `cert.pem` and `private.key` will appear in `./secrets/nginx-ssl/`.
+
+##### Verify certificate files
+
+Ensure the certificate files are in place:
+
+```bash
+ls -la secrets/nginx-ssl/
+```
+
+You should see:
+- `cert.pem` (fullchain certificate)
+- `private.key` (private key with mode 0600)
+
+The `config.env` file generated by the questionnaire already includes the necessary SSL configuration variables:
+- `SERVER_NAME=<FULL_DOMAIN_NAME>`
+- `SSL_CERT_SOURCE=./secrets/nginx-ssl`
+
+Make sure to edit `SERVER_NAME` with your actual domain name before proceeding.
+
+<!-- CONDITION END -->
+
+## 4. [Server] Launch Full Node
+
+Finally, launch all containers, including the API:
+
+<!-- CONDITION START: data-show-when='["non-finished"]' -->
+!!! note "Configuration Required"
+    Please complete the [questionnaire above](#quickstart-questionnaire) to generate the launch commands.
+<!-- CONDITION END -->
+
+<!-- CONDITION START: data-show-when='["protocolHttp"]' -->
+Launch all containers:
+
+```bash
+source config.env && \
+docker compose -f docker-compose.yml -f docker-compose.mlnode.yml up -d
+```
+<!-- CONDITION END -->
+
+<!-- CONDITION START: data-show-when='["protocolHttps", "certMethodAuto"]' -->
+Launch all containers with automatic SSL certificate management:
+
+```bash
+source config.env && \
+docker compose --profile "ssl" \
+  -f docker-compose.yml -f docker-compose.mlnode.yml \
+  up -d
+```
+
+The `--profile "ssl"` flag enables the `proxy-ssl` container which automatically manages SSL certificates.
+<!-- CONDITION END -->
+
+<!-- CONDITION START: data-show-when='["protocolHttps", "certMethodManual", "domainYes"]' -->
+Launch all containers with manual SSL certificates:
+
+```bash
+source config.env && \
+docker compose -f docker-compose.yml -f docker-compose.mlnode.yml up -d
+```
+<!-- CONDITION END -->
+
+## Verify Node Status {#verify-node-status}
+
+<!-- CONDITION START: data-show-when='["protocolHttps"]' -->
+Verify HTTPS is working:
+
+```bash
+curl -I https://<FULL_DOMAIN_NAME>:8443/health   # Expect: HTTP/2 200 OK
+```
+<!-- CONDITION END -->
+
+Open this URL, replacing `<your-gonka-cold-address>` with your address:
+```
+http://node2.gonka.ai:8000/v2/participants/<your-gonka-cold-address>
+```
+
+You should see participant data in JSON (`participant.address`, `participant.inferenceUrl`, `participant.status`).
+
+To check account data (`pubkey`, `balance`, `denom`), use:
+```
+http://node2.gonka.ai:8000/v2/accounts/<your-gonka-cold-address>
+```
+
+Once your node completes the Proof of Compute stage (which runs every 24 hours), you can visit the following URL to see your node:
+```bash
+http://node2.gonka.ai:8000/v1/epochs/current/participants
+```
+
+You can [simulate the Proof of Compute on a MLNode yourself](https://gonka.ai/FAQ/#how-to-simulate-proof-of-compute-poc) to make sure that everything will work when the PoC phase begins on the chain.
+
+You may turn off your server before this stage and start it again right before the next Proof of Compute.
+To track when the next Proof of Compute session will begin, check [the dashboard](https://gonka.ai/wallet/dashboard/) here:
+```
+http://node2.gonka.ai:8000/dashboard/gonka/validator
+```
+
+Once your node is running, check your node status through the proxy.
+```bash
+curl http://<PUBLIC_IP>:8000/chain-rpc/status
+```
+On the server, you can use private ones (from within the container or if 26657 is bound to localhost).
+```bash
+curl http://0.0.0.0:26657/status
+```
+Using the public endpoint of the genesis node.
+```bash
+curl http://node2.gonka.ai:8000/chain-rpc/status
+```
+
+Once your node is visible in the Dashboard, you may also want to update your public profile (host name, website, avatar). This helps other participants identify your node in the network. You can find [the instructions here](https://gonka.ai/host/validator_info/).
+
+## 5. [Local machine] Deposit Collateral
+
+**IMPORTANT: Perform this step on your secure local machine where you created the Account Key.**
+
+Collateral is locked GNK that activates the collateral-eligible portion of your PoC weight. Without it, a Host receives only the **base weight** (20% by default) of what Proof of Compute earns. The grace period has ended, so this step is required to run at full weight.
+
+> **Note on timing:** Verify Node Status confirms your containers are running and your participant is registered. It does **not** mean Proof of Compute has succeeded — PoC runs every ~24 hours and only after it completes can you see your actual weight at `$NODE_URL/v1/epochs/current/participants`. The two options below let you either deposit now with an estimate, or wait for the first PoC and deposit with precise data.
+
+There is no way to know your PoC weight in advance — it is determined by your hardware, the network's current size, and per-model coefficients.
+
+**Option A — Deposit now (full weight from epoch 1).** Look at the current weight distribution in the network and deposit enough to cover the upper end. Your node enters its first PoC with collateral already in place.
+
+```bash
+export NODE_URL="<seed_api_url from server's config.env>"   # e.g. http://node2.gonka.ai:8000
+export CHAIN_ID="gonka-mainnet"
+
+PARAMS=$(curl -s "$NODE_URL/chain-api/productscience/inference/inference/params")
+BASE_WEIGHT_RATIO=$(echo "$PARAMS" | jq -r '.params.collateral_params.base_weight_ratio
+  | (.value | tonumber) * pow(10; .exponent | tonumber)')
+COLLATERAL_PER_UNIT=$(echo "$PARAMS" | jq -r '.params.collateral_params.collateral_per_weight_unit
+  | (.value | tonumber) * pow(10; .exponent | tonumber)')
+
+MAX_WEIGHT=$(curl -s "$NODE_URL/v1/epochs/current/participants" \
+  | jq '[.active_participants.participants[].weight] | max')
+
+DEPOSIT=$(printf "%.0f" "$(echo "$MAX_WEIGHT * (1 - $BASE_WEIGHT_RATIO) * $COLLATERAL_PER_UNIT * 2" | bc -l)")
+echo "Recommended deposit (covers network max with 2x buffer): ${DEPOSIT} ngonka"
+```
+
+The formula is `MAX_WEIGHT × (1 − BASE_WEIGHT_RATIO) × COLLATERAL_PER_UNIT × 2`: only the collateral-eligible portion of the weight needs backing (the rest is granted as base weight), and `× 2` is the recommended safety buffer. All parameters are read from the chain so the script remains correct if governance updates them.
+
+> **Why the 2× buffer?** PoC weights fluctuate between epochs (network normalization, model coefficients, caps, penalties). The protocol does **not** auto-top-up: if your collateral falls short of your actual weight at the next epoch boundary, you silently get less weight until you deposit more — losing at least one epoch of full rewards. Excess collateral is not lost: it sits in the module and can be withdrawn later via `withdraw-collateral`.
+
+**Option B — Wait for first PoC, then deposit precisely (costs one epoch at 20% weight).** Skip this step now, wait for your first PoC stage to complete (every ~24 hours), then check your actual weight at `$NODE_URL/v1/epochs/current/participants` and re-run the same script above with your own weight in place of `MAX_WEIGHT`. From the second epoch onwards your node runs at full weight.
+
+Deposit collateral from your Account Key (always use `ngonka`):
+
+```bash
+./inferenced tx collateral deposit-collateral ${DEPOSIT}ngonka \
+  --from gonka-account-key \
+  --keyring-backend file \
+  --node $NODE_URL/chain-rpc/ \
+  --chain-id $CHAIN_ID
+```
+
+Verify:
+
+```bash
+MY_ADDR=$(./inferenced keys show gonka-account-key -a --keyring-backend file)
+curl -s "$NODE_URL/chain-api/productscience/inference/collateral/collateral/$MY_ADDR" | jq
+```
+
+Deposits are cumulative — top up later with another `deposit-collateral` if your weight grows. To free unused collateral, use `withdraw-collateral` (subject to an unbonding period, default 1 epoch).
+
+For details on slashing, withdrawal, and parameter tuning, see the [Collateral documentation](https://gonka.ai/host/collateral/).
+
+## Optional: PoC delegation and refusal {#optional-poc-delegation-and-refusal}
+
+Use this section **after** your Host is registered, the ML Operational Key is authorized, and you can [verify](#verify-node-status) participation—typically from your **local machine** with the **Account (cold) key** (`gonka-account-key`). Nothing here is required to start containers; it applies when you **do not** run every governance-approved model on your own GPUs and must **delegate** PoC voting to another participant, **refuse** delegation, or compare timing against `params`.
+
+For each `model_id` you either run the model (PoC commits from your stack) or signal on-chain. **Delegation** is the common choice when you trust a host who runs that model; **refuse** is an explicit opt-out. Background: [Multi-Model PoC — Host Operations Guide](./multi_model_poc.md).
+
+Set `NODE` to any synced chain RPC (same pattern as `grant-ml-ops-permissions`: seed API URL from `config.env` with `/chain-rpc/` appended).
+
+```bash
+export NODE="<PUBLIC_CHAIN_RPC>"   # e.g. http://node2.gonka.ai:8000/chain-rpc/
+export CHAIN_ID="gonka-mainnet"
+export KEY="gonka-account-key"
+export KEYRING_BACKEND="file"
+```
+
+Check governance parameters (penalties, `penalty_start_epoch`, etc.):
+
+```bash
+./inferenced query inference params --node "$NODE" -o json
+```
+
+**Inspect your PoC delegation / refusal / intent state** (all models):
+
+```bash
+MY_ADDR="$(./inferenced keys show "$KEY" -a --keyring-backend "$KEYRING_BACKEND")"
+./inferenced query inference poc-delegation "$MY_ADDR" --node "$NODE" -o json
+```
+
+**Delegate** — attach your weight for that model's PoC validation to `DELEGATEE` (their `gonka1…` address). Example for Kimi:
+
+```bash
+MODEL="moonshotai/Kimi-K2.6"
+DELEGATEE="gonka1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+
+./inferenced tx inference set-poc-delegation "$MODEL" "$DELEGATEE" \
+  --from "$KEY" \
+  --node "$NODE" \
+  --chain-id "$CHAIN_ID" \
+  --keyring-backend "$KEYRING_BACKEND" \
+  --gas auto \
+  --gas-adjustment 1.3 \
+  -y
+```
+
+Example for Qwen (e.g. you run Kimi only on your GPUs):
+
+```bash
+MODEL="Qwen/Qwen3-235B-A22B-Instruct-2507-FP8"
+DELEGATEE="gonka1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+
+./inferenced tx inference set-poc-delegation "$MODEL" "$DELEGATEE" \
+  --from "$KEY" \
+  --node "$NODE" \
+  --chain-id "$CHAIN_ID" \
+  --keyring-backend "$KEYRING_BACKEND" \
+  --gas auto \
+  --gas-adjustment 1.3 \
+  -y
+```
+
+Example for MiniMax (e.g. you run Qwen and Kimi only on your GPUs):
+
+```bash
+MODEL="MiniMaxAI/MiniMax-M2.7"
+DELEGATEE="gonka1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+
+./inferenced tx inference set-poc-delegation "$MODEL" "$DELEGATEE" \
+  --from "$KEY" \
+  --node "$NODE" \
+  --chain-id "$CHAIN_ID" \
+  --keyring-backend "$KEYRING_BACKEND" \
+  --gas auto \
+  --gas-adjustment 1.3 \
+  -y
+```
+
+**Clear** a delegation for one model:
+
+```bash
+MODEL="moonshotai/Kimi-K2.6"
+
+./inferenced tx inference set-poc-delegation "$MODEL" "" \
+  --from "$KEY" \
+  --node "$NODE" \
+  --chain-id "$CHAIN_ID" \
+  --keyring-backend "$KEYRING_BACKEND" \
+  --gas auto \
+  --gas-adjustment 1.3 \
+  -y
+```
+
+**Refuse** delegation for one model (explicit on-chain “no”):
+
+```bash
+MODEL="moonshotai/Kimi-K2.6"
+
+./inferenced tx inference refuse-poc-delegation "$MODEL" \
+  --from "$KEY" \
+  --node "$NODE" \
+  --chain-id "$CHAIN_ID" \
+  --keyring-backend "$KEYRING_BACKEND" \
+  --gas auto \
+  --gas-adjustment 1.3 \
+  -y
+```
+
+`declare-poc-intent` applies mainly to **new model bootstrap** windows; see [Kimi K2.6 Bootstrap](./kimi-bootstrap.md). More commands and edge cases: [Multi-Model PoC — Host Operations Guide](./multi_model_poc.md#copy-paste-setup-commands).
+
+## Stopping and Cleaning Up Your Node
+
+### How to stop your node
+
+Check the epoch you are currently in. Open the URL: [http://node1.gonka.ai:8000/api/v1/epochs/latest](http://node1.gonka.ai:8000/api/v1/epochs/latest) (You can use the URL any other active participant). 
+
+In the response, look for:
+```
+"latest_epoch": {
+    "index": 88,
+    ...
+}
+```
+
+Remember the latest epoch index your node worked for. 
+
+In the same JSON response, find:
+```
+"next_epoch_stages": {
+  ...
+  "claim_money": <block_number>
+}
+```
+This block number indicates the block after which you can claim the reward. However, it is important to understand you should proceed with disabling each ML Node now (do not wait for this block before disabling your ML Nodes).
+
+Disable each ML Node.
+
+```
+curl -X POST http://<api_node_static_ip>:<admin_port>/admin/v1/nodes/<id>/disable
+```
+Wait for the next epoch. Do not stop the Network Node or the ML Nodes yet. The disable flag takes effect only after the next epoch starts.
+
+Keep your Network Node online and synced, it should handle the reward claim automatically.
+To check that your latest reward was claimed, after the `claim_money` block run the following command (replace `<YOUR_ADDRESS>` and `<EPOCH>` with your actual values):
+```
+inferenced query inference show-epoch-performance-summary <EPOCH> <YOUR_ADDRESS> --node http://node1.gonka.ai:8000/chain-rpc/ --output json
+```
+Example: 
+```
+Output:
+{
+  "epochPerformanceSummary": {
+    "epoch_index": "87",
+    "participant_id": "<YOUR_ADDRESS>",
+    "missed_requests": "1",
+    "rewarded_coins": "123456",
+    "claimed": true
+  }
+}
+```
+If the result shows `claimed = true`, your reward has already been claimed.
+If it shows `false`, proceed to the manual claim step.
+
+!!! note "Manually claim the reward (if needed)"
+    Run:
+    ```
+    curl -X POST http://localhost:9200/admin/v1/claim-reward/recover \
+     -H "Content-Type: application/json" \
+     -d '{"force_claim": true}'
+    ```
+
+Verify removal and weight. If you disabled all your nodes then your participant should be absent from the active participants list. In case you can still see your participant in the list then it means the network still expects you to participate in the epoch and if you proceed with disabling your node you may miss inferences which will affect your reputation. 
+
+Make sure you are in `gonka/deploy/join` folder. To stop all running containers:
+```
+docker compose -f docker-compose.yml -f docker-compose.mlnode.yml down
+```
+This stops and removes all services defined in the `docker-compose.yml` and `docker-compose.mlnode.yml` files without deleting volumes or data unless explicitly configured.
+
+### How to clean up your node (full reset)
+
+If you want to completely reset your node and remove all data (for redeployment or migration), use the following cleanup steps.  
+
+1. To clean up cache and start fresh, remove the local `.inference` and `.dapi` folders (inference runtime cache and identity):
+```bash
+rm -rf .inference .dapi .tmkms
+```
+
+2. (Optional) Clear model weights cache:
+```bash
+rm -rf $HF_HOME
+```
+
+!!! note
+    Deleting `$HF_HOME` will require re-downloading large model files from Hugging Face or re-mounting the NFS cache.
+
+**Need help?**  Find answers on [FAQ page](https://gonka.ai/FAQ/), or join [Discord server](https://discord.com/invite/RADwCT2U6R) for assistance with general inquiries, technical issues, or security concerns.  

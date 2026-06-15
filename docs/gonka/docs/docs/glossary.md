@@ -1,0 +1,54 @@
+# Glossary 
+
+**AI Token** is a model-specific unit of compute that quantifies the computational cost required for training or inference operations. For instance, in the context of a QwQ-32B model (FP16, 32K context), one AI Token may represent the resources needed to process a fixed number of input and/or output tokens. AI Tokens are tightly coupled to the characteristics of the base model and reflect actual memory, FLOP, etc. 
+
+**Collateral** mechanism allows participants to lock GNK coins in order to activate a portion of their already earned Proof of Compute (PoC) weight. Voting power is never derived solely from holding coins. GNK coins serve as economic collateral, not as a source of influence. Influence is earned through continuous computational contribution, while locking GNK collateral is required to secure participation in governance and enforce accountability.
+
+**Confirmation/Random Proof of Compute (cPoC)** is an auxiliary verification mechanism used to validate the stability of a Host’s declared computational weight outside the primary [Proof of Compute](https://gonka.ai/glossary/#glossary:~:text=Proof%20of%20Compute%20(PoC)%20is,is%20the%20execution%20phase%20of%20PoC.) (PoC) Sprint. These checks are designed to confirm that Hosts continue to provide the computational capacity reflected in their most recent PoC results. CPoC does not replace the standard PoC process (Sprint).
+
+**Confirmation Ratio** is the ratio between a Host’s epoch weight derived from the PoC stage and the weight obtained during the cPoC. A higher Confirmation Ratio indicates greater stability of the compute provided by the Host. If the Confirmation Ratio is 50% or lower, the Host is disqualified from receiving the epoch reward.
+
+**Consensus** is the protocol by which the network agrees on a single, verifiable state of the blockchain, ensuring that all participants maintain a consistent and tamper-proof ledger. In Gonka, consensus is achieved through PoC.
+
+**Epoch** is the core operational cycle of the chain. During an Epoch, Hosts perform meaningful AI work, participate in validation, and accumulate rewards. An Epoch lasts 17280 blocks (~24 hours) and ends with the completion of a Sprint by determining Host weights for the next epoch. 
+
+**Gonka Blockchain** is the foundational ledger and coordination layer (L1) of the decentralized AI network. It records balances, transactions and cryptographic artifacts that prove Hosts have correctly performed AI work, while all actual computations (such as inference and training) happen off-chain. 
+
+**Gonka Network** is a comprehensive ecosystem of participants, including Hosts and Developers that interact through decentralized infrastructure. Powered by the Gonka Blockchain, the network distributes tasks, verifies results, and rewards honest participation only verifiable useful work, creating a competitive, scalable environment for AI workloads.
+
+**Gonka personas:**
+
+- **Developer** builds and deploys AI applications by leveraging the network’s distributed computing power.
+- **Gonka Contributor** participates in development of the core blockchain codebase, protocol upgrades, performance optimizations, security patches, and new feature integrations.
+- **Holder** holds the network’s native coin, which simply means having a Gonka wallet with coins in it. Holders may hold coins, transfer or sell them, spend them on inference and use them according to the protocol rules. Being a holder does not imply any obligation, responsibility, or governance role beyond standard coin ownership.
+- **Host** contributes compute capacity to the network. Hosts perform inference and other computational tasks and are rewarded proportionally to their contributed compute capacity, as long as they maintain honest participation and reliability. Hosts form the backbone of the network. Only Hosts have voting power in the network. This voting power represents their weight in governance and is used to propose and vote on protocol decisions, parameter changes, and upgrades. Any Host acts as Validator, Transfer Agent and an Executor (these are not predefined or on-chain roles, but dynamic operational functions assumed when processing a inference request).
+
+**ML Node** in Gonka is a compute node within a Host’s private infrastructure that performs all real AI workloads (such as LLM inference, training steps, and Sprint computations). It never interacts directly with the public network; instead, it receives tasks from the Host’s API Node and returns results back to it. ML Nodes execute all heavy computation off-chain, while the blockchain only records validation artifacts, proofs, and task commitments.
+
+**Network Node** is a service that handles all communication, including:
+
+- [**Chain Node**](https://github.com/product-science/inference-ignite/tree/main/inference-chain) that connects to the blockchain, maintains the blockchain layer, and handles consensus.
+- [**API Node**](https://github.com/product-science/inference-ignite/tree/main/decentralized-api) serves as the primary coordination layer between the blockchain (Chain Node) and the AI execution environment (ML Node). It exposes REST/gRPC endpoints for interacting with users, developers, and internal components, while managing work orchestration, validation scheduling, and result verification processes that require off-chain execution. In addition to handling user requests, it is responsible for:
+    - Routing inference and training jobs to the ML Node
+    - Recording inference results and ensuring task completion
+    - Scheduling and managing validation tasks
+    - Reporting receipts and signatures to the Chain Node for consensus
+    - Orchestrating PoC
+
+**Private Key** is a private component of the cryptographic key pair, crucial for securing and authorizing transactions and operations within Gonka network. The private key must remain secret at all times. Any party with access to a private key can act on behalf of its owner at the protocol level. Safeguarding private keys is the sole responsibility of the key holder.
+
+**Proof of Compute (PoC)** is a consensus mechanism that replaces capital-based or hash-based weighting with provable Transformer-based computational capability.
+It defines how real AI compute is measured and converted into governance and consensus weight. PoC is executed through short, synchronized Sprints that occur at the end of each epoch. Outside the Sprint, the epoch is used for real-world AI computation. In practice, the terms Proof of Compute (PoC) and Sprint are often used interchangeably.
+When referring to “Next PoC” or “PoC phase”, this typically means the next Sprint, which is the execution phase of PoC.
+
+**Public Key** is a cryptographic key that is publicly available and used for verifying signatures, encrypting messages, and identifying accounts in Gonka network. This is the publicly shareable part of the cryptographic key pair.
+
+**Randomized Task Verification** is the foundation of the platform’s validation strategy. Instead of verifying every inference task redundantly, the system randomly selects a subset of tasks for verification based on Hosts (Executor) Reputation. The higher Host’s Reputation, the less of its work requires validation. This approach drastically reduces overhead to just 1–10% of tasks, while maintaining trust through probabilistic guarantees and the threat of losing rewards if caught cheating.
+
+**Sprint** is a phase of PoC. During a Sprint, all Hosts simultaneously run AI-relevant inference on a transformer with randomized layers over a stream of nonces, producing output vectors. A Host’s voting power for the next epoch is proportional to the number of nonces it processed, as long as the reported outputs are verifiably produced by the required Sprint model.
+
+**Sprint Seed** is generated with a random number generator based on the latest blockchain state. This seed is used to apply random transformations to the hidden layers of the transformer model.
+
+**Validator `status: jailed`** means that a validator has been automatically and temporarily removed from block production by the protocol because it failed to meet the minimum consensus participation requirements (specifically, it signed fewer than the required number of blocks within the defined window).
+
+**Voting Power (Weight)** represents the weight a Host has in governance and protocol decisions within the network and is determined proportionally by the number of processed nonces found during a Sprint.

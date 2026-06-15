@@ -1,0 +1,1673 @@
+# 常见问题（FAQ）
+
+## 概述
+
+### 什么是 Gonka？
+Gonka 是一个去中心化的高效 AI 计算网络——由运行它的人共同运行。它作为中心化云服务的成本效益和高效替代方案，用于 AI 模型训练和推理。作为一个协议，它不是公司或初创企业。
+
+- 在区块链层面，Gonka 是去中心化 AI 网络的基础账本和协调层（L1）。它记录余额、交易以及用于证明 Hosts 已正确完成 AI 工作的加密证明数据，而所有实际计算（例如推理和训练）都在链下进行。
+- 在网络层面，Gonka 是一个由多方参与者组成的综合生态系统，包括通过去中心化基础设施进行交互的 Hosts 和 Developers。在 Gonka 区块链的支持下，该网络分发任务、验证结果，并仅对可验证的有用工作奖励诚实参与者，从而为 AI 工作负载创造一个具有竞争性和可扩展性的运行环境。
+
+### Gonka 解决什么问题？
+
+Gonka 是一种去中心化的 AI 基础设施，旨在减少对中心化云服务提供商的依赖，并比传统的去中心化网络更高效地利用计算能力。其目标是尽可能将计算资源用于有用的 AI 任务，例如推理和训练，同时尽量减少由于共识开销所造成的资源浪费。
+
+### Gonka 生态系统中的关键参与者是谁？
+
+Gonka 生态系统包含四类关键参与者：
+
+- Developer 通过利用网络的分布式计算能力来构建和部署 AI 应用。
+- Gonka Contributor 参与核心区块链代码库的开发、协议升级、性能优化、安全补丁以及新功能集成。
+- Holder 持有网络的原生代币，这仅意味着拥有一个 Gonka 钱包并在其中持有代币。Holder 可以持有代币、转移或出售代币、将其用于推理服务，并按照协议规则使用这些代币。成为 Holder 并不意味着承担任何义务、责任或治理角色，除了标准的代币持有权之外。
+- Host 向网络提供计算能力。Hosts 执行推理和其他计算任务，并根据其所贡献的计算能力按比例获得奖励，前提是他们保持诚实参与和可靠性。Hosts 构成了网络的基础。只有 Hosts 在网络中拥有投票权。该投票权代表其在治理中的权重，并用于提出和投票决定协议决策、参数变更和升级。任何 Host 都可以充当 Validator、Transfer Agent 和 Executor（这些并不是预定义或链上的角色，而是在处理推理请求时承担的动态操作职能）。
+    
+### 什么是 GNK 代币？
+GNK 是 Gonka 网络的原生代币。它用于激励参与者、为资源定价，并确保网络的可持续增长。
+
+### 我可以购买 GNK 代币吗？
+
+不可以，您目前无法在交易所购买 GNK，因为该代币尚未上市。
+请关注 [Twitter](https://x.com/gonka_ai) 上的官方公告，了解有关上市的任何更新。
+
+目前，在任何上线交易之前，获取 GNK 的主要合法方式是 [作为 Host 进行挖矿](https://gonka.ai/host/quickstart/) (通过向网络贡献计算资源，已经可以赚取GNK。).
+
+!!! note "重要"
+	请注意，目前存在虚假的 GNK 上线信息和页面，包括在 CoinGecko 和 CoinMarketCap 上。 这些页面并不代表官方的 GNK 代币，也与项目方没有任何关联。 目前 GNK 尚未在任何交易所上线或可交易。 任何声称是 GNK 的代币，无论是在 Solana 还是其他网络上，都不是官方的 GNK 资产。请务必通过官方渠道核实所有相关信息。
+
+### 协议为何高效？
+Gonka 与那些“头部玩家”之间的区别在于其定价方式，以及即使 Host 的规模不同，推理任务仍然会被公平地分配。若想了解更多内容，请查看[白皮书](https://gonka.ai/whitepaper.pdf).
+    
+### 网络如何运作？
+网络的运作是协作性的，取决于您希望扮演的角色：
+
+- 作为[开发者](https://gonka.ai/zh/developer/quickstart/)：您可以使用网络的计算资源来构建和部署您的 AI 应用程序。
+- 作为[主机](https://gonka.ai/zh/host/quickstart/)：您可以贡献您的计算资源来为网络提供动力。协议旨在奖励您的贡献，确保网络的连续性和主权。
+
+### 这份文档是否详尽？
+
+不是。这份文档涵盖了协议的主要概念、标准工作流程和最常见的操作场景，但它并不代表代码库的完整行为或实现细节。代码包括此处未描述的额外逻辑、交互和边缘情况。
+
+因为 Gonka 是一个开源和去中心化的网络，各种参数、机制和治理驱动的行为可能通过链上投票和社区决策而演变。某些细节可能在发布后发生变化，并非所有边缘情况或未来更新都可能立即反映。
+
+对于主机、开发者和贡献者来说，代码本身是最终的真相来源。如果本文档与代码之间出现任何差异，代码始终优先。
+
+鼓励参与者查看相关仓库、治理提案和网络更新，以确保他们的理解与协议的当前状态一致。
+
+### 贡献计算资源的激励是什么？
+我们创建了一份专门关注[代币经济学](https://gonka.ai/tokenomics.pdf)的文档，您可以在其中找到有关激励如何衡量的所有信息。
+    
+### 硬件要求是什么？
+您可以在文档中清楚地找到最低和推荐的[硬件规格](https://gonka.ai/zh/host/hardware-specifications/)。您应该查看此部分，以确保您的硬件满足有效贡献的要求。
+
+### 我可以使用哪些钱包来存储 GNK 代币？
+您可以在 Cosmos 生态系统中的几个支持的钱包中存储 GNK 代币：
+
+- [Keplr](https://www.keplr.app/)
+- [Cosmostation](https://cosmostation.io/products/application)
+- `inferenced` CLI - 用于 Gonka 中本地账户管理和网络操作的命令行工具。
+
+### 我在哪里可以找到有关 Gonka 的有用信息？
+
+以下是了解 Gonka 生态系统最重要的资源：
+
+- [gonka.ai](https://gonka.ai/) — 项目信息和生态系统概述的主要入口点。
+- [白皮书](https://gonka.ai/whitepaper.pdf) — 描述架构、共识模型、计算证明等的技术文档。
+- [代币经济学](https://gonka.ai/tokenomics.pdf) — 项目代币经济学概述，包括供应、分配、激励和经济设计。
+- [GitHub](https://github.com/gonka-ai/gonka/) — 访问项目的源代码、仓库、开发活动和开源贡献。
+- [Discord](https://discord.com/invite/RADwCT2U6R) — 社区讨论、公告和技术支持的主要场所。
+- [X (Twitter)](https://x.com/gonka_ai) — 新闻、更新和公告。
+
+## 代币经济学
+
+### Gonka 中的治理权重如何计算？
+Gonka 使用 PoC 加权投票模型：
+
+- 计算证明（PoC）：投票权重与您经过验证的计算贡献成正比。
+- 抵押承诺：
+    - PoC 衍生的投票权重的 20% 会自动激活。
+    - 要解锁剩余的 80%，您必须锁定 GNK 代币作为抵押。
+- 这确保了治理影响力反映真实的计算工作 + 经济抵押。
+
+在前 180 个 epoch（约 6 个月）内，新参与者可以仅通过 PoC 参与治理并获得投票权重，无需抵押要求。在此期间，完整的治理权利可用，而投票权重仍然与经过验证的计算活动相关。
+
+### 为什么 Gonka 需要锁定 GNK 代币才能获得治理权重？
+投票权重从不仅来自持有代币。GNK 代币作为经济抵押，而不是影响力的来源。影响力通过持续的计算贡献获得，而锁定 GNK 抵押是确保参与治理和执行问责制所必需的。
+
+## 抵押
+
+### 什么是抵押？
+在宽限期（Grace Period，前 180 个 epoch）结束后，激活可抵押部分 PoC 权重需要提供抵押。
+
+宽限期结束后：
+
+- 基础权重（Base Weight，默认 20%）始终保持激活状态；
+- 剩余权重需要通过存入 GNK 抵押 才能被激活。
+  
+抵押机制确保：
+拥有治理权重的参与者同时承担相应的经济责任。所有参数均在链上定义，并可通过治理进行调整。在做出任何经济决策前，请务必确认当前生效的参数。
+
+### 抵押是按节点计算，还是按账户计算？
+抵押是按账户（account）存入的。如果多个 ML Node 关联到同一个账户，则所需抵押数量将基于该账户下所有节点的权重总和进行计算。
+
+### 我是否必须存入抵押？
+是的，如果你希望激活超过基础权重的部分，就必须存入抵押。
+如果未存入任何抵押，则只有基础权重（Base Weight）处于激活状态。
+
+### 需要多少抵押？
+计算公式如下：
+```
+Required Collateral =
+Total Weight × (1 - base_weight_ratio) × collateral_per_weight_unit
+```
+由于 PoC 权重在不同 epoch 之间可能发生波动，仅存入精确的最低抵押金额，可能会在某些时点出现短暂的抵押不足。
+权重较小的账户，其相对波动比例往往更大。
+在抵押规模仍较小的阶段，建议存入最高可达最低需求 2 倍的缓冲抵押。
+```
+Recommended (with conservative buffer):
+Total Weight × 2 × (1 - base_weight_ratio) × collateral_per_weight_unit
+```
+
+### 可以只对部分权重进行抵押吗？
+可以。你的总激活权重（Active Weight）由以下两部分组成：
+
+- 基础权重（Base Weight）：始终激活
+- 可抵押权重（Collateral-Eligible Weight）：按抵押比例激活
+
+如果你存入的抵押金额低于完整所需金额：
+
+- 基础权重仍然 100% 激活
+- 只有对应比例的可抵押权重会被激活
+- 剩余部分保持未激活状态
+
+激活权重的计算方式为：
+```
+Active Weight =
+Base Weight +
+(Deposited Collateral / Required Collateral) × Collateral-Eligible Weight
+```
+
+### 如果抵押不足会发生什么？
+你的激活权重将按比例降低。由于奖励是按激活权重比例分配的，当你抵押不足时，其他主机将获得更高比例的网络奖励。未激活的权重不会被直接重新分配，而是不参与共识与奖励分配。
+
+### 抵押何时生效？
+抵押必须在 epoch 开始之前 存入，才会在该 epoch 生效。
+在 epoch 进行过程中存入的抵押：
+
+- 不会立即增加权重
+- 将从下一个 epoch开始生效
+
+抵押金额无法在 epoch 中途增加并立即生效。
+
+### 抵押使用什么单位？
+链上交易必须使用 ngonka，而不是 GNK：
+```
+1 GNK = 1,000,000,000 ngonka
+```
+示例：
+```
+10 GNK = 10,000,000,000 ngonka
+```
+
+### 抵押会被罚没（slashing）吗？
+会。以下情况可能触发抵押罚没：
+
+- 无效推理（Invalid inference）
+- 节点宕机（Confirmation PoC 失败或被监禁）
+
+其中，无效推理的罚没每个 epoch 最多发生一次。宕机罚没可能按每次监禁（jail）事件单独计算。
+
+### 被罚没的代币会如何处理？
+目前，被罚没的 GNK 将被永久销毁（burn）并从流通中移除。
+未来是否调整该机制，将由治理决定。
+
+### 可以提取抵押吗？
+可以。提取抵押将触发一个解绑期（unbonding period，默认 1 个 epoch）。在解绑期内，抵押仍然可能被罚没。解绑期结束后，资金将自动返还至你的账户余额。
+
+### 关于抵押的进一步说明
+- 抵押不是投票权。投票权来源于 PoC 权重，而非代币余额。
+- 抵押不是委托（delegation）。每个账户必须自行为其权重提供抵押。
+- 抵押不是永久锁仓，可在满足解绑条件后提取。
+- 抵押在宽限期内（前 180 个 epoch）并非必需。
+
+### 每个 epoch 铸造的奖励如何分配？
+每个 epoch 都会铸造固定数量的 GNK，并按激活 PoC 权重比例进行分配。
+
+激活权重决定：
+- 你在该 epoch 中可获得的奖励份额
+- 你的治理影响力大小
+
+如果因抵押不足导致激活权重下降，你的 epoch 奖励将按比例减少。未激活的权重不会获得任何奖励。
+
+### 是否需要手动存入抵押？
+是的。抵押必须通过链上交易手动存入，不会自动启用。
+
+如果未存入抵押：
+- 节点仍可正常运行
+- 不会被监禁（jail）或禁用
+- 只有基础权重（例如 20%）保持激活
+
+但你的奖励和治理影响力将按比例下降。
+
+### 处于归属期（locked）的 GNK 可以作为抵押吗？
+不可以。抵押必须使用可用余额中的 GNK（已解锁）。尚未释放的归属代币（vested GNK）不能用于抵押。
+
+## 治理
+
+### 哪些类型的更改需要治理提案？
+任何影响网络的链上更改都需要治理提案，例如：
+
+- 更新模块参数（`MsgUpdateParams`）
+- 执行软件升级
+- 添加、更新或弃用推理模型
+- 任何其他必须通过治理模块批准和执行的操作
+
+### 谁可以创建治理提案？
+任何拥有有效治理密钥（冷账户）的人都可以支付所需费用并创建治理提案。但是，每个提案仍必须通过 PoC 加权投票由活跃参与者批准。鼓励提案者在链下首先讨论重大更改（例如，通过 [GitHub](https://github.com/gonka-ai) 或[社区论坛](https://discord.com/invite/RADwCT2U6R)）以增加批准的可能性。请参阅[完整指南](https://gonka.ai/zh/transactions-and-governance/)。
+
+### 如果提案失败会发生什么？
+- 如果提案未达到法定人数 → 自动失败
+- 如果多数投票 `no` → 提案被拒绝，不进行链上更改
+- 如果显著百分比投票 `no_with_veto`（超过否决阈值）→ 提案被拒绝并标记，表示强烈的社区分歧
+- 押金可能会或可能不会退还，取决于链设置
+
+### 治理参数本身可以更改吗？
+可以。所有关键的治理规则——法定人数、多数阈值和否决阈值——都是链上可配置的，可以通过治理提案进行更新。这允许网络随着参与模式和计算经济的变化而演进决策规则。
+
+### 如果我无法投票，因为我没有访问冷钥的权限，或者我希望由其他密钥代我投票，我该怎么办？
+
+如果持有投票权的密钥不是你日常使用的密钥，可以提前授予治理投票权限。
+
+在这种设置下：
+
+- 授权方（Granter）= 拥有投票权的账户（冷钥）
+- 被授权方（Grantee）= 代表授权方提交投票的账户（热钥）
+
+有两种常见情况：
+
+**1. 你想投票，但你没有访问持有投票权的密钥的权限。**
+
+请联系该密钥的持有者，并请求他们授予你的密钥代表其投票的权限。如果没有此授权，你的密钥无法代表该投票权提交治理投票。
+
+**2. 你希望由另一个密钥代你投票。**
+
+使用下面的授权命令，从持有投票权的密钥发起。这将授权被授权方密钥代表你提交治理投票。
+该委托仅允许对治理提案进行投票。被授权方仍然可以为其自身密钥投票。授权方可以随时撤销该权限。
+
+1) 授予投票权限（从授权方密钥执行）
+=== "命令"
+
+    ```
+    ./inferenced tx authz grant <GRANTEE_GONKA_ADDRESS> generic \
+      --msg-type=/cosmos.gov.v1beta1.MsgVote \
+      --from=<GRANTER_KEY_NAME> \
+      --chain-id=gonka-mainnet \
+      --expiration=<UNIX_TIMESTAMP> \
+      --home .inference \
+      --keyring-backend file
+    ```
+    
+=== "示例返回"
+
+    ```
+    {
+        "height": "0",
+        "txhash": "8D96FB6FC06FFB928FBC89FE950689CD040C7F338C197BA856175EC7462A3FFA",
+        "codespace": "",
+        "code": 0,
+        "data": "",
+        "raw_log": "",
+        "logs": [],
+        "info": "",
+        "gas_wanted": "0",
+        "gas_used": "0",
+        "tx": null,
+        "timestamp": "",
+        "events": []
+    }
+    ```
+    
+2) 验证授权是否存在（可从任意节点执行）
+=== "命令"
+    ```
+    ./inferenced query authz grants <GRANTER_GONKA_ADDRESS> <GRANTEE_GONKA_ADDRESS> \
+      --node="http://<MAINNET_NODE_URL>:26657" \
+      --output=json | jq .
+    ```
+    
+=== "示例返回"
+
+    ```
+    {
+        "grants": [
+            {
+                "authorization": {
+                    "type": "cosmos-sdk/GenericAuthorization",
+                    "value": {
+                        "msg": "/cosmos.gov.v1beta1.MsgVote"
+                    }
+                },
+                "expiration": "2026-12-03T18:38:18Z"
+            }
+        ],
+        "pagination": {
+            "total": "1"
+        }
+    }
+    ```
+    
+3) 使用被授权方进行投票
+=== "命令"
+    ```
+    # Find the proposal ID which you are voting for - use it as <VOTE_PROPOSAL_ID> in the voting body 
+    ./inferenced query gov proposals --output json
+    
+    # Prepare the file with the voting body
+    cat > /tmp/authz-vote.json << 'EOF'
+    {
+      "body": {
+        "messages": [
+          {
+            "@type": "/cosmos.authz.v1beta1.MsgExec",
+            "grantee": "<GRANTEE_GONKA_ADDRESS>",
+            "msgs": [
+              {
+                "@type": "/cosmos.gov.v1beta1.MsgVote",
+                "proposal_id": "<VOTE_PROPOSAL_ID>",
+                "voter": "<GRANTER_GONKA_ADDRESS>",
+                "option": "VOTE_OPTION_YES"
+              }
+            ]
+          }
+        ]
+      }
+    }
+    EOF
+    
+    
+    # Vote using the file 
+    ./inferenced tx authz exec /tmp/authz-vote.json \  --from=<GRANTEE_KEY_NAME> \ 
+    --chain-id=gonka-mainnet \
+    --home .inference \
+    --keyring-backend file \
+    --node="http://<MAINNET_NODE_URL>:26657" -y
+    ```
+    
+=== "示例返回"
+
+    ```
+    {
+        "pagination": {
+            "total": "1"
+        },
+        "proposals": [
+            {
+                "deposit_end_time": "2026-03-06T10:40:07.016920026Z",
+                "final_tally_result": {
+                    "abstain_count": "0",
+                    "no_count": "0",
+                    "no_with_veto_count": "0",
+                    "yes_count": "0"
+                },
+                "id": "1",
+                "messages": [
+                    {
+                        "type": "cosmos-sdk/MsgSoftwareUpgrade",
+                        "value": {
+                            "authority": "gonka10d07y265gmmuvt4z0w9aw880jnsr700j2h5m33",
+                            "plan": {
+                                "height": "406062",
+                                "info": "{\n \"binaries\":{\n \"linux/amd64\":\"https://github.com/product-science/race-releases/releases/download/release%2Fv0.2.10-testnet1/inferenced-amd64.zip?checksum=sha256:fb71310427436aebac32813735231882fca420cf0d94b036f8cacd055d0e1c78\"\n },\n \"api_binaries\":{\n \"linux/amd64\":\"https://github.com/product-science/race-releases/releases/download/release%2Fv0.2.10-testnet1/decentralized-api-amd64.zip?checksum=sha256:6fe214f4bb2d831c02ce407682820d95d01e6ae94a33fe9c4617b80e0ca716ce\"\n }\n }",
+                                "name": "v0.2.10",
+                                "time": "0001-01-01T00:00:00Z"
+                            }
+                        }
+                    }
+                ],
+                "proposer": "gonka1xfvr8mywcrxrcrryvj8c5d2grvyjdj5c90fd88",
+                "status": 2,
+                "submit_time": "2026-03-04T10:40:07.016920026Z",
+                "summary": "Upgrade Proposal v0.2.10",
+                "title": "Upgrade Proposal v0.2.10",
+                "total_deposit": [
+                    {
+                        "amount": "50000000",
+                        "denom": "ngonka"
+                    }
+                ],
+                "voting_end_time": "2026-03-04T10:50:07.016920026Z",
+                "voting_start_time": "2026-03-04T10:40:07.016920026Z"
+            }
+        ]
+    }
+    ```
+    
+投票选项：
+
+- `VOTE_OPTION_YES`
+- `VOTE_OPTION_ABSTAIN`
+- `VOTE_OPTION_NO`
+- `VOTE_OPTION_NO_WITH_VETO`
+
+4) 撤销委托（从授权方密钥执行）
+=== "命令"
+
+    ```
+    ./inferenced tx authz revoke <GRANTEE_GONKA_ADDRESS> /cosmos.gov.v1beta1.MsgVote \
+      --from=<GRANTER_KEY_NAME> \
+      --chain-id=gonka-mainnet \
+      --home .inference \
+      --keyring-backend file
+    ```
+=== "示例返回"
+
+    ```
+    {
+        code: 0
+        codespace: ""
+        data: ""
+        events: []
+        gas_used: "0"
+        gas_wanted: "0"
+        height: "0"
+        info: ""
+        logs: []
+        raw_log: ""
+        timestamp: ""
+        tx: null
+        txhash: A2C3CDA9E95DCF143C0D8981A4F573F1E68879ECF4903B25BA97383C3F2FDFBA
+    }
+    ```
+	
+## 改进提案
+
+### 治理提案和改进提案之间有什么区别？
+治理提案 → 链上提案。用于直接影响网络并需要链上投票的更改。示例：
+
+- 更新网络参数（`MsgUpdateParams`）
+- 执行软件升级
+- 添加新模型或功能
+- 任何需要由治理模块执行的修改
+
+改进提案 → 由活跃参与者控制的链下提案。用于制定长期路线图、讨论新想法并协调更大的战略更改。
+
+- 作为 Markdown 文件在 [/proposals](https://github.com/gonka-ai/gonka/tree/main/proposals) 目录中管理
+- 通过 GitHub Pull Request 进行审查和讨论
+- 批准的提案合并到仓库中
+
+### 如何审查和批准改进提案？
+
+社区提案审查的目标，是获取来自社区的验证：包括反馈反应、评论以及具体、可执行的建议，从而为后续获得治理层面的批准打下更坚实的基础。
+这一点在以下情况下尤为重要：提案的实施需要大量工作投入、长期承诺、多方协作，或涉及对协议本身的重大改动。
+
+- 请先阅读推荐指南：[https://github.com/gonka-ai/gonka/discussions/795](https://github.com/gonka-ai/gonka/discussions/795). 该指南详细说明了什么内容适合纳入改进提案（Improvement Proposals），以及如何撰写一份结构清晰、有说服力的提案。
+- 请在 [GitHub Discussions](https://github.com/gonka-ai/gonka/discussions)  中发布并讨论改进提案（推荐方式）；此前这些内容以 Markdown 文件的形式存放在`/proposals`目录下。
+- 为了帮助社区更好地评估你的提案（并提升其后续在治理流程中通过的可能性），主动收集早期反馈和支持信号（如表态、评论、具体问题）是提案发起者自身的利益所在，也是其责任。
+	- 将 Discussion 链接分享到 Discord 的 #improvements-proposals 频道，以提升覆盖面和可见度；同时也可以通过你所掌握的其他渠道进行扩散（包括直接联系 Hosts / 矿工），以收集更贴近实操层面的意见和支持。
+	- 在提案讨论串中说明你自身的背景、经验和专业能力。如果你代表某个团队或公司，请明确指出，并附上相关工作链接，帮助社区更高效地评估你的可信度和提案质量。
+- 社区审查：
+    - 活跃贡献者和维护者会在 [GitHub Discussions](https://github.com/gonka-ai/gonka/discussions) 中对提案展开讨论。讨论可以发生在任何平台，但请务必将关键信息和结论回收并整理到 [GitHub Discussions](https://github.com/gonka-ai/gonka/discussions) 中：这样可以将完整历史集中保存在一处，便于搜索，也更利于长期维护。GitHub 是主要的信息来源（source of truth）。
+	- 欢迎提出问题、反馈、建议和改进意见，并为你认为有价值的提案点赞。所有人的关注与参与，都是 Gonka 可持续演进不可或缺的一部分。
+- 强烈的正向反馈和大量点赞，通常代表真实的社区需求。这将使团队能够把广受欢迎的提案视为社区驱动路线图的一部分，并在确信社区共识和未来治理通过可能性的前提下，放心启动实施。需要注意的是，来自 Hosts 的反馈尤为关键——它可以帮助将项目拆解为阶段性里程碑、解锁部分赏金支付，甚至争取来自社区资金池的资助。但最终，所有链上更新和资金支付仍需经过治理批准。
+
+### 改进提案会导致治理提案吗？
+是的。通常，改进提案用于在起草治理提案之前探索想法并收集共识。例如：
+
+- 您可能首先将新模型集成作为改进提案提出。
+- 社区同意后，创建链上治理提案以更新参数或触发软件升级。
+
+## 投票 
+
+### 投票流程如何工作？
+- 一旦提案被提交并用最低押金资助，它进入投票期
+- 投票选项：`yes`、`no`、`no_with_veto`、`abstain`
+  
+    - `yes` → 批准提案
+    - `no` → 拒绝提案
+    - `no_with_veto` → 拒绝并发出强烈反对信号
+    - `abstain` → 既不批准也不拒绝，但计入法定人数
+   
+- 您可以在投票期内的任何时候更改投票；只计算您的最后一次投票
+- 如果达到法定人数和阈值，提案通过并通过治理模块自动执行
+  
+要投票，您可以使用下面的命令。此示例投票 yes，但您可以用您首选的选项替换它（`yes`、`no`、`no_with_veto`、`abstain`）：
+```
+./inferenced tx gov vote 2 yes \
+      --from <cold_key_name> \
+      --keyring-backend file \
+      --unordered \
+      --timeout-duration=60s --gas=2000000 --gas-adjustment=5.0 \
+      --node $NODE_URL/chain-rpc/ \
+      --chain-id gonka-mainnet \
+      --yes
+```
+
+### 如何跟踪治理提案的状态？
+您可以使用 CLI 随时查询提案状态：
+```
+export NODE_URL=http://47.236.19.22:18000
+./inferenced query gov tally 2 -o json --node $NODE_URL/chain-rpc/
+```
+
+## 运行节点
+
+### 如果我想停止挖矿但仍在我回来时使用我的账户怎么办？
+要在将来恢复网络节点，备份以下内容就足够了：
+
+- 冷密钥（最重要，其他都可以轮换）
+- tmkms 的机密：`.tmkms/secrets/`
+- 来自 `.inference .inference/keyring-file/` 的密钥环
+- 来自 `.inference/config .inference/config/node_key.json` 的节点密钥
+- 热密钥的密码 `KEYRING_PASSWORD`
+
+### 我的节点被监禁了。这意味着什么？
+您的验证者被监禁是因为它在最近 100 个区块中签名的区块少于 50 个（要求计算该窗口内签名的区块总数，而不是连续的）。这意味着您的节点被暂时排除（约 15 分钟）在区块生产之外，以保护网络稳定性。
+这可能有几个原因：
+
+- **共识密钥不匹配**。您的节点使用的共识密钥可能与链上为您的验证者注册的密钥不同。确保您使用的共识密钥与链上为您的验证者注册的密钥匹配。
+- **网络连接不稳定**。网络不稳定或中断可能会阻止您的节点达成共识，导致错过签名。确保您的节点具有稳定、低延迟的连接，并且不会被其他进程过载。
+
+**奖励**：即使您的节点被监禁，只要它在推理或其他验证者相关工作中保持活跃，您仍将继续获得大部分作为主机的奖励。因此，除非检测到推理问题，否则奖励不会丢失。 
+
+**如何解除监禁您的节点**：要恢复正常运行，请在问题解决后解除监禁您的验证者。使用您的冷密钥提交解除监禁交易：
+
+```
+export NODE_URL=http://<NODE_URL>:<port>
+ ./inferenced tx slashing unjail \
+    --from <cold_key_name> \
+    --keyring-backend file \
+    --chain-id gonka-mainnet \
+    --gas auto \
+    --gas-adjustment 1.5 \
+    --fees 200000ngonka \
+    --node $NODE_URL/chain-rpc/
+```
+然后，检查节点是否已解除监禁：
+```
+ ./inferenced query staking delegator-validators \
+    <cold_key_addr> \
+    --node $NODE_URL/chain-rpc/
+```
+当节点被监禁时，它显示 `jailed: true`。
+
+### 如何停用旧集群？
+
+按照本指南安全地关闭旧集群，而不会影响声誉。
+
+1) 使用以下命令禁用每个 ML 节点：
+    
+```
+curl -X POST http://localhost:9200/admin/v1/nodes/<id>/disable
+```
+
+您可以使用以下命令列出所有节点 ID：
+
+```
+curl http://localhost:9200/admin/v1/nodes | jq '.[].node.id'
+```
+
+2) 未安排在下一个计算证明（PoC）期间提供推理的节点将在该 PoC 期间自动停止。
+被安排提供推理的节点将在停止前再保持活跃一个 epoch。您可以在以下位置的 mlnode 字段中验证节点的状态：
+
+```
+curl http://<inference_url>/v1/epochs/current/participants
+```
+
+一旦节点被标记为禁用，就可以安全地关闭 MLNode 服务器。
+
+3) 在所有 MLNode 被禁用并关闭后，您可以关闭网络节点。在此之前，建议（但可选）备份以下文件：
+
+- `.dapi/api-config.yaml`
+- `.dapi/gonka.db`（链上升级后创建）
+- `.inference/config/`
+- `.inference/keyring-file/`
+- `.tmkms/`
+
+如果您跳过备份，稍后仍可以使用您的账户密钥恢复设置。
+
+### 我的节点无法连接到 config.env 中指定的默认种子节点
+
+如果你的节点无法连接到默认种子节点，只需在 config.env 中更新以下三个变量，将其指向另一个种子节点即可。
+
+1. SEED_API_URL：种子节点的 HTTP 端点（用于 API 通信）。 从下面列表中选择任意一个 URL，并直接赋值给 SEED_API_URL。
+    ```
+    export SEED_API_URL=<chosen_http_url>
+    ```
+    可用的创世（genesis）API URL：
+    ```
+    http://185.216.21.98:8000
+    http://36.189.234.197:18026
+    http://36.189.234.237:17241
+    http://node1.gonka.ai:8000
+    http://node2.gonka.ai:8000
+    http://node3.gonka.ai:8000
+    https://node4.gonka.ai
+    http://47.236.26.199:8000
+    http://47.236.19.22:18000
+    http://gonka.spv.re:8000
+    ```
+2. SEED_NODE_RPC_URL：公共 Tendermint RPC 访问必须通过种子节点的 HTTP(S) 代理路径 /<chain-rpc>。 使用与 SEED_API_URL 相同的协议（http 或 https）、主机（host）和端口（port），并在末尾追加 /chain-rpc。
+    ```
+    export SEED_NODE_RPC_URL=http://<host>/chain-rpc
+    ```
+    示例：
+    ```
+    SEED_NODE_RPC_URL=http://node2.gonka.ai:8000/chain-rpc/ 
+    ```
+!!! note "重要"
+
+	- 不要将 http://<host>:26657 用作公共 RPC 端点。
+	26657 端口必须仅限内部访问（localhost/私有网络）。公共 RPC 必须通过 /<chain-rpc> 访问。
+	
+3. SEED_NODE_P2P_URL：用于节点间网络通信的 P2P 地址。 你必须通过同一个 /<chain-rpc> 代理，从种子节点的 status 端点获取 P2P 端口。
+
+    查询节点状态：
+    ```
+    http://<host>:<http_port>/chain-rpc/status
+    ```
+    示例：
+    ```
+    http://node3.gonka.ai:8000/chain-rpc/status
+    ```
+    在返回内容中找到 listen_addr，例如：
+    ```
+    ""listen_addr"": ""tcp://0.0.0.0:5000""
+    ```
+    
+    使用该端口设置：
+    ```
+    export SEED_NODE_P2P_URL=tcp://<host>:<p2p_port>
+    ```
+    示例：
+    ```
+    export SEED_NODE_P2P_URL=tcp://node3.gonka.ai:5000
+    ```
+    
+    最终示例：
+    ```
+    export SEED_API_URL=http://node2.gonka.ai:8000
+    export SEED_NODE_RPC_URL=http://node2.gonka.ai:8000/chain-rpc/
+    export SEED_NODE_P2P_URL=tcp://node2.gonka.ai:5000
+    ```
+
+### 如何更改种子节点？
+
+根据节点是否已经初始化，有两种不同的方式来更新种子节点。
+
+=== "选项 1. 手动编辑种子节点（初始化后）"
+
+    一旦创建了 `.node_initialized` 文件，系统就不再自动更新种子节点。
+    在那之后：
+    
+    - 种子列表按原样使用
+    - 任何更改都必须手动完成
+    - 您可以添加任意数量的种子节点
+    
+    格式是单个逗号分隔的字符串：
+    ```
+    seeds = "<node1_id>@<node1_ip>:<node1_p2p_port>,<node2_id>@<node2_ip>:<node2_p2p_port>"
+    ```
+    要查看任何运行节点已知的对等节点，请使用链 RPC：
+    ```
+    curl http://47.236.26.199:8000/chain-rpc/net_info | jq
+    ```
+
+    在响应中，查找：
+    
+    - `listen_addr` -  P2P 端点
+    - `rpc_addr` - RPC 端点
+   
+    示例： 
+
+    ```
+         % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                     Dload  Upload   Total   Spent    Left  Speed
+    100 94098    0 94098    0     0  91935      0 --:--:--  0:00:01 --:--:-- 91982
+    {
+      "jsonrpc": "2.0",
+      "id": -1,
+      "result": {
+        "listening": true,
+        "listeners": [
+          "Listener(@tcp://47.236.26.199:5000)"
+        ],
+        "n_peers": "50",
+        "peers": [
+          {
+            "node_info": {
+              "protocol_version": {
+                "p2p": "8",
+                "block": "11",
+                "app": "0"
+              },
+              "id": "ce6f26b9508839c29e0bfd9e3e20e01ff4dda360",
+              "listen_addr": "tcp://85.234.78.106:5000",
+              "network": "gonka-mainnet",
+              "version": "0.38.17",
+              "channels": "40202122233038606100",
+              "moniker": "my-node",
+              "other": {
+                "tx_index": "on",
+                "rpc_address": "tcp://0.0.0.0:26657"
+              }
+            },
+    ...
+    ```
+
+    这显示节点当前看到的所有对等节点。
+
+=== "选项 2. 重新初始化节点（从环境自动应用种子）"
+
+    如果您希望节点重新生成其配置并自动应用 `config.env` 中定义的种子节点，请使用此方法。
+    ```
+    source config.env
+    docker compose down node
+    sudo rm -rf .inference/data/ .inference/.node_initialized
+    sudo mkdir -p .inference/data/
+    ```
+    重启节点后，它将像全新安装一样运行并重新创建其配置，包括来自环境变量的种子。
+    要验证实际应用的种子：
+    
+    ```
+    sudo cat .inference/config/config.toml
+    ```
+    查找字段：
+    ```
+    seeds = [...]
+    ```
+
+### 硬件、节点权重和 ML 节点配置实际上是如何验证的？
+
+链**不**验证真实硬件。它只验证参与者总权重，这是用于权重分配和奖励计算的唯一值。 
+
+此权重在 ML 节点之间的任何细分，以及任何"硬件类型"或其他描述性字段，都纯粹是信息性的，可以由主机自由修改。  
+
+在创建或更新节点时（例如，通过 `POST http://localhost:9200/admin/v1/nodes`，如处理程序代码所示：[https://github.com/gonka-ai/gonka/blob/aa85699ab203f8c7fa83eb1111a2647241c30fc4/decentralized-api/internal/server/admin/node_handlers.go#L62](https://github.com/gonka-ai/gonka/blob/aa85699ab203f8c7fa83eb1111a2647241c30fc4/decentralized-api/internal/server/admin/node_handlers.go#L62)），可以显式指定硬件字段。如果省略，API 服务会尝试从 ML 节点自动检测硬件信息。 
+
+在实践中，许多主机在代理 ML 节点后面运行多个服务器；自动检测只能看到其中一台服务器，这是一个完全有效的设置。无论配置如何，所有权重分配和奖励都仅依赖于主机总权重，而 ML 节点之间的内部拆分或报告的硬件类型永远不会影响链上验证。
+
+### 如何切换至`Qwen/Qwen3-235B-A22B-Instruct-2507-FP8`，升级 ML Nodes，并移除其他模型？
+
+本指南说明 Hosts 应如何根据 v0.2.8 版本中模型可用性的变更，以及即将到来的 PoC v2 更新，对其 ML Nodes 进行调整。从 Epoch 155 起，网络将开始观察 ML Node 配置是否符合 PoC v2 要求。建议 Hosts 在此之前完成 ML Node 配置检查与准备。
+PoC v2 的迁移可在 Epoch 155 之后进行。在迁移阶段结束后，不符合配置要求的 ML Node，其权重可能将不被计入。
+
+**1. 背景：模型可用性变更（v0.2.8 升级）**
+
+作为 v0.2.8 升级的一部分，当前可用的模型集合已发生调整。
+
+**支持的模型（当前有效集）**
+
+目前仅支持以下模型：
+
+- `Qwen/Qwen3-235B-A22B-Instruct-2507-FP8`
+- `Qwen/Qwen3-32B-FP8`
+
+在迁移期间，`Qwen/Qwen3-32B-FP8` 仍可运行，但不会计入 PoC v2 的就绪状态或权重分配。参与 PoC v2 必须提供 `Qwen/Qwen3-235B-A22B-Instruct-2507-FP8`。
+
+**已移除模型**
+
+此前所有受支持的模型均已从有效集移除，不得继续提供服务。
+
+**2. PoC v2 就绪条件（重要）**
+
+成功参与 PoC v2 迁移，需同时满足以下两项条件：
+
+- 所有 ML Nodes 均提供 `Qwen/Qwen3-235B-A22B-Instruct-2507-FP8`这是 唯一 会被计入 PoC v2 权重的模型。
+- 所有 ML Nodes 均升级至兼容 PoC v2 的镜像版本：
+    - ghcr.io/product-science/mlnode:3.0.12-post3
+    - ghcr.io/product-science/mlnode:3.0.12-post3-blackwell
+
+!!! note "重要"
+	- 仅提供正确模型但未升级 ML Node 并不充分。
+	- 一旦网络切换为单模型配置，未同时满足上述两项条件的节点将不具备参与资格。
+	- ML Node 的升级必须在迁移完成、并在 v0.2.8 升级之后通过单独的治理提案激活 PoC v2 之前完成。
+	- v0.2.8 升级本身并不会启用 PoC v2。
+
+**3. 检查 ML Node 分配状态（推荐的安全步骤）**
+
+在切换模型前，建议先检查当前 ML Node 的分配状态。可查询 Network Node 的 Admin API：
+```
+curl http://127.0.0.1:9200/admin/v1/nodes
+```
+关注字段：
+```
+"timeslot_allocation": [
+  true,
+  false
+]
+```
+字段含义：
+
+- 第一个布尔值：该节点是否在当前 epoch 中提供推理服务
+- 第二个布尔值：该节点是否计划在下一个 PoC 中提供推理服务
+  
+**推荐做法**
+  
+- 优先在第二个值为 false 的节点上进行模型切换
+- 在 PoC v2 行为仍处于观察阶段时，可降低风险
+- 鼓励跨多个 epoch 逐步滚动升级
+  
+**4. 更新 ML Node 模型：仅保留受支持模型**
+
+预下载模型权重（推荐）
+为避免节点启动延迟，建议提前将模型权重下载至  `HF_HOME`：
+```
+mkdir -p $HF_HOME
+huggingface-cli download Qwen/Qwen3-235B-A22B-Instruct-2507-FP8
+```
+使用 ML Node 管理 API，将 ML Node 切换至受支持模型 `Qwen/Qwen3-235B-A22B-Instruct-2507-FP8`.  
+
+示例：
+```
+curl -X PUT "http://localhost:9200/admin/v1/nodes/node1" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "id": "node1",
+    "host": "inference",
+    "inference_port": 5000,
+    "poc_port": 8080,
+    "max_concurrent": 800,
+    "models": {
+      "Qwen/Qwen3-235B-A22B-Instruct-2507-FP8": {
+        "args": [
+          "--tensor-parallel-size",
+          "4",
+          "--max-model-len",
+          "240000"
+        ]
+      }
+    }
+  }'
+```
+通过 Admin API 应用的更改将于下一个 epoch 生效： ([https://gonka.ai/host/mlnode-management/#updating-an-existing-mlnode](https://gonka.ai/host/mlnode-management/#updating-an-existing-mlnode))
+
+!!! 注意
+	`node-config.json` 仅在 Network Node API 首次启动或本地状态/数据库被清除时使用。对于已有节点，模型更新应通过 Admin API 完成。
+	
+**5. 升级 ML Node 镜像（PoC v2 必需）**
+
+编辑 `docker-compose.mlnode.yml` ，更新 ML Node 镜像：
+
+标准 GPU
+```
+image: ghcr.io/product-science/mlnode:3.0.12-post3
+```
+NVIDIA Blackwell GPU
+```
+image: ghcr.io/product-science/mlnode:3.0.12-post3-blackwell
+```
+应用更改并重启服务。在 `gonka/deploy/join`目录下执行：
+```
+source config.env
+docker compose -f docker-compose.yml -f docker-compose.mlnode.yml pull
+docker compose -f docker-compose.yml -f docker-compose.mlnode.yml up -d
+```
+
+**6. 验证模型服务状态（于下一个 epoch 生效）**
+
+确认 ML Node 仅提供 `Qwen/Qwen3-235B-A22B-Instruct-2507-FP8` ，这是 PoC v2 权重及未来权重分配中唯一使用的模型：
+```
+curl http://127.0.0.1:8080/v1/models | jq
+```
+可选：重新检查节点分配状态：
+```
+curl http://127.0.0.1:9200/admin/v1/nodes
+```
+!!! note "治理与 PoC v2 激活说明"
+	PoC v2 将分阶段引入，而非一次性启用。
+
+**阶段 1：观察期（v0.2.8 之后的当前状态）**
+
+v0.2.8 升级完成后，PoC v2 的逻辑已可用，但**尚未用于权重分配**。
+
+在此阶段：
+
+- Hosts 可提供 `Qwen/Qwen3-235B-A22B-Instruct-2507-FP8` 或 `Qwen/Qwen3-32B-FP8`
+- 若希望贡献 PoC v2 权重，Hosts **必须**将 ML Nodes 切换至 `Qwen/Qwen3-235B-A22B-Instruct-2507-FP8`，并升级至兼容 PoC v2 的版本
+- 网络将观察整体采用情况，以评估 Hosts 对 PoC v2 的就绪度
+
+**阶段 2：治理提案（可选，未来）**
+
+当观察到活跃 Hosts 中有足够比例完成升级（约 50%）后：
+
+- 可能会提交一项**独立的治理提案**
+- 该提案可能请求批准启用 PoC v2 并用于权重分配
+
+该采用比例仅用于观察判断，**不会自动触发任何变更**。
+
+**阶段 3：激活（仅在治理批准后）**
+
+只有在治理提案获得链上批准后，PoC v2 才会正式成为权重分配的生效机制。
+
+在此之前：
+
+- PoC v2 不参与权重分配
+- 现有 PoC 机制仍用于确定权重
+
+**总结检查清单**
+
+在 PoC v2 激活前，请确保：
+
+- ML Node 提供 `Qwen/Qwen3-235B-A22B-Instruct-2507-FP8`
+- 配置中已移除所有其他模型
+- ML Node 镜像版本为 `3.0.12-post3` （或 `3.0.12-post3-blackwell`）
+
+## 密钥和安全
+
+### 在 v0.2.9 升级之后 创建的 warm keys 应使用哪个 CLI 版本？
+
+对于在 v0.2.9 升级之后 创建的新 warm keys，[在授予权限时应使用 CLI v0.2.9。](https://github.com/gonka-ai/gonka/releases/tag/release/v0.2.9)
+    
+### 我在哪里可以找到密钥管理的信息？
+您可以在文档中找到关于[密钥管理](https://gonka.ai/zh/host/key-management/)的专门部分。它概述了在网络上安全管理应用程序密钥的程序和最佳实践。
+
+### 我清除了或覆盖了我的共识密钥
+
+如果您使用 **tmkms** 并删除了 `.tmkms` 文件夹，只需重启 **tmkms** — 它会自动生成新密钥。
+要注册新的共识密钥，请提交以下交易：
+```
+./inferenced tx inference submit-new-participant \
+    <PUBLIC_URL> \
+    --validator-key <CONSENSUS_KEY> \
+    --keyring-backend file \
+    --unordered \
+    --from <COLD_KEY_NAME> \
+    --timeout-duration 1m \
+    --node http://<node-url>/chain-rpc/ \
+    --chain-id gonka-mainnet
+```
+
+### 我删除了热密钥
+请在本地设备上备份冷密钥，不要存放在服务器上。
+
+1) 停止 API 容器：
+    ```
+    docker compose down api --no-deps
+    ```
+
+2) 在 `config.env` 文件中设置热密钥的 `KEY_NAME`。
+   
+3) [服务器]：重新创建热密钥：
+    ```
+    source config.env && docker compose run --rm --no-deps -it api /bin/sh
+    ```
+
+4) 然后在容器内执行：
+    ```
+    printf '%s\n%s\n' "$KEYRING_PASSWORD" "$KEYRING_PASSWORD" | \
+    inferenced keys add "$KEY_NAME" --keyring-backend file
+    ```
+
+5) [本地]：在备份了冷密钥的本地设备上，执行以下交易：
+    ```
+    ./inferenced tx inference grant-ml-ops-permissions \
+        gonka-account-key \
+        <address-of-warm-key-you-just-created> \
+        --from gonka-account-key \
+        --keyring-backend file \
+        --gas 2000000 \
+        --node http://<node-url>/chain-rpc/
+    ```
+
+6) 启动 API 容器：
+    ```
+    source config.env && docker compose up -d
+    ```
+    
+## 计算证明（PoC）
+
+### 什么是 Proof-of-Compute？
+
+Proof of Compute（PoC）是一种共识机制，它用可验证的、基于 Transformer 的计算能力取代了基于资本或哈希算力的权重机制。它定义了如何衡量真实的 AI 计算能力，并将其转化为治理权重和共识权重。PoC 通过在每个 epoch 结束时进行的短时间、同步执行的 Sprint 来运行。在 Sprint 之外的时间，epoch 用于进行真实世界的 AI 计算。在实际使用中，Proof of Compute（PoC）和 Sprint 这两个术语通常可以互换使用。当提到“Next PoC”或“PoC phase”时，通常指的是下一次 Sprint，即 Proof of Compute 的执行阶段。
+
+### 什么是 Sprint？
+
+Sprint 是 Proof of Compute 的一个阶段。在 Sprint 期间，所有 Hosts 会同时在一个具有随机层的 transformer 上运行与 AI 相关的推理任务，并对一系列 nonce 流进行处理，从而生成输出向量。某个 Host 在下一个 epoch 中的投票权与其处理的 nonce 数量成正比，前提是其报告的输出可以被验证为由所要求的 Sprint 模型生成。
+
+### 如何模拟计算证明（PoC）？
+
+您可能想自己在 ML 节点上模拟 PoC，以确保当链上开始 PoC 阶段时一切都会正常工作。
+
+要运行此测试，您需要有一个尚未向 api 节点注册的运行中的 ML 节点，或者暂停 api 节点。要暂停 api 节点，请使用 `docker pause api`。测试完成后，您可以取消暂停：`docker unpause api`。
+
+对于测试本身，您将向 ML 节点发送 POST `/v1/pow/init/generate` 请求，这与 api 节点在 POC 阶段开始时发送的请求相同：
+[https://github.com/gonka-ai/gonka/blob/312044d28c7170d7f08bf88e41427396f3b95817/mlnode/packages/pow/src/pow/service/routes.py#L32](https://github.com/gonka-ai/gonka/blob/312044d28c7170d7f08bf88e41427396f3b95817/mlnode/packages/pow/src/pow/service/routes.py#L32)
+
+PoC 使用以下模型参数：[https://github.com/gonka-ai/gonka/blob/312044d28c7170d7f08bf88e41427396f3b95817/mlnode/packages/pow/src/pow/models/utils.py#L41](https://github.com/gonka-ai/gonka/blob/312044d28c7170d7f08bf88e41427396f3b95817/mlnode/packages/pow/src/pow/models/utils.py#L41)
+
+如果您的节点处于 `INFERENCE` 状态，则首先需要将节点转换到停止状态：
+
+```
+curl -X POST "http://<ml-node-host>:<port>/api/v1/stop" \
+  -H "Content-Type: application/json"
+```
+
+现在您可以发送请求以启动 PoC：
+
+```
+curl -X POST "http://<ml-node-host>:<port>/api/v1/pow/init/generate" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "node_id": 0,
+    "node_count": 1,
+    "block_hash": "EXAMPLE_BLOCK_HASH",
+    "block_height": 1,
+    "public_key": "EXAMPLE_PUBLIC_KEY",
+    "batch_size": 1,
+    "r_target": 10.0,
+    "fraud_threshold": 0.01,
+    "params": {
+      "dim": 1792,
+      "n_layers": 64,
+      "n_heads": 64,
+      "n_kv_heads": 64,
+      "vocab_size": 8196,
+      "ffn_dim_multiplier": 10.0,
+      "multiple_of": 8192,
+      "norm_eps": 1e-5,
+      "rope_theta": 10000.0,
+      "use_scaled_rope": false,
+      "seq_len": 256
+    },
+    "url": "http://api:9100"
+  }'
+```
+将此请求发送到 ML 节点的代理容器的 `8080` 端口，或直接发送到 ML 节点的 `8080` [https://github.com/gonka-ai/gonka/blob/312044d28c7170d7f08bf88e41427396f3b95817/deploy/join/docker-compose.mlnode.yml#L26](https://github.com/gonka-ai/gonka/blob/312044d28c7170d7f08bf88e41427396f3b95817/deploy/join/docker-compose.mlnode.yml#L26)
+
+如果测试成功运行，您将看到类似以下的日志：
+```
+2025-08-25 20:53:33,568 - pow.compute.controller - INFO - Created 4 GPU groups:
+2025-08-25 20:53:33,568 - pow.compute.controller - INFO -   Group 0: GpuGroup(devices=[0], primary=0) (VRAM: 79.2GB)
+2025-08-25 20:53:33,568 - pow.compute.controller - INFO -   Group 1: GpuGroup(devices=[1], primary=1) (VRAM: 79.2GB)
+2025-08-25 20:53:33,568 - pow.compute.controller - INFO -   Group 2: GpuGroup(devices=[2], primary=2) (VRAM: 79.2GB)
+2025-08-25 20:53:33,568 - pow.compute.controller - INFO -   Group 3: GpuGroup(devices=[3], primary=3) (VRAM: 79.2GB)
+2025-08-25 20:53:33,758 - pow.compute.controller - INFO - Using batch size: 247 for GPU group [0]
+2025-08-25 20:53:33,944 - pow.compute.controller - INFO - Using batch size: 247 for GPU group [1]
+2025-08-25 20:53:34,151 - pow.compute.controller - INFO - Using batch size: 247 for GPU group [2]
+2025-08-25 20:53:34,353 - pow.compute.controller - INFO - Using batch size: 247 for GPU group [3]
+```
+然后服务将开始向 `DAPI_API__POC_CALLBACK_URL` 发送生成的 nonce。
+```
+2025-08-25 20:54:58,822 - pow.service.sender - INFO - Sending generated batch to http://api:9100/
+```
+如果您暂停了 api 容器，或者 ML 节点容器和 api 容器不共享同一个 docker 网络，则 http://api:9100 url 将不可用。预计会看到错误消息，说明 ML 节点无法发送生成的批次。重要的是确保生成过程正在发生。
+
+### 0% 的确认率意味着什么？如果发生这种情况我该怎么办？
+
+0% 的确认率是一种不正常的情况，表示在该 epoch 期间，你的 API 节点没有发送任何 nonce，也就是说该节点完全没有参与确认型计算量证明（Confirmation Proof-of-Compute，CPoC）。
+要进行排查，请检查 API 节点日志 和 ML Node 日志，它们通常可以说明为什么没有发生 nonce 提交。
+
+可能的原因包括：
+
+- API 节点配置错误或处于不可用状态
+- 管理端口或控制端口对公网开放，导致 ML Node 被访问或干扰
+- 共识节点落后于链的最新高度，导致 PoC 参与开始得过晚，超出允许窗口
+- ML Node 驱动程序发生故障
+
+为降低此类风险，请确保管理和控制端口不对公网开放，确认 API 节点正在运行且配置正确，持续监控共识节点的同步状态，并为 ML Node 及其驱动程序的故障设置告警机制。
+
+## 性能和故障排除
+
+### 如何使用代理预发布版本（v0.2.8-pre-release）保护节点免受 DDoS 攻击？
+
+已发布一个新的代理版本，包含速率限制和 DDoS 防护机制。
+
+新增内容：
+
+- 对 API / RPC 端点进行速率限制
+- `/v1/poc-batches` 端点默认被阻止
+- 可选地禁用 `/chain-api`、`/chain-rpc` 和 `/chain-grpc` 端点
+- 防护过量请求，这类请求此前已影响网络节点稳定性
+- 禁用 training URL
+
+**更新说明**
+
+**Step 1**: 更新代理镜像
+```
+sed -i -E 's|(image:[[:space:]]*ghcr.io/product-science/proxy)(:.*)?$|\1:0.2.8-pre-release-proxy@sha256:6ccb8ac8885e03aab786298858cc763a99f99543b076f2a334b3c67d60fb295f |' docker-compose.yml
+```
+!!! note "重要说明"
+	Step 2 会在该节点上禁用 /chain-api、/chain-rpc 和 /chain-grpc 端点。
+	应用此步骤后，该节点将不再提供公共 RPC 服务。
+	如果你需要对外提供公共 RPC 端点，必须运行独立的 RPC 专用节点（不启用这些限制），并将当前节点保持为私有节点。
+
+**Step 2（可选）**：禁用 `chain-api`、`chain-rpc` 和 `chain-grpc`
+
+如果你希望完全禁用 `/chain-api`、`/chain-rpc` 和 `/chain-grpc` 端点：
+```
+sed -i 's|DASHBOARD_PORT=5173|DASHBOARD_PORT=5173\n      - DISABLE_CHAIN_API=${DISABLE_CHAIN_API:-true}\n      - DISABLE_CHAIN_RPC=${DISABLE_CHAIN_RPC:-true}\n      - DISABLE_CHAIN_GRPC=${DISABLE_CHAIN_GRPC:-true}\n|' docker-compose.yml
+```
+禁用在近期攻击中被使用的 training URL：
+```
+sed -i -E -e '/GONKA_API_(EXEMPT|BLOCKED)_ROUTES/d' -e 's|(- GONKA_API_PORT=9000)|\1\n      - GONKA_API_EXEMPT_ROUTES=chat inference\n      - GONKA_API_BLOCKED_ROUTES=poc-batches training|' docker-compose.yml
+```
+完成后，你的代理配置应如下所示：
+```
+proxy:
+    container_name: proxy
+    image: ghcr.io/product-science/proxy:0.2.8-pre-release-proxy@sha256:6ccb8ac8885e03aab786298858cc763a99f99543b076f2a334b3c67d60fb295f
+    ports:
+      - "${API_PORT:-8000}:80"
+      - "${API_SSL_PORT:-8443}:443"
+    environment:
+      - NGINX_MODE=${NGINX_MODE:-http}
+      - SERVER_NAME=${SERVER_NAME:-}
+      - GONKA_API_PORT=9000
+      - GONKA_API_EXEMPT_ROUTES=chat inference
+      - GONKA_API_BLOCKED_ROUTES=poc-batches training
+      - CHAIN_RPC_PORT=26657
+      - CHAIN_API_PORT=1317
+      - CHAIN_GRPC_PORT=9090
+      - DASHBOARD_PORT=5173
+      - DISABLE_CHAIN_API=${DISABLE_CHAIN_API:-true}
+      - DISABLE_CHAIN_RPC=${DISABLE_CHAIN_RPC:-true}
+      - DISABLE_CHAIN_GRPC=${DISABLE_CHAIN_GRPC:-true}
+```
+**Step 3：**拉取并重启代理
+```
+docker compose -f docker-compose.mlnode.yml -f docker-compose.yml pull proxy
+source ./config.env && docker compose -f docker-compose.mlnode.yml -f docker-compose.yml up -d --no-deps proxy
+```
+**Step 4：**关闭外部端口 26657
+
+你可以关闭 26657 端口的外部访问。
+
+这是可选的，但强烈建议执行：
+```
+sed -i 's|- "26657:26657"|#- "26657:26657"|g' docker-compose.yml
+```
+这将注释掉 node 容器中的端口映射：
+```
+node:
+    container_name: node
+    ...
+    ports:
+      - "5000:26656" #p2p
+      #- "26657:26657" #rpc
+```
+**Step 5** 重启节点
+```
+source ./config.env && docker compose -f docker-compose.mlnode.yml -f docker-compose.yml up -d --no-deps node
+```
+**关闭 26657 端口后访问节点状态**
+
+如果你之前通过 `curl -s http://localhost:26657/status` 访问节点状态，现在可以从容器内部访问：
+
+=== "方式一：从 proxy 容器访问（使用 `curl`)"
+
+	```
+	docker exec proxy curl -s node:26657/status | jq
+	```
+=== "方式二：从 node 容器访问（使用 wget)"
+
+	```
+	docker exec node wget -qO- http://localhost:26657/status | jq
+	```
+	
+使用 `watch` 进行持续监控：
+```
+watch -n 5 'docker exec node wget -qO- http://localhost:26657/status | jq -r ".result.sync_info | \"Block: \(.latest_block_height) | Time: \(.latest_block_time) | Syncing: \(.catching_up)\""'
+```
+
+### Cosmovisor 更新需要多少可用磁盘空间，以及如何安全地从 `.inference` 目录中删除旧备份？
+Cosmovisor 在执行更新时会在 `.inference` 状态文件夹中创建完整备份。例如，您可以看到类似 `data-backup-<some_date>` 的文件夹。
+截至 2025 年 11 月 20 日，数据目录的大小约为 150 GB，因此每个备份将占用大约相同的空间。
+为了安全地运行更新，建议有 250+ GB 的可用磁盘空间。
+您可以删除旧备份以释放空间，尽管在某些情况下这可能仍然不足，您可能需要扩展服务器磁盘。
+要删除旧备份目录，您可以使用：
+```
+sudo su
+cd .inference
+ls -la   # 查看文件夹列表。会有类似 data-backup... 的文件夹。除了这些，不要删除任何其他内容
+rm -rf <data-backup...>
+```
+
+### 如何防止 NATS 中的无界内存增长？
+
+NATS 当前配置为无限期存储所有消息，这会导致内存使用量持续增长。
+推荐的解决方案是在两个 NATS 流中为消息配置 24 小时的生存时间（TTL）。
+
+1. 安装 NATS CLI。按照此处的说明安装 Golang：[https://go.dev/doc/install](https://go.dev/doc/install)。然后安装 NATS CLI：
+   ```
+   go install github.com/nats-io/natscli/nats@latest
+   ```
+2. 如果您已经安装了 NATS CLI，请运行：
+    ```
+    nats stream info txs_to_send --server localhost:<your_nats_server_port>
+    nats stream info txs_to_observe --server localhost:<your_nats_server_port>
+    ```
+### 如何更改 `inference_url`？
+
+如果出现以下情况，您可能需要更新 `inference_url`：
+
+- 您更改了 API 域名；
+- 您将 API 节点移动到了新机器；
+- 您重新配置了 HTTPS / 反向代理；
+- 您正在迁移基础设施，希望您的主机条目指向新端点。
+
+此操作不需要重新注册、重新部署或密钥重新生成。更新 `inference_url` 通过用于初始注册的相同交易执行（`submit-new-participant msg`）。
+
+链逻辑检查您的主机（参与者）是否已存在：
+
+- 如果参与者不存在，交易会创建一个新的；
+- 如果参与者已存在，只有三个字段可以更新：`InferenceURL`、`ValidatorKey`、`WorkerKey`。
+
+所有其他字段都会自动保留。
+
+这意味着更新 `inference_url` 是一个安全、非破坏性的操作。
+
+!!! note
+
+    当节点更新其执行 URL 时，新 URL 会立即生效，用于来自其他节点的推理请求。但是，`ActiveParticipants` 中记录的 URL 直到下一个 epoch 才会更新，因为更早修改会使与参与者集相关的加密证明无效。为避免服务中断，建议在下一个 epoch 完成之前同时保持旧 URL 和新 URL 运行。
+
+[本地] 使用您的冷密钥在本地执行更新：
+    ```
+    ./inferenced tx inference submit-new-participant \
+        <PUBLIC_URL> \
+        --validator-key <CONSENSUS_KEY> \
+        --keyring-backend file \
+        --unordered \
+        --from <COLD_KEY_NAME> \
+        --timeout-duration 1m \
+        --node http://<node-url>/chain-rpc/ \
+        --chain-id gonka-mainnet
+    ```
+通过以下链接验证更新，并将结尾替换为您的节点地址 [http://node2.gonka.ai:8000/chain-api/productscience/inference/inference/participant/gonka1qqqc2vc7fn9jyrtal25l3yn6hkk74fq2c54qve](http://node2.gonka.ai:8000/chain-api/productscience/inference/inference/participant/gonka1qqqc2vc7fn9jyrtal25l3yn6hkk74fq2c54qve)
+
+### 为什么我的 `application.db` 变得如此大，如何修复？
+
+某些节点存在 `application.db` 不断增长的问题。 
+
+`.inference/data/application.db` 存储链的状态历史（不是区块），默认情况下是 362880 的状态。 
+
+状态历史包含每个状态的完整默克尔树，将其保留更短的时间是安全的。例如，仅保留 1000 个区块。
+
+修剪参数可以在 `.inference/config/app.toml` 中设置：
+
+```
+...
+pruning = "custom"
+pruning-keep-recent = "1000"
+pruning-interval    = "100"
+```
+
+新配置将在重启 `node` 容器后使用。但有一个问题——即使启用了修剪，数据库清理也非常慢。
+
+有几种方法可以重置 `application.db`： 
+
+=== "选项 1：从快照完全重新同步" 
+
+    1) 停止节点
+        ```
+        docker stop node
+        ```
+    
+    2) 删除数据 
+        ```
+        sudo rm -rf .inference/data/ .inference/.node_initialized
+        sudo mkdir -p .inference/data/
+        ```
+    
+    3) 启动节点
+        ```
+        docker start node
+        ```
+    
+    此方法可能需要一些时间，在此期间节点将无法记录交易。
+    
+    请使用可用的可信节点下载快照。
+
+=== "选项 2：从本地快照重新同步" 
+
+    快照默认启用并存储在 `.inference/data/snapshots`
+    
+    1) 准备新的 `application.db`（`node` 容器仍在运行）
+    
+    1.1) 为 `inferenced` 准备临时主目录
+        ```
+        mkdir -p .inference/temp
+        cp -r .inference/config .inference/temp/config
+        mkdir -p .inference/temp/data/
+        ```
+    
+    1.2) 复制快照： 
+        ```
+        cp -r .inference/data/snapshots .inference/temp/data/
+        ```
+    
+    1.3) 列出快照 
+        ```
+        inferenced snapshots list --home .inference/temp
+        ```
+    
+    复制最新快照的高度。 
+    
+    1.4) 开始从快照恢复（`node` 容器仍在运行） 
+        ```
+        inferenced snapshots restore <INSERT_HEIGHT> 3  --home .inference/temp
+        ```
+    
+    这可能需要一些时间。完成后，您将在 `.inference/temp/data/application.db` 中获得新的 `application.db`
+    
+    2) 用新的 `application.db` 替换旧的
+    
+    2.1) 停止 `node` 容器（从另一个终端窗口） 
+        ```
+        docker stop node
+        ```
+    
+    2.2) 移动原始 `application.db` 
+        ```
+        mv .inference/data/application.db .inference/temp/application.db-backup
+        mv .inference/wasm .inference/wasm.db-backup
+        ```
+    
+    2.3) 用新的替换它 
+        ```
+        cp -r .inference/temp/data/application.db .inference/data/application.db
+        cp -r .inference/temp/wasm .inference/wasm
+        ```
+    
+    2.4) 启动 `node` 容器（从另一个终端窗口）： 
+        ```
+        docker start node
+        ```
+    
+    3) 等待 `node` 容器同步，然后删除 `.inference/temp/`
+    
+    如果您有多个节点，建议逐个清理。
+
+=== "选项 3：实验性"
+
+    另一个选项可能是在单独的仅 CPU 机器上启动 `node` 容器的单独实例，并在严格验证器模式下设置：
+    
+    - 保留非常短的历史
+    - 仅将 RPC 和 API 访问限制为 `api` 容器
+    
+    运行后，将现有的 `tmkms` 卷移动到新节点（首先在现有节点上禁用区块签名）。 
+    
+    这是该方法的一般思路。如果您决定尝试并有任何问题，请随时在 [Discord](https://discord.com/invite/RADwCT2U6R) 上联系我们。
+
+=== "选项 4：升级到 pruning 修复版本" 
+
+	一个修复已经发布，用于解决长期存在的问题：在多种 pruning 配置下，`application.db` 会持续增长。
+	该改进由 [Lelouch33](https://github.com/Lelouch33) 贡献，并已包含在版本 [`0.2.10-post6`](https://github.com/gonka-ai/gonka/compare/main...release/v0.2.10-post6) 中. 使用更新后的逻辑以及以下配置，`application.db` 可以保持在大约 100 GB：
+	
+	- `SNAPSHOT_INTERVAL=1000`
+	- `SNAPSHOT_KEEP_RECENT=2`
+	- `pruning-keep-recent = "20000"`
+	- `pruning-interval = "512"`
+	
+	参考资料：
+	
+	- [https://github.com/gonka-ai/gonka/issues/819#issuecomment-3996332369](https://github.com/gonka-ai/gonka/issues/819#issuecomment-3996332369)
+	- [https://github.com/gonka-ai/gonka/pull/867](https://github.com/gonka-ai/gonka/pull/867)
+	
+	在升级到该二进制文件之后，pruning 将在下一个 snapshot 区块之后开始执行。该过程相对较重，在清理旧的状态历史时，可能会暂时降低 `node` 容器的运行速度。
+	
+	为了减少对运行的影响，建议逐个节点进行更新，并使用更高的 `pruning-interval`（例如 `512`），以避免过于频繁地执行 pruning。
+	
+	如果在 pruning 过程中节点明显变慢，重启 node 容器可能有助于其恢复同步。
+	
+	建议在即将到来的 v0.2.11 升级之前应用此更新，以避免多个节点同时开始执行 pruning。
+	
+	应用更新（示例基于 `v0.2.7`，其 `inferenced` 相同）：
+	```
+	# 预检查：确保没有 confirmation PoC 正在运行（如果不为 false，整个脚本将失败）
+	echo "--- 预检查：Confirmation PoC 状态 ---" && \
+	CONFIRMATION_POC_ACTIVE=$(curl -sf "https://node3.gonka.ai/v1/epochs/latest" | jq -r '.is_confirmation_poc_active') && \
+	[ "$CONFIRMATION_POC_ACTIVE" = "false" ] && \
+	echo "OK: 当前没有 confirmation PoC 正在运行" && \
+	
+	sudo rm -rf inferenced.zip .inference/cosmovisor/upgrades/v0.2.10-post7/ .inference/data/upgrade-info.json  && \
+	sudo mkdir -p  .inference/cosmovisor/upgrades/v0.2.10-post7/bin/  && \
+	wget -q -O  inferenced.zip 'https://github.com/gonka-ai/gonka/releases/download/release%2Fv0.2.10-post7/inferenced-amd64.zip' && \
+	echo "5ed8941d50779fa2359a9745263b324b887465104f81073827321945ab1f392a  inferenced.zip" | sha256sum --check && \
+	sudo unzip -o -j  inferenced.zip -d .inference/cosmovisor/upgrades/v0.2.10-post7/bin/ && \
+	sudo chmod +x .inference/cosmovisor/upgrades/v0.2.10-post7/bin/inferenced && \
+	echo "已安装并验证完成"  && \
+	
+	# 链接二进制文件
+	echo "--- 最终验证 ---" && \
+	sudo rm -rf .inference/cosmovisor/current  && \
+	sudo ln -sf upgrades/v0.2.10-post7 .inference/cosmovisor/current  && \
+	echo "d9093b225cbd531afc56c99d0b0996b1fa2896c0745cd73293f0de08132f7754 .inference/cosmovisor/current/bin/inferenced" | sudo sha256sum --check && \
+	
+	# 重启 
+	source config.env && docker compose up node --no-deps --force-recreate -d
+	```
+
+### 自动 `ClaimReward` 未通过，我该怎么办？
+
+如果您有尚未领取的奖励，请执行以下操作：
+```
+curl -X POST http://localhost:9200/admin/v1/claim-reward/recover \
+    -H "Content-Type: application/json" \
+    -d '{"force_claim": true, "epoch_index": 106}'
+```
+
+要检查您是否有未领取的奖励，可以使用：
+```
+curl http://node2.gonka.ai:8000/chain-api/productscience/inference/inference/epoch_performance_summary/106/<ACCOUNT_ADDRESS> | jq
+```
+
+## 升级
+
+### v0.2.12 升级：升级前模型清理
+
+!!! note "重要"
+	此清理过程必须在升级发生之前完成。如果在清理模型之前进行升级，你的节点将被拒绝并下线。
+
+版本 0.2.12 会移除所有不在升级后批准列表中的治理模型。在主网上，仅会保留此前已强制执行的模型以及 Kimi。
+
+每个 DAPI 会在本地持久化其 MLNode 配置。在启动时，它会根据链上治理列表验证每一个已配置的模型。如果配置中包含至少一个不受支持的模型，则整个节点会被拒绝，主机将下线。
+
+版本 0.2.11 通过将运行时视图裁剪为仅保留强制模型来掩盖了这个问题，因此即使持久化配置中仍包含额外模型， `/admin/v1/nodes` 看起来也依然是干净的。版本 0.2.12 取消了这种裁剪，这意味着持久化配置将被直接加载。
+
+为了解决这个问题，下面的脚本会在 `/admin/v1/config` 中查找每个包含额外模型的节点，并向 `/admin/v1/nodes/<id>` 发送带有清理后配置的 `PUT` 请求。这些更改将在 60 秒内持久化。剩余模型的参数、硬件和端口将被完全保留。未列出强制模型的节点将被跳过，并需要手动修复。
+
+将以下脚本粘贴到主机的 shell 中。默认情况下，它会应用更改。如果仅想预览更改而不执行，请设置 `APPLY=dry` （或任何不等于 `--apply`的值）。
+
+仓库中的脚本：
+
+- [Bash](https://github.com/gonka-ai/gonka/blob/upgrade-v0.2.12/proposals/governance-artifacts/update-v0.2.12/cleanup/cleanup_models.sh)
+- [Python](https://github.com/gonka-ai/gonka/blob/upgrade-v0.2.12/proposals/governance-artifacts/update-v0.2.12/cleanup/cleanup_models.py).
+
+```bash
+ADMIN=${ADMIN:-http://127.0.0.1:9200}
+KEEP=${KEEP:-Qwen/Qwen3-235B-A22B-Instruct-2507-FP8}
+APPLY=${APPLY:-"--apply"}
+
+curl -sS "$ADMIN/admin/v1/config" | jq -r --arg k "$KEEP" '
+  .nodes[] | "\(.id): " + (
+    if (.models | has($k) | not) then "skip (\(.models | keys))"
+    elif (.models | length) == 1 then "ok"
+    else "\(.models | keys) -> [\($k)]" end)'
+
+if [[ "$APPLY" == "--apply" ]]; then
+  curl -sS "$ADMIN/admin/v1/config" \
+    | jq -c --arg k "$KEEP" \
+        '.nodes[] | select((.models | has($k)) and (.models | length > 1)) | .models = {($k): .models[$k]}' \
+    | while IFS= read -r p; do
+        id=$(jq -r .id <<<"$p")
+        curl -sS -f -X PUT -H 'Content-Type: application/json' -d "$p" \
+          "$ADMIN/admin/v1/nodes/$id" >/dev/null && echo "$id: updated"
+      done
+  echo "done; persisted within 60s"
+else
+  echo "preview only; rerun without APPLY=dry to commit"
+fi
+```
+
+
+运行脚本后，请等待 60 秒，以确保更改已被持久化，然后再触发升级。随后，验证配置：
+
+```bash
+curl -sS http://127.0.0.1:9200/admin/v1/config \
+  | jq '.nodes[] | {id, models: (.models | keys)}'
+```
+
+预期输出：
+```json
+{
+  "id": "<nodeId>",
+  "models": [
+    "Qwen/Qwen3-235B-A22B-Instruct-2507-FP8"
+  ]
+}
+```
+*（其他节点将遵循相同格式）*
+
+## 升级
+
+### 升级 v0.2.11：预下载二进制文件
+
+```
+# 1. 创建目录
+sudo mkdir -p .dapi/cosmovisor/upgrades/v0.2.12/bin \
+              .inference/cosmovisor/upgrades/v0.2.12/bin && \
+
+# 2. DAPI：下载 -> 校验 -> 直接解压到 bin 目录 -> 赋予执行权限
+wget -q -O decentralized-api.zip "https://github.com/gonka-ai/gonka/releases/download/release%2Fv0.2.12/decentralized-api-amd64.zip" && \
+echo "d0143a95e12e1ada06cfea5e4d3deab13534c3523c967e9a6b87ac9f9bf3247d decentralized-api.zip" | sha256sum --check && \
+sudo unzip -o -j decentralized-api.zip -d .dapi/cosmovisor/upgrades/v0.2.12/bin/ && \
+sudo chmod +x .dapi/cosmovisor/upgrades/v0.2.12/bin/decentralized-api && \
+echo "DAPI 已安装并校验完成" && \
+
+# 3. Inference：下载 -> 校验 -> 直接解压到 bin 目录 -> 赋予执行权限
+sudo rm -rf inferenced.zip .inference/cosmovisor/upgrades/v0.2.12/bin/ && \
+wget -q -O inferenced.zip "https://github.com/gonka-ai/gonka/releases/download/release%2Fv0.2.12/inferenced-amd64.zip" && \
+echo "df7656503d39f6703767d32d5578d1291e32cb114844d8c1cd0f134d1bf4babd inferenced.zip" | sha256sum --check && \
+sudo unzip -o -j inferenced.zip -d .inference/cosmovisor/upgrades/v0.2.12/bin/ && \
+sudo chmod +x .inference/cosmovisor/upgrades/v0.2.12/bin/inferenced && \
+echo "Inference 已安装并校验完成" && \
+
+# 4. 清理并最终检查
+rm decentralized-api.zip inferenced.zip && \
+echo "--- 最终校验 ---" && \
+sudo ls -l .dapi/cosmovisor/upgrades/v0.2.12/bin/decentralized-api && \
+sudo ls -l .inference/cosmovisor/upgrades/v0.2.12/bin/inferenced && \
+echo "94ce943338d12844028e84fe770106c9d28d866cf0af99f27da30f56d69efa34 .dapi/cosmovisor/upgrades/v0.2.12/bin/decentralized-api" | sudo sha256sum --check && \
+echo "642eb9858cd77d182f3e1c4d44553f5379d615983430e1fd8e85f09632af4271 .inference/cosmovisor/upgrades/v0.2.12/bin/inferenced" | sudo sha256sum --check
+```
+
+## 赏金计划
+
+### 什么是赏金计划？谁可以参与？奖励如何发放？
+
+参与赏金计划不需要成为 Host。许多赏金会发放给提交漏洞修复、实现功能改进，或为 Gonka 更广泛基础设施作出贡献的开发者和社区成员。
+
+所有赏金在通过社区治理审批后，从社区资金池中发放。其中，漏洞报告尤其受到重视。凡是以负责任披露的方式，帮助防止潜在攻击、提升网络整体安全性的行为，同样有资格获得赏金。
+
+最终是否发放赏金、赏金金额以及所属类别，均由社区治理决定。
+
+### 漏洞赏金的定价模型是什么？
+
+衡量漏洞严重性的一个常见方法是：
+```
+风险（Risk） = 影响（Impact） × 发生可能性（Likelihood）
+```
+其中，影响（Impact）从整个网络的角度进行评估。只有对网络整体产生影响的问题，才可能被评为 高风险 或 严重风险。
+仅影响单一参与者的问题，通常最高不超过 低风险 或 中等风险。
+
+**影响等级（Impact levels）**
+
+| 等级    | 描述                         | 示例                                                                 |
+|----------|--------------------------------------|--------------------------------------------------------------------------|
+| 严重风险 | 对整个网络具有灾难性影响   | 完全接管或劫持整个网络                                             |
+| 高风险     | 大规模、系统性的严重扰动     | 网络崩溃或停摆；模块资金被盗；所有参与者奖励计算错误 |
+| 中等风险   | 中等程度扰动，影响范围有限    | 共识或奖励完整性受影响；单一参与者的资金或可用性风险 |
+| 低风险      | 影响轻微且局限，不影响链 | 单一组件问题；对某个参与者造成轻微影响；不涉及链级问题 |
+
+**发生可能性（Likelihood）**
+
+- **自然发生（非故意）：** 在正常运行条件下可能出现的问题。通常按概率评估，例如触发条件出现频率、使用场景等。
+- **故意利用（牟利型）：** 以获取经济收益为目的的攻击。当潜在收益高、攻击成本或复杂度低时，发生可能性更高。
+- **故意利用（破坏型）：** 以制造干扰或破坏为目的的行为。当能够产生网络级影响且成本较低时，发生可能性较高；若仅能影响单一参与者，则可能性相对较低。
+
+**风险矩阵（Risk Matrix）**
+
+| 影响 \ 可能性 | 高     | 中   | 低           |
+|---------------------|----------|----------|---------------|
+| 严重           | 严重 | 严重 | 高          |
+| 高                | 严重 | 高     | 中等        |
+| 中等              | 高     | 中等   | 低           |
+| 低                 | 中等  | 低      | 信息性（Informational） |
+
+### 如何参与赏金计划？
+
+-  可以创建一个新的 GitHub issue 或 discussion，提出改进建议，并征求社区意见，判断是否值得实施。
+- 或者直接选择一个[已标注为 up-for-grabs 的 issue](https://github.com/gonka-ai/gonka/issues?q=is%3Aissue%20state%3Aopen%20label%3Aup-for-grabs). 在开始之前，请先留言说明你已开始处理，并给出大致的完成时间（ETA），以便他人了解进度，避免重复投入。
+
+### 推荐的漏洞报告流程是什么？
+- 如果问题不属于 高风险 或 严重风险（影响范围有限、无网络级影响），且修复成本较低，通常可以直接提交 PR。
+- 如果问题属于 高风险 或 严重风险 级别，请私下向可信的社区成员报告（长期参与 Gonka 仓库维护的贡献者），可以是漏洞说明，也可以在私有 fork 中连同修复一起提交。
+- 如果该问题看起来属于某一更大漏洞类别，且系统性审查可能发现更多同类问题，请提前说明将进行全面审查，以避免社区成员并行开展重复的安全检查。
+
+总结一句话就是：选择一个问题 → 提交高质量修复 → 在相关开发者频道分享链接并获取反馈。
+
+### 哪里可以看到谁在何时因何获得了赏金？
+
+最可靠的信息来源是链上记录以及 GitHub（https://github.com/gonka-ai/gonka/）。请将它们作为权威依据，用于核实谁获得了赏金、赏金对应的工作内容是什么，以及赏金是在何时发放并执行的。
+
+## 错误
+
+### `No epoch models available for this node`
+
+您可以在此处找到常见错误和可能出现在节点日志中的典型日志条目的示例。
+
+```
+2025/08/28 08:37:08 ERROR No epoch models available for this node subsystem=Nodes node_id=node1
+2025/08/28 08:37:08 INFO Finalizing state transition for node subsystem=Nodes node_id=node1 from_status=FAILED to_status=FAILED from_poc_status="" to_poc_status="" succeeded=false blockHeight=92476
+```
+这实际上不是错误。它只是表示您的节点尚未被分配模型。最有可能的是，这是因为您的节点尚未参与 Sprint，尚未获得投票权重，因此尚未分配模型。
+如果您的节点已经通过了 PoC，您应该不会再看到此日志。如果没有，PoC 大约每 24 小时进行一次。
+
+### 如何在 state sync 快照启动时修复 `"no validator signing info found"` 的问题？
+
+如果你在使用 state sync 快照启动节点时，周期性遇到 `err="no validator signing info found"` 报错，通常与 Cosmos SDK 的 `iavl-fastnode` 行为有关。一个安全的变通方案是在首次启动时禁用 `fastnode`，待节点完全同步后再重新启用（可选）。
+
+**修复方法（Docker）：**
+
+1.	停止节点：
+```
+docker stop node
+```
+2. 在 `.inference/config/app.toml` 中，将以下参数设置为：
+```
+iavl-disable-fastnode = true
+```
+3. 启动节点：
+```
+docker start node
+```
+在完成一次重启后，该问题通常不会再次出现。
+
+!!! 重要提示 
+	`main` 分支已包含 v0.2.10-post6。从该版本开始启动的节点会自动应用此设置，因此一般不需要再手动修改配置。
+
+## Inference 
+
+### 为什么 4,096 输出 token 限制会导致模型在 thinking 期间完全卡住——即使是中等大小的请求，也会返回零 token？
+
+**Kimi-K2.6 特有行为。** 模型会输出 `<think>...</think>` 块，并且 **两个部分 (`<think>` 与可见内容) 都会同等消耗 `max_tokens` 计数器。** 。当`max_tokens`较小时，模型会在 `<think>` 中耗尽全部预算，仅返回 `</think>`，而 vLLM 会将其作为特殊 token 进行剥离。结果就是 `content=null`、`finish_reason=length`，从客户端视角看起来就像“0 tokens”。
+
+在 gateway 层面，以下规则生效（均在 `devshard-0.2.13`中）：
+
+- **最低 `max_tokens >= 16`** ([PR #1227](https://github.com/gonka-ai/gonka/pull/1227)): 此前，probe clients 发出的 `max_tokens=1` 一定会返回 `content=null`。现在会被静默提升至 16。
+- **`thinking_token_budget` resolver** ([PR #1202](https://github.com/gonka-ai/gonka/pull/1202)):
+  - 如果客户端发送 `max_tokens < 256`，则 `ttb` 会被强制设为 **0**（覆盖客户端值）。模型不会进入隐藏 thinking。 
+  - 否则，如果缺少 `ttb` ，默认值为 `ttb = max_tokens / 2`.
+  - 绝对上限：`ttb <= 96,000` （Moonshot HLE/AIME budget）。
+  - Clamp：`ttb <= max_tokens - 64` （为 `</think>` 之后的可见内容预留 64 token 空间）。
+- **`thinking: {"type":"disabled"}` mirror** (PR #1224): gateway 会将该设置镜像到 `chat_template_kwargs.thinking=false`。Kimi chat template 会读取这个 kwarg；顶层的 `thinking` 参数会被移除。
+
+**已在线验证：** 历史上会返回 `content=null` 的场景 (`max_tokens=1` 、probe 形态的 `{max_tokens:100, min_tokens:100, thinking_token_budget:50}`)，现在通过运行当前 gateway 的 broker 已能够返回非空内容。
+
+**对于 Inference 用户：**
+
+- 请针对 gateway >= 0.2.13 的 broker 重新测试（2026-05-23 或之后发布的版本）。
+- 如果你仍然看到零 token，请从响应中捕获 `id` (`devshard-XXXX-YYY`) 并发送给你的 broker。
+- **不要只依赖 `thinking:disabled`:** 为了确保 thinking 被禁用，请显式发送 `thinking_token_budget: 0` （参见“在 Kimi K2 中，整个 token 限额可能全部消耗在 thinking 上而没有任何实际输出。这是输出上限、带宽还是上游问题？”）。
+
+**对于 Broker:** 请确保你的 gateway image 包含PR [#1202](https://github.com/gonka-ai/gonka/pull/1202)、 [#1224](https://github.com/gonka-ai/gonka/pull/1224)以及 [#1227](https://github.com/gonka-ai/gonka/pull/1227)，即版本 >= `devshard-0.2.13`。如果没有这些修复，唯一的 workaround 是在客户端侧进行 patch：为 Kimi 注入 `thinking_token_budget = max_tokens / 2` 并拒绝 `max_tokens < 16`。
+
+### 在 Kimi K2 中，整个 token 限额可能全部消耗在 thinking 上而没有任何实际输出。这是输出上限、带宽还是上游问题？
+
+**根本原因与“为什么 4,096 输出 token 限制会导致模型在 thinking 期间卡住并返回零 token？”相同： 属于模型侧 reasoning 拆分 (`<think>` 与可见内容共享 `max_tokens`)，而不是带宽问题，也不是输出上限问题。有两个 escape hatch，且都已在生产环境可用：
+
+1. **`thinking: {"type": "disabled"}`**：gateway 会将其镜像到 `chat_template_kwargs.thinking=false` （Kimi chat template 会读取该 kwarg），并移除顶层的 `thinking`。同时也接受`"adaptive"` 和 `"auto"` （Claude Code CLI / Anthropic SDK preset，PR [#1224](https://github.com/gonka-ai/gonka/pull/1224)。两者最终都会解析为 `enabled`。
+2. **`thinking_token_budget: 0`**：显式的 0 会直接作为 generation parameter 传递给 vLLM，并可靠地将 thinking budget 归零。
+
+**重要细节：** 这两个机制工作在不同层级（chat-template hint vs. generation parameter），彼此不会重叠。 `thinking:disabled` 并不会自动将 `thinking_token_budget`归零。因此，在默认 `max_tokens=4096` 且仅设置 `disabled`的情况下，模型仍会从 gateway resolver 收到隐藏预算 `ttb=2048` 。对于大多数 prompt，template hint 仍然会说服模型不要进行 thinking，但在复杂推理任务中，模型可能会忽略该 hint。双保险做法： 对于关键流程，请同时发送这两个参数。
+
+**数值验证（相同的 bug-finding prompt、 `max_tokens=500`、语义完全相同的回答）：**
+
+| 配置 | usage.completion_tokens | 总耗时 |
+|---|---:|---:|
+| `thinking: {"type":"disabled"}` | **65** | 3.6秒 |
+| 默认 - gateway 自动设置 `ttb=250` | **312** | 12.5秒 |
+
+即使是一个简单任务，默认预算中也有一半会消耗在隐藏 thinking 上，这也是为什么对于 tool-heavy 与 agentic flows，建议禁用 thinking。
+
+**对于 Inference 用户：**
+
+- 对于不需要 reasoning 的 tool-heavy 或 agentic flows，请使用 `"thinking": {"type": "disabled"}` （Kimi）或 `"enable_thinking": false` （Qwen，会被自动转换）。
+- 对于复杂推理，请显式设置 `thinking_token_budget` 。不要依赖默认的 `max_tokens / 2`。
+- 如果 `thinking:disabled` 仍然导致你的 prompt 出现 budget 消耗，也请显式发送 `thinking_token_budget: 0` explicitly。
+
+**对于 Broker：** 请参见“为什么 4,096 输出 token 限制会导致模型在 thinking 期间卡住并返回零 token？”。请固定到包含 PR [#1202](https://github.com/gonka-ai/gonka/pull/1202)/[#1224](https://github.com/gonka-ai/gonka/pull/1224)/[#1227](https://github.com/gonka-ai/gonka/pull/1227) 的 build（>= `devshard-0.2.13`)。在 landing page 上，请说明：Kimi 在 tool-heavy 工作场景下，需要使用 `thinking:disabled`、显式 `thinking_token_budget`，或者较大的`max_tokens`。
+
+### Kimi 的输入 token 上限是 4k，输出上限是 8,192 token。这些限制什么时候会提高？
+
+**问题中的数字并不正确：**
+
+- 输出上限： 网络级别 **最高为 4,096** ；实际上限取决于 broker（例如在 gonka-api.org 上实测为 3,072）。并不是 8,192。
+- 输入：最高为 240,000 tokens（主网 Kimi deploy 中的 `--max-model-len`）。并不是 4,000。
+
+**输出上限来源。**在 gateway 代码中： `DefaultRequestMaxTokens = 3,072`, `RequestMaxTokensCap = 4,096` (`devshard/cmd/devshardctl/gateway.go:143-144`).
+
+该上限 **不是由链上治理设置的**: 链上只存储 `context_window`、`units_of_compute_per_token`、`coins_per_input_token`、`coins_per_output_token` 以及 `deployment 的 model_args`，但没有 `output cap`字段。因此，每个模型的放宽限制是由 `broker operator` 本地 通过 `admin endpoint POST /v1/admin/settings` 完成的（`devshard/cmd/devshardctl/gateway_store.go:32` 中的 `GatewayModelLimitSettings` 结构，字段为每个模型的 `request_max_tokens_cap`）。如果要将网络级上限提高到 4,096 以上，则需要一个 PR 加新的 `devshard release`。
+
+**240k 输入上限来源。** 主网 Kimi-K2.6 deploy 是通过链上治理提案 v0.2.12 注册的 (`inference-chain/app/upgrades/v0_2_12/upgrades.go:kimiGovernanceModel()`) ，其参数为 `ModelArgs: ["--max-model-len","240000","--tool-call-parser","kimi_k2","--reasoning-parser","kimi_k2"]` ，以及 `VRam: 720` (GB)。模型卡声明原生 context 为 256K (`docs/chat-api/kimi-k2.6.md:11`)。除了通用 body size limit（10 MiB）与 messages 数量限制（<= 2,048）之外，gateway 不会单独限制输入，的 “Request limits” 部分中有说明。 `docs/chat-api/README.md`,。
+
+**重要注意事项（未解决 issue）：* 即使 broker 同意提高 output cap，单个节点也可能运行着更小的 `--max-model-len`。这是一个已知但未修复的问题：`devshard/docs/known-issues.md`§3，“Some nodes have lower max context than expected”。

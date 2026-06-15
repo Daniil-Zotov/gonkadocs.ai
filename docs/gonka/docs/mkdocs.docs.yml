@@ -1,0 +1,22 @@
+# Docs-only MkDocs build.
+#
+# Produces the full documentation tree under https://gonka.ai/docs/ (and
+# /docs/zh/). The site root / is handled separately by mkdocs.home.yml.
+#
+# docs_dir points at _stage/docs, populated by buildtools/prepare-stages.sh:
+# a full copy of docs/ where introduction.md has been promoted to index.md
+# so that /docs/ serves the Introduction page directly (no redirect).
+INHERIT: mkdocs.yml
+
+site_url: https://gonka.ai/docs/
+site_dir: _publish/docs
+docs_dir: _stage/docs
+
+# Override the header logo link so it points at the landing page at the apex
+# domain (gonka.ai/) rather than the docs index (gonka.ai/docs/).
+extra:
+  homepage: https://gonka.ai/
+
+# nav is auto-generated at build time by buildtools/sync-docs-nav.py
+# from the single source of truth in mkdocs.yml (strips "Home",
+# remaps "Introduction" → index.md). Do not add nav here manually.

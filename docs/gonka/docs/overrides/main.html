@@ -1,0 +1,39 @@
+{#-
+    This file was automatically generated - do not edit
+  -#}
+  {% extends "base.html" %}
+
+  {% block extrahead %}
+    {% set title = config.site_name %}
+    {% if page and page.title and not page.is_homepage %}
+      {% set title = config.site_name ~ " - " ~ page.title | striptags %}
+    {% endif %}
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="{{ title }}">
+    <meta property="og:description" content="{{ config.site_description }}">
+    <meta property="og:url" content="{{ page.canonical_url }}">
+    <meta property="og:image" content="{{ image }}">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="1080">
+    <meta property="og:image:height" content="568">
+  {% endblock %}
+
+{# Hide Material's header/tabs only on pages that are actual hero landings.
+   The split build has two index pages per locale:
+     - /       and /zh/        -> real hero landing (meta.landing: true)
+     - /docs/  and /docs/zh/   -> Introduction content (no meta.landing)
+   Relying on page.is_homepage would wrongly hide the header on /docs/
+   (which is the "homepage" of the docs build) and fail to hide it on
+   /zh/ (which i18n does not flag as the primary homepage). #}
+{% set is_landing = page and page.meta and page.meta.landing %}
+{% block header %}
+{% if not is_landing %}
+{{ super() }}
+{% endif %}
+{% endblock %}
+
+{% block tabs %}
+{% if not is_landing %}
+{{ super() }}
+{% endif %}
+{% endblock %}
