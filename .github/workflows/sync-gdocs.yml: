@@ -1,0 +1,67 @@
+name: Sync Google Docs to Markdown
+
+on:
+  schedule:
+    - cron: "0 */6 * * *"   # каждые 6 часов
+  workflow_dispatch:         # кнопка ручного запуска
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install pandoc
+        run: sudo apt-get update && sudo apt-get install -y pandoc
+
+      - name: Create target directory
+        run: mkdir -p docs/community/gsc/assets
+
+      - name: Download Google Doc as DOCX
+        env:
+          DOC_ID: 1xPmMFoXhhVXeTTvGwQ_tGCcZJgIwViqok-H08yod_Pk
+        run: |
+          curl -sL \
+            "https://docs.google.com/document/d/${DOC_ID}/export?format=docx" \
+            -o /tmp/document.docx
+
+      - name: Convert DOCX → Markdown
+        run: |
+          pandoc /tmp/document.docx \
+            --from=docx \
+            --to=gfm \
+            --wrap=none \
+            --markdown-headings=atx \
+            --extract-media=docs/community/gsc/assets \
+            -o docs/community/gsc/regulation.md
+
+      - name: Add front-matter and sync banner
+        run: |
+          cat > /tmp/header.md << 'EOF'
+          ---
+          source: https://docs.google.com/document/d/1xPmMFoXhhVXeTTvGwQ_tGCcZJgIwViqok-H08yod_Pk/edit
+          synced_at: __SYNCED_AT__
+          ---
+
+          > 🔄 **Авто-синхронизация:** этот документ автоматически обновляется из [Google Docs](https://docs.google.com/document/d/1xPmMFoXhhVXeTTvGwQ_tGCcZJgIwViqok-H08yod_Pk/edit) каждые 6 часов. Прямые правки в репозитории будут перезаписаны.
+
+          EOF
+          sed -i "s|__SYNCED_AT__|$(date -u +'%Y-%m-%dT%H:%M:%SZ')|" /tmp/header.md
+          cat /tmp/header.md docs/community/gsc/regulation.md > /tmp/full.md
+          mv /tmp/full.md docs/community/gsc/regulation.md
+
+      - name: Commit & push if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/community/gsc/
+          if git diff --cached --quiet; then
+            echo "No changes — skipping commit."
+          else
+            git commit -m "chore(docs): sync GSC regulation from Google Docs"
+            git push
+          fi
