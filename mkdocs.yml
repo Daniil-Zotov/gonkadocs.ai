@@ -9,6 +9,7 @@ site_dir: _site
 
 theme:
   name: material
+  custom_dir: docs/overrides   
   language: ru
   font:
     text: -apple-system
@@ -30,6 +31,7 @@ theme:
     - content.code.annotate
     - content.tabs.link
     - content.action.edit
+    - content.comments
   palette:
     - media: "(prefers-color-scheme: light)"
       scheme: default
@@ -109,6 +111,7 @@ markdown_extensions:
   - pymdownx.caret
 
 extra:
+  comments: true
   social:
     - icon: fontawesome/brands/github
       link: https://github.com/Daniil-Zotov/gonkadocs
