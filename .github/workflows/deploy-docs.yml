@@ -38,8 +38,7 @@ jobs:
           pip install \
             mkdocs-material \
             mkdocs-awesome-pages-plugin \
-            pymdown-extensions \
-            mkdocs-material[imaging]
+            pymdown-extensions
 
       - name: Build site
         run: mkdocs build
