@@ -1,7 +1,7 @@
 site_name: Gonka Docs
-site_url: https://daniil-zotov.github.io/gonkadocs/
-repo_url: https://github.com/Daniil-Zotov/gonkadocs
-repo_name: Daniil-Zotov/gonkadocs
+site_url: https://daniil-zotov.github.io/gonkadocs.ai/
+repo_url: https://github.com/Daniil-Zotov/gonkadocs.ai
+repo_name: Daniil-Zotov/gonkadocs.ai
 edit_uri: edit/main/docs/
 
 docs_dir: docs
@@ -114,7 +114,7 @@ extra:
   comments: true
   social:
     - icon: fontawesome/brands/github
-      link: https://github.com/Daniil-Zotov/gonkadocs
+      link: https://github.com/Daniil-Zotov/gonkadocs.ai
 
 validation:
   omitted_files: warn
