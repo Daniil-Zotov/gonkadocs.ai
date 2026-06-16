@@ -67,7 +67,7 @@ theme:
 extra_css:
   - stylesheets/github_.css
   - stylesheets/extra.css
-  - stylesheets/nft-landing
+  - stylesheets/nft-landing.css
 
 plugins:
   - search:
