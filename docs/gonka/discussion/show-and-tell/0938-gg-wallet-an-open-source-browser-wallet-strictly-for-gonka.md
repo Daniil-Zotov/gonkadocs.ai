@@ -3,7 +3,7 @@ title: "#938 — GG Wallet - An Open-Source Browser Wallet strictly for Gonka"
 source: https://github.com/gonka-ai/gonka/discussions/938
 discussion_number: 938
 category: show-and-tell
-synced_at: 2026-06-16T11:35:44Z
+synced_at: 2026-06-16T17:22:37Z
 ---
 
 > 🔄 **Авто-синхронизация:** из [Discussion #938](https://github.com/gonka-ai/gonka/discussions/938) каждые 6 часов. Прямые правки будут перезаписаны.
