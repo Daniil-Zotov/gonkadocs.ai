@@ -65,9 +65,8 @@ theme:
       quote: octicons/quote-16
 
 extra_css:
-  - stylesheets/github_.css
+  - stylesheets/github.css
   - stylesheets/extra.css
-  - stylesheets/nft-landing.css
 
 plugins:
   - search:
