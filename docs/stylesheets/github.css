@@ -395,3 +395,45 @@
 ::-webkit-scrollbar-thumb:hover {
   background: var(--md-default-fg-color--lighter);
 }
+
+
+/* =====================================================================
+   ШИРИНА ЛЕВОГО САЙДБАРА
+   ===================================================================== */
+
+/* Material использует CSS-переменные для ширины сайдбаров.
+   Меняем для экранов от 1220px и выше. */
+@media screen and (min-width: 76.25em) {
+  .md-sidebar--primary {
+    width: 16rem;            /* было ~12.1rem — теперь шире */
+  }
+  /* контент сдвигаем, чтобы он не "наезжал" */
+  .md-main__inner {
+    margin-left: 0;
+  }
+}
+
+/* Для очень широких экранов можно ещё шире */
+@media screen and (min-width: 100em) {
+  .md-sidebar--primary {
+    width: 17rem;
+  }
+}
+
+/* Текст в сайдбаре — снимаем перенос по словам и даём место под emoji/длинные заголовки */
+.md-sidebar--primary .md-nav__link {
+  white-space: normal;
+  word-break: normal;
+  overflow-wrap: anywhere;
+  padding-right: .6rem;
+}
+
+/* Чуть больше воздуха внутри сайдбара */
+.md-sidebar--primary .md-nav__item {
+  padding: 0 .75rem;
+}
+
+/* Раскрывающие "стрелки" не должны слипаться с текстом */
+.md-sidebar--primary .md-nav__icon {
+  margin-left: .25rem;
+}
