@@ -396,3 +396,7 @@
   background: var(--md-default-fg-color--lighter);
 }
 
+/* Убираем вкладку Home из верхней навигации */
+.md-tabs__item:first-child {
+  display: none;
+}
