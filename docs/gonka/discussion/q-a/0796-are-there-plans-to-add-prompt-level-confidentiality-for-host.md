@@ -3,7 +3,7 @@ title: "#796 — Are there plans to add prompt-level confidentiality for hosts?"
 source: https://github.com/gonka-ai/gonka/discussions/796
 discussion_number: 796
 category: q-a
-synced_at: 2026-06-16T21:21:08Z
+synced_at: 2026-06-17T05:17:49Z
 ---
 
 > 🔄 **Авто-синхронизация:** из [Discussion #796](https://github.com/gonka-ai/gonka/discussions/796) каждые 6 часов. 

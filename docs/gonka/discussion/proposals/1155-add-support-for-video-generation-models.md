@@ -3,7 +3,7 @@ title: "#1155 — Add support for video generation models"
 source: https://github.com/gonka-ai/gonka/discussions/1155
 discussion_number: 1155
 category: proposals
-synced_at: 2026-06-16T21:20:55Z
+synced_at: 2026-06-17T05:17:38Z
 ---
 
 > 🔄 **Авто-синхронизация:** из [Discussion #1155](https://github.com/gonka-ai/gonka/discussions/1155) каждые 6 часов. 
