@@ -4,7 +4,7 @@ title: ":raised_hands: Show and Tell"
 
 # :raised_hands: Show and Tell
 
-Дискуссии в категории **:raised_hands: Show and Tell**. Всего: **18**. Обновлено: `2026-06-19 20:04 UTC`.
+Дискуссии в категории **:raised_hands: Show and Tell**. Всего: **18**. Обновлено: `2026-06-20 04:41 UTC`.
 
 [← ко всем категориям](../index.md)
 
