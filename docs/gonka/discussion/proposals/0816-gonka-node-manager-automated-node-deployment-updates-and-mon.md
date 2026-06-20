@@ -3,7 +3,7 @@ title: "#816 — Gonka Node Manager — Automated Node Deployment, Updates, and 
 source: https://github.com/gonka-ai/gonka/discussions/816
 discussion_number: 816
 category: proposals
-synced_at: 2026-06-20T09:43:21Z
+synced_at: 2026-06-20T14:32:01Z
 ---
 
 > 🔄 **Авто-синхронизация:** из [Discussion #816](https://github.com/gonka-ai/gonka/discussions/816) каждые 6 часов. 
