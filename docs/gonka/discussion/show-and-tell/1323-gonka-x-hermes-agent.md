@@ -3,7 +3,7 @@ title: "#1323 — Gonka x Hermes Agent"
 source: https://github.com/gonka-ai/gonka/discussions/1323
 discussion_number: 1323
 category: show-and-tell
-synced_at: 2026-06-20T14:31:45Z
+synced_at: 2026-06-20T19:57:18Z
 ---
 
 > 🔄 **Авто-синхронизация:** из [Discussion #1323](https://github.com/gonka-ai/gonka/discussions/1323) каждые 6 часов. 
