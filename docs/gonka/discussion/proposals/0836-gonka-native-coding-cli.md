@@ -3,7 +3,7 @@ title: "#836 — Gonka-native Coding CLI"
 source: https://github.com/gonka-ai/gonka/discussions/836
 discussion_number: 836
 category: proposals
-synced_at: 2026-06-21T10:06:01Z
+synced_at: 2026-06-21T14:33:53Z
 ---
 
 > 🔄 **Авто-синхронизация:** из [Discussion #836](https://github.com/gonka-ai/gonka/discussions/836) каждые 6 часов. 
