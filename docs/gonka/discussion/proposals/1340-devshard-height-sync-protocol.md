@@ -3,14 +3,14 @@ title: "#1340 — `devshard` Height-sync protocol"
 source: https://github.com/gonka-ai/gonka/discussions/1340
 discussion_number: 1340
 category: proposals
-synced_at: 2026-06-21T20:03:37Z
+synced_at: 2026-06-22T05:32:00Z
 ---
 
 > 🔄 **Авто-синхронизация:** из [Discussion #1340](https://github.com/gonka-ai/gonka/discussions/1340) каждые 6 часов. 
 
 # `devshard` Height-sync protocol
 
-**Автор:** [@alexanderkuprin](https://github.com/alexanderkuprin) · **Категория:** :bulb: Proposals · **Создано:** 2026-06-12 12:35 UTC · **Обновлено:** 2026-06-14 08:30 UTC
+**Автор:** [@alexanderkuprin](https://github.com/alexanderkuprin) · **Категория:** :bulb: Proposals · **Создано:** 2026-06-12 12:35 UTC · **Обновлено:** 2026-06-22 03:30 UTC
 
 ---
 
@@ -804,7 +804,7 @@ the test scenario that proves it (full catalog in
 
 ---
 
-## 💬 Комментарии (1)
+## 💬 Комментарии (4)
 
 ### Комментарий 1 — [@a-kuprin](https://github.com/a-kuprin)
 
@@ -815,3 +815,57 @@ Important point according to this proposal is that consensus part is out of scop
 It is the optimistic protocol - we trust while height is in some delta from our own known height. But we always have signed by originator block hash, so later, when we get same height from dapi, if we see block hash differs we can start the dispute, and originator of invalid data will be punished.
 
 While document states that block hash could be also source of deterministic randomness (if we select height and related block hash in the future in advance), there are other possible solutions to get source of deterministic randomness, that could be more elegant and this is point of discussion
+
+### Комментарий 2 — [@shd](https://github.com/shd)
+
+*2026-06-22 01:31 UTC*
+
+Random comments, part 1.
+
+1. I'd propose to describe the "non-optimistic path" in detail. As I understand, this path leads to consensus round, but maybe this should be better described. In particular, "Strong (LightBlock + VerifyCommit)" - either references to the protocol are necessary, or its description should be provided. Existing description is too sketchy (at least to my outsider opinion).
+
+Also I'd also propose to describe the usage of height/block_hash in more detail: maybe some improvements to the algorithm could become obvious after that.
+
+2. Some random questions and ideas about D (maximal interval between adjacent heights):
+
+_... We trust heights in the future without additional mainnet proove if the height is close to the one we know is current. If there is a large disagreement between hosts on height (height_in_the_future - known_height = |Δ| > D) we use the full data from mainnet (block hash and validators signatures) to validate the height ..._
+
+What if the time difference between nonces is big enough? For example, 1 min? It will lead to large disagreement and to consensus round (even despite there is no real reason for a dispute: _attack model 13, Long inter-block time (feed quiet, cached tip still valid)_). Imagine that inference requests are coming with 1 min intervals: each will be accompanied with a consensus.
+
+However, if one would put big D as a measure against regular strong phases, then it can damage precision of height discovery.
+
+We can have the following proposals here:
+
+a) (Maybe this is wrong) but the height main usage is PoC phase detection: if a user requests inference, but the node replies with "rejected because of PoC". In this case, user immediately sends the request to the next node, and that reply comes immediately, and D is important. So, the check for D may be activated only on some occasions. Otherwise, we always trust height progression, unless the previous height is earlier than ours.
+
+b) User may specify current time in request -- so Host must provide be closest block height to the user's time, maybe +-1 slot. In case user time is too different from host time, a consensus (strong phase) can be activated: hosts sends to everybody user's current time and his own current time. In case of 5 seconds consensus (comparable with consensus speed in mainnet) this mechanism can be efficient enough.
+
+c) Adaptive up-to-date height guarantees. User makes empty requests each 5 seconds, it must do them (so that these requests would receive latest height in proper time intervals, and height changes would always be either 0 or 1) -- or performs a consensus in case of a long pause. 
+
+Consensus can be very long in comparison with these empty messages. These messages can be cast in separate round robin - that is, not affect next inferencing host. They can stop after (N^2/2) empty requests -- that is, stop right before price of liveness support becomes bigger than price of consensus after recovery.
+
+3. Source of randomness: 
+a) the proposed method leaves some space for manipulation (since height difference < D gives possibility of chosing best possible hash). 
+b) in case of adversary host AND user, that possibility becomes guarantee (user and host together can always choose proper delay to receive necessary hash - e.g. to select proper next node)
+c) so, commitment schemes may be preferred here: if host and user are from "different teams"
+d) in case host AND user are adversary together, additional approaches can be proposed, the exact formulation is outside of the scope for the comment.
+
+
+
+### Комментарий 3 — [@shd](https://github.com/shd)
+
+*2026-06-22 03:06 UTC*
+
+Important update about D: elementary analysis shows that there is a big increase in number of consensus rounds required at the border of 30 seconds/1 minute inactivity period.
+
+Very approximate actual data suggestions: epoch 263 had 590000 inference requests per 44 users, which gives T = 0.15 requests per second. We can consider (as the first guess) that inference requests follow Poisson distribution, it gives e^(-0.15 * 60) = 0.0001 probability of 60 seconds inactivity; and e^(-0.15 * 30) = 0.01 probability of 30 seconds inactivity.
+
+Of course, the distribution is different (requests are usually aligned to some inference process -- that is, they are not independent), and the exact numbers will be different. But D may influence performance in a very unusual way if moderate pause in inference leads to a new consensus round.
+
+### Комментарий 4 — [@shd](https://github.com/shd)
+
+*2026-06-22 03:30 UTC*
+
+Question:
+There is an attack vector, _attack model 13, Long inter-block time (feed quiet, cached tip still valid)_
+However, is there any specific attack/case about long inactivity of user?

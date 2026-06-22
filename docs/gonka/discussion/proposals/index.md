@@ -4,14 +4,14 @@ title: ":bulb: Proposals"
 
 # :bulb: Proposals
 
-Дискуссии в категории **:bulb: Proposals**. Всего: **33**. Обновлено: `2026-06-21 20:03 UTC`.
+Дискуссии в категории **:bulb: Proposals**. Всего: **33**. Обновлено: `2026-06-22 05:32 UTC`.
 
 [← ко всем категориям](../index.md)
 
 | # | Заголовок | Автор | Обновлено |
 |---:|---|---|---|
 | [1345](1345-network-documentation.md) | [Network Documentation](1345-network-documentation.md) | [@heitor-lassarote](https://github.com/heitor-lassarote) | 2026-06-16 |
-| [1340](1340-devshard-height-sync-protocol.md) | [`devshard` Height-sync protocol](1340-devshard-height-sync-protocol.md) | [@alexanderkuprin](https://github.com/alexanderkuprin) | 2026-06-14 |
+| [1340](1340-devshard-height-sync-protocol.md) | [`devshard` Height-sync protocol](1340-devshard-height-sync-protocol.md) | [@alexanderkuprin](https://github.com/alexanderkuprin) | 2026-06-22 |
 | [1335](1335-add-support-for-speech-to-text-asr-models.md) | [Add support for speech-to-text (ASR) models](1335-add-support-for-speech-to-text-asr-models.md) | [@ivan-smetannikov-serokell](https://github.com/ivan-smetannikov-serokell) | 2026-06-11 |
 | [1334](1334-devshard-e2e-test-automation-proposal.md) | [Devshard E2E Test Automation Proposal](1334-devshard-e2e-test-automation-proposal.md) | [@aikuznetsov](https://github.com/aikuznetsov) | 2026-06-12 |
 | [1309](1309-design-and-implementation-of-maintenance-windows.md) | [Design and Implementation of Maintenance Windows](1309-design-and-implementation-of-maintenance-windows.md) | [@heitor-lassarote](https://github.com/heitor-lassarote) | 2026-06-09 |

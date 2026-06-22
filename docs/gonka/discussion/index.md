@@ -4,7 +4,7 @@ title: "GitHub Discussions"
 
 # GitHub Discussions — `gonka-ai/gonka`
 
-Срез всех обсуждений из репозитория [gonka-ai/gonka](https://github.com/gonka-ai/gonka/discussions). Всего: **60**. Обновлено: `2026-06-21 20:03 UTC`.
+Срез всех обсуждений из репозитория [gonka-ai/gonka](https://github.com/gonka-ai/gonka/discussions). Всего: **60**. Обновлено: `2026-06-22 05:32 UTC`.
 
 ## 📂 Категории
 
@@ -20,10 +20,10 @@ title: "GitHub Discussions"
 
 | # | Заголовок | Категория | Автор | Обновлено |
 |---:|---|---|---|---|
+| [1340](proposals/1340-devshard-height-sync-protocol.md) | [`devshard` Height-sync protocol](proposals/1340-devshard-height-sync-protocol.md) | :bulb: Proposals | [@alexanderkuprin](https://github.com/alexanderkuprin) | 2026-06-22 |
 | [1354](q-a/1354-i-would-like-to-ask-if-the-developers-intentionally-pushed-i.md) | [I would like to ask if the developers intentionally pushed inference data to the main chain, causing some nodes to lose their epoch rewards.](q-a/1354-i-would-like-to-ask-if-the-developers-intentionally-pushed-i.md) | :pray: Q&A | [@Llgmhsl](https://github.com/Llgmhsl) | 2026-06-21 |
 | [1345](proposals/1345-network-documentation.md) | [Network Documentation](proposals/1345-network-documentation.md) | :bulb: Proposals | [@heitor-lassarote](https://github.com/heitor-lassarote) | 2026-06-16 |
 | [944](general/0944-gonkas-support-of-new-modalities-besides-text.md) | [Gonka's support of new modalities besides text](general/0944-gonkas-support-of-new-modalities-besides-text.md) | :speech_balloon: General | [@tamazgadaev](https://github.com/tamazgadaev) | 2026-06-15 |
-| [1340](proposals/1340-devshard-height-sync-protocol.md) | [`devshard` Height-sync protocol](proposals/1340-devshard-height-sync-protocol.md) | :bulb: Proposals | [@alexanderkuprin](https://github.com/alexanderkuprin) | 2026-06-14 |
 | [1334](proposals/1334-devshard-e2e-test-automation-proposal.md) | [Devshard E2E Test Automation Proposal](proposals/1334-devshard-e2e-test-automation-proposal.md) | :bulb: Proposals | [@aikuznetsov](https://github.com/aikuznetsov) | 2026-06-12 |
 | [1339](show-and-tell/1339-gonka-x-mimocode.md) | [Gonka x MiMoCode](show-and-tell/1339-gonka-x-mimocode.md) | :raised_hands: Show and Tell | [@Dankosik](https://github.com/Dankosik) | 2026-06-12 |
 | [1335](proposals/1335-add-support-for-speech-to-text-asr-models.md) | [Add support for speech-to-text (ASR) models](proposals/1335-add-support-for-speech-to-text-asr-models.md) | :bulb: Proposals | [@ivan-smetannikov-serokell](https://github.com/ivan-smetannikov-serokell) | 2026-06-11 |
