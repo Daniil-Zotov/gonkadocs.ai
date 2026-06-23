@@ -1,16 +1,16 @@
 ---
-title: "#1340 — `devshard` Height-sync protocol"
-source: https://github.com/gonka-ai/gonka/discussions/1340
-discussion_number: 1340
+title: "#1244 — `devshard` `technical` Height-sync protocol"
+source: https://github.com/gonka-ai/gonka/discussions/1244
+discussion_number: 1244
 category: proposals
-synced_at: 2026-06-23T15:25:12Z
+synced_at: 2026-06-23T15:25:17Z
 ---
 
-> 🔄 **Авто-синхронизация:** из [Discussion #1340](https://github.com/gonka-ai/gonka/discussions/1340) каждые 6 часов. 
+> 🔄 **Авто-синхронизация:** из [Discussion #1244](https://github.com/gonka-ai/gonka/discussions/1244) каждые 6 часов. 
 
-# `devshard` Height-sync protocol
+# `devshard` `technical` Height-sync protocol
 
-**Автор:** [@alexanderkuprin](https://github.com/alexanderkuprin) · **Категория:** :bulb: Proposals · **Создано:** 2026-06-12 12:35 UTC · **Обновлено:** 2026-06-22 03:30 UTC
+**Автор:** [@akup](https://github.com/akup) · **Категория:** :bulb: Proposals · **Создано:** 2026-05-25 11:35 UTC · **Обновлено:** 2026-05-25 11:39 UTC
 
 ---
 
@@ -18,21 +18,22 @@ synced_at: 2026-06-23T15:25:12Z
 
 # Height-sync protocol
 
-User ↔ host envelopes carry an **optional `HeightSyncSection`** that attests to a mainnet `(height, block_hash, block_timestamp)` triple. This section is the sole input to cross-host time alignment, timeout decisions, and the
-`IsStrictlyConfirmed(h)` predicate that downstream protocols (cPoC, finalization) gate verdicts on.
-`block_hash` could be the source of determenistic randomness that is unknown in advance, can be used by [`VALIDATION_PROTOCOL_PROPOSAL.md`](https://github.com/a-kuprin/gonka/blob/devshard-testenv/devshard/docs/proposals/VALIDATION_PROTOCOL_PROPOSAL.md)
-There is another variants for source of randomness to be discussed.
+Currently `devshard` is missing decentralized block height oracle, that can is provable in a devshardd consensus level. It is critical for handling cPoC at devshardd without punishing hosts for missed rates, and for deterministic randomness unknown in advance, needed for validation protocol update.
 
-`block_timestamp` can be deterministic time to be used in `devshard` for timeouts.
+**This protocol part is very important but just a building block for cPoC and validation.**
+
+[Related PR is here](https://github.com/gonka-ai/gonka/pull/1209)
+
+User ↔ host envelopes carry an **optional `HeightSyncSection`** that attests to a mainnet `(height, block_hash)` pair. This section is the sole input to cross-host time alignment, timeout decisions, and the `IsStrictlyConfirmed(h)` predicate that downstream protocols (cPoC, finalization) gate verdicts on. `block_hash` is a source of determenistic randomness that is unknown in advance, used by [`VALIDATION_PROTOCOL_PROPOSAL.md`](https://github.com/a-kuprin/gonka/blob/1f0933ad9136cfbcf7070f8210e2c6694731ebaf/devshard/docs/proposals/VALIDATION_PROTOCOL_PROPOSAL.md)
 
 This document is the **canonical, single-version** spec. The in-tree implementation matches this document; the test catalog
-([`height-sync-tests.md`](https://github.com/a-kuprin/gonka/blob/devshard-testenv/devshard/docs/height-sync-tests.md)) lists what is already proven and what is planned.
+([`height-sync-tests.md`](https://github.com/a-kuprin/gonka/blob/1f0933ad9136cfbcf7070f8210e2c6694731ebaf/devshard/docs/height-sync-tests.md)) lists what is already proven and what is planned.
 
 Related docs:
-[`height-sync-tests.md`](https://github.com/a-kuprin/gonka/blob/devshard-testenv/devshard/docs/height-sync-tests.md) (test catalog — implemented and planned),
-[`CPOC_PROTOCOL.md`](https://github.com/a-kuprin/gonka/blob/devshard-testenv/devshard/docs/proposals/CPOC_PROTOCOL.md),
-[`FINALIZATION_COLLECTOR_PROTOCOL_PROPOSAL.md`](https://github.com/a-kuprin/gonka/blob/devshard-testenv/devshard/docs/proposals/FINALIZATION_COLLECTOR_PROTOCOL_PROPOSAL.md),
-[`VALIDATION_PROTOCOL_PROPOSAL.md`](https://github.com/a-kuprin/gonka/blob/devshard-testenv/devshard/docs/proposals/VALIDATION_PROTOCOL_PROPOSAL.md).
+[`height-sync-tests.md`](https://github.com/a-kuprin/gonka/blob/1f0933ad9136cfbcf7070f8210e2c6694731ebaf/devshard/docs/height-sync-tests.md) (test catalog — implemented and planned),
+[`CPOC_PROTOCOL.md`](https://github.com/a-kuprin/gonka/blob/1f0933ad9136cfbcf7070f8210e2c6694731ebaf/devshard/docs/proposals/CPOC_PROTOCOL.md),
+[`FINALIZATION_COLLECTOR_PROTOCOL_PROPOSAL.md`](./FINALIZATION_COLLECTOR_PROTOCOL_PROPOSAL.md),
+[`VALIDATION_PROTOCOL_PROPOSAL.md`](https://github.com/a-kuprin/gonka/blob/1f0933ad9136cfbcf7070f8210e2c6694731ebaf/devshard/docs/proposals/VALIDATION_PROTOCOL_PROPOSAL.md).
 
 ---
 
@@ -741,7 +742,7 @@ attestations and per-peer history.
 
 Each row maps an adversary action to the protocol's defence and to
 the test scenario that proves it (full catalog in
-[`height-sync-tests.md`](https://github.com/a-kuprin/gonka/blob/devshard-testenv/devshard/docs/height-sync-tests.md)).
+[`height-sync-tests.md`](../height-sync-tests.md)).
 
 | # | Adversary action | Defence | Proven by |
 | - | ---------------- | ------- | --------- |
@@ -786,86 +787,3 @@ the test scenario that proves it (full catalog in
 | Confirmation rule | `(C-quorum)` | `ConfirmationConfig.Rule` (`Quorum`/`Strong`/`Hybrid`) |
 | `StaleAfter` (block oracle client) | `10 s` client default; testenv: `block_time + block_interval_delta + 1s` (floor `10s`) | `MOCKDAPI_STALE_AFTER` env (compose / devshardd-testenv) |
 
----
-
-## Reading order for contributors
-
-1. §6 — architecture diagram. Build a mental model of the host
-   producer (own oracle, signs response leg) and the courier user
-   (peer-tip cache, request-leg carrier) feeding a single receiver
-   pipeline.
-2. §8 — the three sync modes and the state diagram.
-3. §11 — the receiver pipeline flowchart; this is the load-bearing
-   normative section.
-4. §12 — asymmetric signing model.
-5. §14 + §15 — what cPoC actually consumes.
-6. [`height-sync-tests.md`](https://github.com/a-kuprin/gonka/blob/devshard-testenv/devshard/docs/height-sync-tests.md) — every behaviour
-   above is bound to at least one named test.
-
----
-
-## 💬 Комментарии (4)
-
-### Комментарий 1 — [@a-kuprin](https://github.com/a-kuprin)
-
-*2026-06-12 12:41 UTC*
-
-Important point according to this proposal is that consensus part is out of scope and should be here: [FINALIZATION_COLLECTOR_PROTOCOL_PROPOSAL.md](https://raw.githubusercontent.com/a-kuprin/gonka/1f0933ad9136cfbcf7070f8210e2c6694731ebaf/devshard/docs/proposals/FINALIZATION_COLLECTOR_PROTOCOL_PROPOSAL.md)
-
-It is the optimistic protocol - we trust while height is in some delta from our own known height. But we always have signed by originator block hash, so later, when we get same height from dapi, if we see block hash differs we can start the dispute, and originator of invalid data will be punished.
-
-While document states that block hash could be also source of deterministic randomness (if we select height and related block hash in the future in advance), there are other possible solutions to get source of deterministic randomness, that could be more elegant and this is point of discussion
-
-### Комментарий 2 — [@shd](https://github.com/shd)
-
-*2026-06-22 01:31 UTC*
-
-Random comments, part 1.
-
-1. I'd propose to describe the "non-optimistic path" in detail. As I understand, this path leads to consensus round, but maybe this should be better described. In particular, "Strong (LightBlock + VerifyCommit)" - either references to the protocol are necessary, or its description should be provided. Existing description is too sketchy (at least to my outsider opinion).
-
-Also I'd also propose to describe the usage of height/block_hash in more detail: maybe some improvements to the algorithm could become obvious after that.
-
-2. Some random questions and ideas about D (maximal interval between adjacent heights):
-
-_... We trust heights in the future without additional mainnet proove if the height is close to the one we know is current. If there is a large disagreement between hosts on height (height_in_the_future - known_height = |Δ| > D) we use the full data from mainnet (block hash and validators signatures) to validate the height ..._
-
-What if the time difference between nonces is big enough? For example, 1 min? It will lead to large disagreement and to consensus round (even despite there is no real reason for a dispute: _attack model 13, Long inter-block time (feed quiet, cached tip still valid)_). Imagine that inference requests are coming with 1 min intervals: each will be accompanied with a consensus.
-
-However, if one would put big D as a measure against regular strong phases, then it can damage precision of height discovery.
-
-We can have the following proposals here:
-
-a) (Maybe this is wrong) but the height main usage is PoC phase detection: if a user requests inference, but the node replies with "rejected because of PoC". In this case, user immediately sends the request to the next node, and that reply comes immediately, and D is important. So, the check for D may be activated only on some occasions. Otherwise, we always trust height progression, unless the previous height is earlier than ours.
-
-b) User may specify current time in request -- so Host must provide be closest block height to the user's time, maybe +-1 slot. In case user time is too different from host time, a consensus (strong phase) can be activated: hosts sends to everybody user's current time and his own current time. In case of 5 seconds consensus (comparable with consensus speed in mainnet) this mechanism can be efficient enough.
-
-c) Adaptive up-to-date height guarantees. User makes empty requests each 5 seconds, it must do them (so that these requests would receive latest height in proper time intervals, and height changes would always be either 0 or 1) -- or performs a consensus in case of a long pause. 
-
-Consensus can be very long in comparison with these empty messages. These messages can be cast in separate round robin - that is, not affect next inferencing host. They can stop after (N^2/2) empty requests -- that is, stop right before price of liveness support becomes bigger than price of consensus after recovery.
-
-3. Source of randomness: 
-a) the proposed method leaves some space for manipulation (since height difference < D gives possibility of chosing best possible hash). 
-b) in case of adversary host AND user, that possibility becomes guarantee (user and host together can always choose proper delay to receive necessary hash - e.g. to select proper next node)
-c) so, commitment schemes may be preferred here: if host and user are from "different teams"
-d) in case host AND user are adversary together, additional approaches can be proposed, the exact formulation is outside of the scope for the comment.
-
-
-
-### Комментарий 3 — [@shd](https://github.com/shd)
-
-*2026-06-22 03:06 UTC*
-
-Important update about D: elementary analysis shows that there is a big increase in number of consensus rounds required at the border of 30 seconds/1 minute inactivity period.
-
-Very approximate actual data suggestions: epoch 263 had 590000 inference requests per 44 users, which gives T = 0.15 requests per second. We can consider (as the first guess) that inference requests follow Poisson distribution, it gives e^(-0.15 * 60) = 0.0001 probability of 60 seconds inactivity; and e^(-0.15 * 30) = 0.01 probability of 30 seconds inactivity.
-
-Of course, the distribution is different (requests are usually aligned to some inference process -- that is, they are not independent), and the exact numbers will be different. But D may influence performance in a very unusual way if moderate pause in inference leads to a new consensus round.
-
-### Комментарий 4 — [@shd](https://github.com/shd)
-
-*2026-06-22 03:30 UTC*
-
-Question:
-There is an attack vector, _attack model 13, Long inter-block time (feed quiet, cached tip still valid)_
-However, is there any specific attack/case about long inactivity of user?

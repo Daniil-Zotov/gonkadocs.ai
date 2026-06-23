@@ -3,7 +3,7 @@ title: "#1085 — INC4 | Gonka Node Observability Platform"
 source: https://github.com/gonka-ai/gonka/discussions/1085
 discussion_number: 1085
 category: proposals
-synced_at: 2026-06-23T10:03:50Z
+synced_at: 2026-06-23T15:25:26Z
 ---
 
 > 🔄 **Авто-синхронизация:** из [Discussion #1085](https://github.com/gonka-ai/gonka/discussions/1085) каждые 6 часов. 
@@ -251,7 +251,7 @@ As a company, INC4 was founded in 2013, with 70+ engineers and 230+ delivered pr
 
 ---
 
-## 💬 Комментарии (4)
+## 💬 Комментарии (5)
 
 ### Комментарий 1 — [@rwxr-xr-x](https://github.com/rwxr-xr-x)
 
@@ -502,7 +502,25 @@ May I kindly ask whether it would be possible to cancel any of the future tranch
 
 Vesting Contract: https://github.com/rwxr-xr-x/gonka-usdt-vesting-schedule
 
-### Комментарий 4 — [@rwxr-xr-x](https://github.com/rwxr-xr-x)
+### Комментарий 4 — [@akup](https://github.com/akup)
+
+*2026-04-18 06:50 UTC*
+
+Questions according to proposal:
+
+1. It is focused on offchain metrics, (that are already proposed by community and there are [PRs on this point](https://github.com/gonka-ai/gonka/pull/1046)), but there are some problems on-chain when validators can stop to work. And identifying issue needs detailed metrics even inside cosmosSDK layers, because database pruning, consensus timeouts and other things can also lead to unidentifyed issues. Why the proposal is focused on offchain metrics?
+2. There are DoS attacks possible and there are some other hack attempts. Why proposal doesn't cover network metrics and traffic analysis
+3. How are you going to identify senders and how are you going protect metrics aggregation server from spam?
+
+It is very high-level view on the proposal and it seams to lack a lot of technical details that should be covered in the spec first before it could be applyed.
+
+Moreover it would be much better to see first proof of concept
+
+**↳ Ответ от [@rwxr-xr-x](https://github.com/rwxr-xr-x)** · *2026-04-18 07:50 UTC*
+
+> The idea behind the proposal is to create a unified, open platform where these telemetry, metrics and logs can be aggregated. But yeah it might be not obvious that the metrics listed in the text are merely examples. If we were to list them all, they would bloat the sections where they need to be listed. Naturally, all proposed metrics will be added - this is what is meant by creating custom exporters. And adding new metrics is precisely one of the tasks an engineer is responsible for.
+
+### Комментарий 5 — [@rwxr-xr-x](https://github.com/rwxr-xr-x)
 
 *2026-04-18 07:51 UTC*
 

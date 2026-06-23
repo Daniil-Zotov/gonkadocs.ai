@@ -4,7 +4,7 @@ title: ":bulb: Proposals"
 
 # :bulb: Proposals
 
-Дискуссии в категории **:bulb: Proposals**. Всего: **33**. Обновлено: `2026-06-23 10:04 UTC`.
+Дискуссии в категории **:bulb: Proposals**. Всего: **39**. Обновлено: `2026-06-23 15:25 UTC`.
 
 [← ко всем категориям](../index.md)
 
@@ -15,11 +15,16 @@ title: ":bulb: Proposals"
 | [1335](1335-add-support-for-speech-to-text-asr-models.md) | [Add support for speech-to-text (ASR) models](1335-add-support-for-speech-to-text-asr-models.md) | [@ivan-smetannikov-serokell](https://github.com/ivan-smetannikov-serokell) | 2026-06-22 |
 | [1334](1334-devshard-e2e-test-automation-proposal.md) | [Devshard E2E Test Automation Proposal](1334-devshard-e2e-test-automation-proposal.md) | [@aikuznetsov](https://github.com/aikuznetsov) | 2026-06-12 |
 | [1309](1309-design-and-implementation-of-maintenance-windows.md) | [Design and Implementation of Maintenance Windows](1309-design-and-implementation-of-maintenance-windows.md) | [@heitor-lassarote](https://github.com/heitor-lassarote) | 2026-06-09 |
+| [1256](1256-devshard-cpoc-skip-protocol.md) | [`devshard` cPoC skip protocol](1256-devshard-cpoc-skip-protocol.md) | [@akup](https://github.com/akup) | 2026-05-26 |
+| [1244](1244-devshard-technical-height-sync-protocol.md) | [`devshard` `technical` Height-sync protocol](1244-devshard-technical-height-sync-protocol.md) | [@akup](https://github.com/akup) | 2026-05-25 |
 | [1243](1243-project-funding-governance-and-management.md) | [Project funding governance and management](1243-project-funding-governance-and-management.md) | [@a-kuprin](https://github.com/a-kuprin) | 2026-05-25 |
 | [1230](1230-proposal-optional-signed-agent-request-envelope-for-gonka-in.md) | [Proposal: optional signed agent request envelope for Gonka inference](1230-proposal-optional-signed-agent-request-envelope-for-gonka-in.md) | [@aeoess](https://github.com/aeoess) | 2026-05-24 |
 | [1207](1207-devshard-improvement-cpoc-skip-protocol.md) | [`devshard improvement` cPoC skip protocol](1207-devshard-improvement-cpoc-skip-protocol.md) | [@alexanderkuprin](https://github.com/alexanderkuprin) | 2026-05-20 |
 | [1206](1206-devshard-improvement-height-sync-protocol.md) | [`devshard improvement` Height-sync protocol](1206-devshard-improvement-height-sync-protocol.md) | [@alexanderkuprin](https://github.com/alexanderkuprin) | 2026-05-20 |
 | [1192](1192-inc4-gonka-nop-grant-for-the-node-deployment-tool.md) | [INC4 \| Gonka NOP - grant for the node deployment tool](1192-inc4-gonka-nop-grant-for-the-node-deployment-tool.md) | [@rwxr-xr-x](https://github.com/rwxr-xr-x) | 2026-05-19 |
+| [1190](1190-devshard-improvements-cpoc-skip-protocol-proposal.md) | [`devshard improvements` cPoC skip protocol — proposal](1190-devshard-improvements-cpoc-skip-protocol-proposal.md) | [@akup](https://github.com/akup) | 2026-05-19 |
+| [1189](1189-devshard-improvements-validation-protocol-eligibility-in-pla.md) | [`devshard improvements` Validation protocol: eligibility, in-place checks, and transparent randomness](1189-devshard-improvements-validation-protocol-eligibility-in-pla.md) | [@akup](https://github.com/akup) | 2026-05-19 |
+| [1188](1188-devshard-improvements-height-sync-protocol-needed-to-support.md) | [`devshard improvements` Height-sync protocol (needed to support cPoC at devshard and new validation protocol)](1188-devshard-improvements-height-sync-protocol-needed-to-support.md) | [@akup](https://github.com/akup) | 2026-05-19 |
 | [1185](1185-public-review-gonka-network-development-roadmap.md) | [[Public Review] Gonka Network Development Roadmap](1185-public-review-gonka-network-development-roadmap.md) | [@paranjko](https://github.com/paranjko) | 2026-05-27 |
 | [1155](1155-add-support-for-video-generation-models.md) | [Add support for video generation models](1155-add-support-for-video-generation-models.md) | [@baygeldin](https://github.com/baygeldin) | 2026-05-19 |
 | [1153](1153-cosmos-sdk-fork-genesisgo151-158-panics-on-appd-export-init-.md) | [cosmos-sdk fork: genesis.go:151-158 panics on `appd export → init` — mirror existing PoC skip pattern from delegation.go?](1153-cosmos-sdk-fork-genesisgo151-158-panics-on-appd-export-init-.md) | [@vitaly-andr](https://github.com/vitaly-andr) | 2026-05-08 |
@@ -28,6 +33,7 @@ title: ":bulb: Proposals"
 | [1090](1090-qwen3-235b-a22b-instruct-2507-fp8-with-fp8-kvcache-as-the-fi.md) | [Qwen3-235B-A22B-Instruct-2507-FP8 with FP8 KVcache as the first multi model PoC launch model](1090-qwen3-235b-a22b-instruct-2507-fp8-with-fp8-kvcache-as-the-fi.md) | [@beatifull](https://github.com/beatifull) | 2026-04-18 |
 | [1085](1085-inc4-gonka-node-observability-platform.md) | [INC4 \| Gonka Node Observability Platform](1085-inc4-gonka-node-observability-platform.md) | [@rwxr-xr-x](https://github.com/rwxr-xr-x) | 2026-04-18 |
 | [1008](1008-token-based-governance-splitting-technical-and-community-dec.md) | [Token-Based Governance: Splitting Technical and Community Decisions](1008-token-based-governance-splitting-technical-and-community-dec.md) | [@Alert17](https://github.com/Alert17) | 2026-04-20 |
+| [954](0954-optimistic-parallel-execution-of-messages-for-inference-chai.md) | [Optimistic parallel execution of messages for inference-chain](0954-optimistic-parallel-execution-of-messages-for-inference-chai.md) | [@akup](https://github.com/akup) | 2026-03-26 |
 | [951](0951-tee-implementation.md) | [TEE Implementation](0951-tee-implementation.md) | [@mtvnastya](https://github.com/mtvnastya) | 2026-06-05 |
 | [930](0930-proposal-agent-identity-and-delegation-governance-for-gonka-.md) | [Proposal: Agent identity and delegation governance for Gonka compute](0930-proposal-agent-identity-and-delegation-governance-for-gonka-.md) | [@aeoess](https://github.com/aeoess) | 2026-03-22 |
 | [875](0875-automatic-node-provisioning-tool-exists.md) | [Automatic Node Provisioning Tool exists](0875-automatic-node-provisioning-tool-exists.md) | [@SegovChik](https://github.com/SegovChik) | 2026-03-10 |

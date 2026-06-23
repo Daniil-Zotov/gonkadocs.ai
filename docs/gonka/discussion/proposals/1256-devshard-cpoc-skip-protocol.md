@@ -1,16 +1,16 @@
 ---
-title: "#1207 — `devshard improvement` cPoC skip protocol"
-source: https://github.com/gonka-ai/gonka/discussions/1207
-discussion_number: 1207
+title: "#1256 — `devshard` cPoC skip protocol"
+source: https://github.com/gonka-ai/gonka/discussions/1256
+discussion_number: 1256
 category: proposals
-synced_at: 2026-06-23T15:25:19Z
+synced_at: 2026-06-23T15:25:17Z
 ---
 
-> 🔄 **Авто-синхронизация:** из [Discussion #1207](https://github.com/gonka-ai/gonka/discussions/1207) каждые 6 часов. 
+> 🔄 **Авто-синхронизация:** из [Discussion #1256](https://github.com/gonka-ai/gonka/discussions/1256) каждые 6 часов. 
 
-# `devshard improvement` cPoC skip protocol
+# `devshard` cPoC skip protocol
 
-**Автор:** [@alexanderkuprin](https://github.com/alexanderkuprin) · **Категория:** :bulb: Proposals · **Создано:** 2026-05-20 05:28 UTC · **Обновлено:** 2026-05-20 05:28 UTC
+**Автор:** [@akup](https://github.com/akup) · **Категория:** :bulb: Proposals · **Создано:** 2026-05-26 10:40 UTC · **Обновлено:** 2026-05-26 10:40 UTC
 
 ---
 
@@ -26,8 +26,8 @@ The core idea that hosts know mainnet heights and there is (out of scope) concen
 
 **Out of scope for this document:**
 
-- **How each host obtains / agrees on mainnet height.** That is solved by **[HEIGHT_SYNC_PROTOCOL_PROPOSAL.md](https://github.com/gonka-ai/gonka/discussions/1206)** (Omit / Anchor / Strong, deferred checks, etc.). Here we **assume** each host has a scalar `**H(host)**` equal to the **height known to the majority of validators / devshard hosts** (its own follower + height-sync rules have converged on that value). Discrepancies at the level handled by the height-sync spec are **that spec’s problem**; this document only distinguishes the cases where such a discrepancy **affects a cPoC verdict** and defers the discrepancy itself to height sync.
-- **Mainnet settlement / slashing math** — out of scope; this doc emits **verdicts** (`Valid` / `Invalid` / `Inconclusive`) and hands evidence to [FINALIZATION_COLLECTOR_PROTOCOL_PROPOSAL.md](./FINALIZATION_COLLECTOR_PROTOCOL_PROPOSAL.md).
+- **How each host obtains / agrees on mainnet height.** That is solved by **[HEIGHT_SYNC_PROTOCOL_PROPOSAL](https://github.com/gonka-ai/gonka/discussions/1244)** (Omit / Anchor / Strong, deferred checks, etc.). Here we **assume** each host has a scalar `**H(host)**` equal to the **height known to the majority of validators / devshard hosts** (its own follower + height-sync rules have converged on that value). Discrepancies at the level handled by the height-sync spec are **that spec’s problem**; this document only distinguishes the cases where such a discrepancy **affects a cPoC verdict** and defers the discrepancy itself to height sync.
+- **Mainnet settlement / slashing math** — out of scope; this doc emits **verdicts** (`Valid` / `Invalid` / `Inconclusive`) and hands evidence to [FINALIZATION_COLLECTOR_PROTOCOL_PROPOSAL.md](https://github.com/a-kuprin/gonka/blob/1f0933ad9136cfbcf7070f8210e2c6694731ebaf/devshard/docs/proposals/FINALIZATION_COLLECTOR_PROTOCOL_PROPOSAL.md).
 
 It may be easier to understand this proposal through worked examples; see [Cases to handle (case / dataflow)](#cases-to-handle-case--dataflow).
 
@@ -48,7 +48,7 @@ It may be easier to understand this proposal through worked examples; see [Cases
 
 ## Shared assumptions (informative)
 
-1. **Height oracle (provided by height sync, treated as black box here):** Each host `**V`** exposes a scalar `**H(V)**` — the mainnet height **known to the majority of validators / devshard hosts** as of `**V`**’s latest convergence with the height-sync layer. This doc **does not** re-specify how `H(V)` is computed, trusted, or refreshed; see [HEIGHT_SYNC_PROTOCOL_PROPOSAL.md](https://github.com/gonka-ai/gonka/discussions/1206). When this doc says “height `**H`**” without qualification, read it as `**H(V)` at the moment `V` evaluates the case**.
+1. **Height oracle (provided by height sync, treated as black box here):** Each host `**V`** exposes a scalar `**H(V)**` — the mainnet height **known to the majority of validators / devshard hosts** as of `**V`**’s latest convergence with the height-sync layer. This doc **does not** re-specify how `H(V)` is computed, trusted, or refreshed; see [HEIGHT_SYNC_PROTOCOL_PROPOSAL](https://github.com/gonka-ai/gonka/discussions/1244). When this doc says “height `**H`**” without qualification, read it as `**H(V)` at the moment `V` evaluates the case**.
 2. **cPoC schedule:** Given a host `**H_i`** and a mainnet height `**H**`, there exists a deterministic predicate `**Schedule(H_i, H) ∈ {idle, prepare, active}**` derivable from chain / epoch state by anyone with that height. Semantics of `prepare` vs `active` are defined in the chain-side cPoC spec and out of scope here.
 3. **Executor schedule:** Requests in a session are ordered by a **monotonic nonce** (linear increment). With `**N_slots`** slots and fixed mapping `**executor(nonce) = hosts[nonce mod N_slots]**`, the same logical slot recurs at `**nonce + N_slots**` (one **round**).
 4. **Asynchronous developer traffic:** The developer **does not** wait for a host response before sending the next request. A response to a request at `**R_req`** is merged into the session's **linearized diff** at some later nonce `**R_req + x`**, `**x ≥ 0**` — not necessarily the same nonce. Any nonce-bound rule must work on **the nonce at which a message appears in `Diff`**, not on wall-clock pairing with the outbound request.
@@ -93,7 +93,7 @@ A developer could **hold** a host's cPoC skip response and later attach it via `
 Under high inference rate, if most hosts skip during cPoC, per-skip gossip is unacceptable:
 
 - **No** gossip inside a normal round if diffs already propagate the evidence.
-- **Dispute-grade** evidence rides on **[finalization / state sharing](./FINALIZATION_COLLECTOR_PROTOCOL_PROPOSAL.md)** rather than a parallel flood channel.
+- **Dispute-grade** evidence rides on **[finalization / state sharing](https://github.com/a-kuprin/gonka/blob/1f0933ad9136cfbcf7070f8210e2c6694731ebaf/devshard/docs/proposals/FINALIZATION_COLLECTOR_PROTOCOL_PROPOSAL.md)** rather than a parallel flood channel.
 
 It is important that each host can participate in a lot of devshards, so gossip traffic is highly unwanted and is limited to disputes and settlement cases.
 
@@ -160,7 +160,7 @@ Because of **asynchronous developer traffic** (Shared assumptions, item **5**), 
 
 1. **Round-based elision (high load):** If within `timeout_skip_gossip` after `N_carry` the session advances to `N_carry + N_slots` (one full round), every honest verifier has seen the evidence via the diff. No dedicated gossip is emitted.
 2. **Timeout-based gossip (low load):** Otherwise, any `V` with a non-`Valid` verdict **MAY** emit a compact `SkipEvidenceGossip` pointing into `Diff`. Peers re-run the verdict predicate locally.
-3. **Finalization alignment:** Global, dispute-grade evidence rides with [FINALIZATION_COLLECTOR_PROTOCOL_PROPOSAL.md](./FINALIZATION_COLLECTOR_PROTOCOL_PROPOSAL.md) rather than a parallel flood channel.
+3. **Finalization alignment:** Global, dispute-grade evidence rides with [FINALIZATION_COLLECTOR_PROTOCOL_PROPOSAL.md](https://github.com/a-kuprin/gonka/blob/1f0933ad9136cfbcf7070f8210e2c6694731ebaf/devshard/docs/proposals/FINALIZATION_COLLECTOR_PROTOCOL_PROPOSAL.md) rather than a parallel flood channel.
 
 Parameter `**timeout_skip_gossip`** (proposal: **≈ 2** mainnet blocks) is **chain-parametrized**; its exact value is out of scope here.
 
@@ -208,7 +208,7 @@ Usually **no extra gossip**: the diff propagates the evidence. Gossip is a rare 
 | Symbol                  | Meaning                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
 | ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `**Diff**`              | Append-only linearized diff of session messages, indexed by monotonic nonce `**n**`.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
-| `**H(V)**`              | Height oracle (out of scope — supplied by [HEIGHT_SYNC_PROTOCOL_PROPOSAL.md](https://github.com/gonka-ai/gonka/discussions/1206)): mainnet height known to the majority of validators as of `**V**`’s latest height-sync convergence.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| `**H(V)**`              | Height oracle (out of scope — supplied by [HEIGHT_SYNC_PROTOCOL_PROPOSAL](https://github.com/gonka-ai/gonka/discussions/1244)): mainnet height known to the majority of validators as of `**V**`’s latest height-sync convergence.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
 | `**height_at[n]**`      | Local map: when `V` ingests diff entry at nonce `**n**`, it records `**H(V)**` at that moment. **Not shared**; local only.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
 | `**PoC_slot_set**`      | See assumption **3**.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
 | `**pending_verdicts**`  | Buffer of skip attestations ingested from `Diff` whose `Verdict` is not yet final, keyed by `(R_req, N_carry)`. Three reasons an entry sits here: (a) `**Inconclusive**` — `I`'s endpoints (`h_X`, `h_carry`) are not yet strictly confirmed by the height-sync layer (resolution key: confirmation signal covering `I`, see C6); (b) `**Invalid**` awaiting the round-elision / gossip deadline (C9/C10); (c) `**provisional**` within the **seal window** `[h_carry, h_carry + W_seal]` used by step (2) of the Verdict predicate — a `MsgConfirmStart` for the same `inference_id` may still arrive and flip the verdict to `Invalid` (C2'). Note that `Diff[X]` is **always** present by the time `Diff[N_carry]` is ingested (because `X ≤ R_req ≤ N_carry` and `Diff` is append-only), so `h_X` is always immediately computable — no "wait for witness" deferral exists. Each entry holds: `N_carry`, `R_req`, skipping host `H_i`, raw signed host response (`CPoCSkipResponse` or refusal-outcome `CPoCProbeResponse`), current tentative verdict (if any), `provisional_until` mainnet height (when reason (c) applies), and the resolution key/deadline. Entries are removed on commit: `Valid` → drop after the seal window expires; `Invalid` → hand to finalization. `ready`-outcome carries never enter this buffer — they are recorded directly in `ready_at` (below). |
@@ -300,7 +300,7 @@ Names in `subnet/proto/subnet/v1/{tx,diff}.proto` unless marked **(new)**. The *
 5. **Height freshness at ingest.** If the endpoints of `I` (`h_X` and `h_carry`) are **strictly confirmed** by the height-sync layer (assumption **1**), commit to the candidate from (4). If the height-sync layer flags either endpoint as **not yet strictly confirmed**, and the schedule verdict is adversarial (`Invalid`), V **MUST** hold the verdict as `Inconclusive` until height sync reports confirmation covering `I` — then re-run step (4). **This could be scheduled for future releases**
 6. **Signature / binding.** `CPoCSkipResponse` must be validly signed by `H_i` and reference `R_req` as it appears in `Diff`.
 
-Outputs feed **Gossip minimization** (below) and, for disputes, **[FINALIZATION_COLLECTOR_PROTOCOL_PROPOSAL.md](./FINALIZATION_COLLECTOR_PROTOCOL_PROPOSAL.md)**.
+Outputs feed **Gossip minimization** (below) and, for disputes, **[FINALIZATION_COLLECTOR_PROTOCOL_PROPOSAL.md](https://github.com/a-kuprin/gonka/blob/1f0933ad9136cfbcf7070f8210e2c6694731ebaf/devshard/docs/proposals/FINALIZATION_COLLECTOR_PROTOCOL_PROPOSAL.md)**.
 
 ---
 
@@ -489,7 +489,7 @@ V on Diff[N_carry]:
 
 **Setup:** `H_i` returns nothing (neither inference nor skip).
 
-**Expected action:** Out of scope of cPoC-skip verdict. Governed by `**USER_TIMEOUT`** in [FINALIZATION_COLLECTOR_PROTOCOL_PROPOSAL.md](./FINALIZATION_COLLECTOR_PROTOCOL_PROPOSAL.md). cPoC protocol contributes **no** verdict in this case.
+**Expected action:** Out of scope of cPoC-skip verdict. Governed by `**USER_TIMEOUT`** in [FINALIZATION_COLLECTOR_PROTOCOL_PROPOSAL.md](https://github.com/a-kuprin/gonka/blob/1f0933ad9136cfbcf7070f8210e2c6694731ebaf/devshard/docs/proposals/FINALIZATION_COLLECTOR_PROTOCOL_PROPOSAL.md). cPoC protocol contributes **no** verdict in this case.
 
 ### C9 — Low-load vote collection (explicit gossip)
 
@@ -705,8 +705,7 @@ Exact values — `quorum_invalid` (e.g. simple-majority vs. 2/3 stake-weighted),
 
 ## Related documents
 
-- [HEIGHT_SYNC_PROTOCOL_PROPOSAL.md](https://github.com/gonka-ai/gonka/discussions/1206) — **out of scope** for this doc; supplies `H(V)` as a black-box oracle.
-- [FINALIZATION_COLLECTOR_PROTOCOL_PROPOSAL.md](./FINALIZATION_COLLECTOR_PROTOCOL_PROPOSAL.md) — consumes `Invalid` verdicts, decides inclusion in finalization bundles.
+- [HEIGHT_SYNC_PROTOCOL_PROPOSAL](https://github.com/gonka-ai/gonka/discussions/1244) — **out of scope** for this doc; supplies `H(V)` as a black-box oracle.
+- [FINALIZATION_COLLECTOR_PROTOCOL_PROPOSAL.md](https://github.com/a-kuprin/gonka/blob/1f0933ad9136cfbcf7070f8210e2c6694731ebaf/devshard/docs/proposals/FINALIZATION_COLLECTOR_PROTOCOL_PROPOSAL.md) — consumes `Invalid` verdicts, decides inclusion in finalization bundles.
 
 ---
-

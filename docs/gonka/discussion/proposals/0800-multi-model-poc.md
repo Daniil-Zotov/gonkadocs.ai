@@ -3,7 +3,7 @@ title: "#800 — Multi-Model PoC"
 source: https://github.com/gonka-ai/gonka/discussions/800
 discussion_number: 800
 category: proposals
-synced_at: 2026-06-23T10:03:49Z
+synced_at: 2026-06-23T15:25:24Z
 ---
 
 > 🔄 **Авто-синхронизация:** из [Discussion #800](https://github.com/gonka-ai/gonka/discussions/800) каждые 6 часов. 
@@ -208,7 +208,7 @@ This bounds the damage from fake participants: even if they pass validation, the
 
 ---
 
-## 💬 Комментарии (4)
+## 💬 Комментарии (5)
 
 ### Комментарий 1 — [@tcharchian](https://github.com/tcharchian)
 
@@ -216,7 +216,67 @@ This bounds the damage from fake participants: even if they pass validation, the
 
 Please consider joining the discussion on this proposal and sharing any ideas or suggestions. An initial version will be provided by the proposal author, and feedback from participants will help refine the approach and clarify next steps.
 
-### Комментарий 2 — [@andrey055](https://github.com/andrey055)
+### Комментарий 2 — [@akup](https://github.com/akup)
+
+*2026-03-01 07:24 UTC*
+
+Questions
+1. When host A delegates it's vote to host B in another model group, it adds the voting power to host B. But why it is not reducing voting power of host A?
+
+2. If some host A trusts host B it seams that they are already in the trust group and have communication and can agree on joint actions. Actually what is the difference if it was one host?
+
+3. How participant can choose to what host delegate it's weight? How it could be practically coordinated?
+It would be more clear if there will be real world example with a step by step plan:
+if there is a new model, and there are new hosts who want to run it, how do they start?
+How they are getting delegation, how hosts from other groups starting to know that they need to delegate and how they can decide what host to choose to delegate it's vote to?
+
+4. How many hosts should run the model to start group working. For example if there is just 2 hosts will they get the reward? If there are 3 hosts? Form what number of hosts we can trust the group (seems to be related to Q5 question)
+
+5. How following scenario can be avoided?
+New grace period begins.
+Attacker creates multiple hosts that are going to participate with the model
+Participants from other groups, as they don't know personally to whom delegate the vote, delegate it to "random someone"
+Also attacker delegates his votes (from multiple hosts) to his hosts in a new group.
+And attacker gets the control of the group
+
+6. Isn't it simpler to have a new model seed (genesys) group? For example, hosts that already have voting power can run some of their mlnodes with new model and get additional reward for participating in early start of the new model group. They help to start the new model group (as they have resources and are interested in network development) as they already have the voting power, but there will no be all difficulties (that are not only technical but also real-life practical) of delegation.
+
+p.s.
+**Unregistered Models** is a very good point
+
+**↳ Ответ от [@gmorgachev](https://github.com/gmorgachev)** · *2026-04-02 05:08 UTC*
+
+> >  But why it is not reducing voting power of host A?
+> host A doesn't have voting power in this model group, it can't be reduces. host A can either has MLNode with this model or delegate its PoC validation
+> important: it's doesn't affect consensus weight of any hosts
+>
+> > If some host A trusts host B it seams that they are already in the trust group and have communication and can agree on joint actions. Actually what is the difference if it was one host?
+> In my understanding host A can delegate to well known hosts with great reputation on mainnet. So they don't have to really know each other but host A must trust host B incentive to act honest. I think the joining nodes is much closer :) 
+>
+> > How many hosts should run the model to start group working. For example if there is just 2 hosts will they get the reward? If there are 3 hosts? Form what number of hosts we can trust the group (seems to be related to Q5 question)
+> I don't think any validation can happen with less then 3 hosts. But we also must have limitation on the total consensus weight of this this model group participants. I think it should not be less then at least 5-10% of the network (if talk about today's size)
+>
+> > How following scenario can be avoided?
+> From my perspective it should be combination of limits on:
+> - minimal consensus power from another group which hosts must have for group to be eligible (5-10%+)
+> - cap on the weight which single group might have (to avoid getting control of the whole chain)
+>
+> I agree that delegation to "random someone" is serious concern and mechanism relies on the fact that host must make informed decision about delegation. Do you have some additional ideas how to protect in mind? 
+>
+> ------
+>
+> > Isn't it simpler to have a new model seed (genesys) group? For example, hosts that already have voting power can run some of their mlnodes with new model and get additional reward for participating in early start of the new model group. They help to start the new model group (as they have resources and are interested in network development) as they already have the voting power, but there will no be all difficulties (that are not only technical but also real-life practical) of delegation.
+>
+> I don't see how it would help to avoid delegation. The question is what consensus weight will have such group. If only their weight counts, with current limit such seed group must control > 2/3 of the total network power for PoC to pass. Which is impossible 
+> If PoC inside this new group will be counted only from weight of participants - such early seed nodes can also easily cheat.
+>  
+> In the original proposal the initial seed group is still existing validators with some threshold on their total weight. Delegation just allows to make this threshold lower then 2/3
+
+**↳ Ответ от [@gmorgachev](https://github.com/gmorgachev)** · *2026-04-02 05:58 UTC*
+
+> Sorry, i used 2/3 instead of 50% in the comment as found out that mainnet already uses 2/3 as the threshold
+
+### Комментарий 3 — [@andrey055](https://github.com/andrey055)
 
 *2026-03-03 12:13 UTC*
 
@@ -226,7 +286,7 @@ I would really like to see it implemented. Of course, there are certain concerns
 
 I hope appropriate safeguards against this will be put in place.
 
-### Комментарий 3 — [@jacky6block](https://github.com/jacky6block)
+### Комментарий 4 — [@jacky6block](https://github.com/jacky6block)
 
 *2026-03-04 10:16 UTC*
 
@@ -373,7 +433,7 @@ Happy to help refine parameters (W_threshold, V_min, T_grace, f) or propose samp
 > About the TEE, there is a separate thread where i fully agree that it's required :) 
 > https://github.com/gonka-ai/gonka/discussions/951
 
-### Комментарий 4 — [@unameisfine](https://github.com/unameisfine)
+### Комментарий 5 — [@unameisfine](https://github.com/unameisfine)
 
 *2026-04-20 14:57 UTC*
 

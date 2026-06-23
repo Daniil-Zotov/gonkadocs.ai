@@ -4,7 +4,7 @@ title: "GitHub Discussions"
 
 # GitHub Discussions — `gonka-ai/gonka`
 
-Срез всех обсуждений из репозитория [gonka-ai/gonka](https://github.com/gonka-ai/gonka/discussions). Всего: **60**. Обновлено: `2026-06-23 10:04 UTC`.
+Срез всех обсуждений из репозитория [gonka-ai/gonka](https://github.com/gonka-ai/gonka/discussions). Всего: **66**. Обновлено: `2026-06-23 15:25 UTC`.
 
 ## 📂 Категории
 
@@ -12,7 +12,7 @@ title: "GitHub Discussions"
 |---|---:|
 | [:mega: Announcements](announcements/index.md) | 1 |
 | [:speech_balloon: General](general/index.md) | 5 |
-| [:bulb: Proposals](proposals/index.md) | 33 |
+| [:bulb: Proposals](proposals/index.md) | 39 |
 | [:pray: Q&A](q-a/index.md) | 3 |
 | [:raised_hands: Show and Tell](show-and-tell/index.md) | 18 |
 
@@ -32,11 +32,11 @@ title: "GitHub Discussions"
 | [951](proposals/0951-tee-implementation.md) | [TEE Implementation](proposals/0951-tee-implementation.md) | :bulb: Proposals | [@mtvnastya](https://github.com/mtvnastya) | 2026-06-05 |
 | [1304](general/1304-aps-for-delegated-wallets-and-agent-accounts-track-2-project.md) | [APS for delegated wallets and agent accounts (Track 2, Project 3)](general/1304-aps-for-delegated-wallets-and-agent-accounts-track-2-project.md) | :speech_balloon: General | [@aeoess](https://github.com/aeoess) | 2026-06-04 |
 | [1185](proposals/1185-public-review-gonka-network-development-roadmap.md) | [[Public Review] Gonka Network Development Roadmap](proposals/1185-public-review-gonka-network-development-roadmap.md) | :bulb: Proposals | [@paranjko](https://github.com/paranjko) | 2026-05-27 |
+| [1256](proposals/1256-devshard-cpoc-skip-protocol.md) | [`devshard` cPoC skip protocol](proposals/1256-devshard-cpoc-skip-protocol.md) | :bulb: Proposals | [@akup](https://github.com/akup) | 2026-05-26 |
+| [1244](proposals/1244-devshard-technical-height-sync-protocol.md) | [`devshard` `technical` Height-sync protocol](proposals/1244-devshard-technical-height-sync-protocol.md) | :bulb: Proposals | [@akup](https://github.com/akup) | 2026-05-25 |
 | [1243](proposals/1243-project-funding-governance-and-management.md) | [Project funding governance and management](proposals/1243-project-funding-governance-and-management.md) | :bulb: Proposals | [@a-kuprin](https://github.com/a-kuprin) | 2026-05-25 |
 | [1230](proposals/1230-proposal-optional-signed-agent-request-envelope-for-gonka-in.md) | [Proposal: optional signed agent request envelope for Gonka inference](proposals/1230-proposal-optional-signed-agent-request-envelope-for-gonka-in.md) | :bulb: Proposals | [@aeoess](https://github.com/aeoess) | 2026-05-24 |
 | [1141](show-and-tell/1141-ibc-usdt-withdrawal-guide.md) | [IBC USDT Withdrawal Guide](show-and-tell/1141-ibc-usdt-withdrawal-guide.md) | :raised_hands: Show and Tell | [@paranjko](https://github.com/paranjko) | 2026-05-20 |
 | [1207](proposals/1207-devshard-improvement-cpoc-skip-protocol.md) | [`devshard improvement` cPoC skip protocol](proposals/1207-devshard-improvement-cpoc-skip-protocol.md) | :bulb: Proposals | [@alexanderkuprin](https://github.com/alexanderkuprin) | 2026-05-20 |
 | [1206](proposals/1206-devshard-improvement-height-sync-protocol.md) | [`devshard improvement` Height-sync protocol](proposals/1206-devshard-improvement-height-sync-protocol.md) | :bulb: Proposals | [@alexanderkuprin](https://github.com/alexanderkuprin) | 2026-05-20 |
 | [1155](proposals/1155-add-support-for-video-generation-models.md) | [Add support for video generation models](proposals/1155-add-support-for-video-generation-models.md) | :bulb: Proposals | [@baygeldin](https://github.com/baygeldin) | 2026-05-19 |
-| [1192](proposals/1192-inc4-gonka-nop-grant-for-the-node-deployment-tool.md) | [INC4 \| Gonka NOP - grant for the node deployment tool](proposals/1192-inc4-gonka-nop-grant-for-the-node-deployment-tool.md) | :bulb: Proposals | [@rwxr-xr-x](https://github.com/rwxr-xr-x) | 2026-05-19 |
-| [1153](proposals/1153-cosmos-sdk-fork-genesisgo151-158-panics-on-appd-export-init-.md) | [cosmos-sdk fork: genesis.go:151-158 panics on `appd export → init` — mirror existing PoC skip pattern from delegation.go?](proposals/1153-cosmos-sdk-fork-genesisgo151-158-panics-on-appd-export-init-.md) | :bulb: Proposals | [@vitaly-andr](https://github.com/vitaly-andr) | 2026-05-08 |
