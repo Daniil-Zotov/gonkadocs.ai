@@ -3,7 +3,7 @@ title: "#951 — TEE Implementation"
 source: https://github.com/gonka-ai/gonka/discussions/951
 discussion_number: 951
 category: proposals
-synced_at: 2026-06-24T15:13:29Z
+synced_at: 2026-06-24T20:10:09Z
 ---
 
 > 🔄 **Авто-синхронизация:** из [Discussion #951](https://github.com/gonka-ai/gonka/discussions/951) каждые 6 часов. 

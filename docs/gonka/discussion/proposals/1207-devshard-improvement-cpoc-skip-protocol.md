@@ -3,7 +3,7 @@ title: "#1207 — `devshard improvement` cPoC skip protocol"
 source: https://github.com/gonka-ai/gonka/discussions/1207
 discussion_number: 1207
 category: proposals
-synced_at: 2026-06-24T15:13:33Z
+synced_at: 2026-06-24T20:10:13Z
 ---
 
 > 🔄 **Авто-синхронизация:** из [Discussion #1207](https://github.com/gonka-ai/gonka/discussions/1207) каждые 6 часов. 
