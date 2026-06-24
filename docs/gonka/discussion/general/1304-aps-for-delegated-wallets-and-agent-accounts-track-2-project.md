@@ -3,7 +3,7 @@ title: "#1304 — APS for delegated wallets and agent accounts (Track 2, Project
 source: https://github.com/gonka-ai/gonka/discussions/1304
 discussion_number: 1304
 category: general
-synced_at: 2026-06-24T04:37:12Z
+synced_at: 2026-06-24T09:51:31Z
 ---
 
 > 🔄 **Авто-синхронизация:** из [Discussion #1304](https://github.com/gonka-ai/gonka/discussions/1304) каждые 6 часов. 

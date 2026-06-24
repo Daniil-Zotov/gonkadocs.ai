@@ -3,7 +3,7 @@ title: "#840 — Prometheus Exporter for Node Monitoring"
 source: https://github.com/gonka-ai/gonka/discussions/840
 discussion_number: 840
 category: show-and-tell
-synced_at: 2026-06-24T04:37:21Z
+synced_at: 2026-06-24T09:51:40Z
 ---
 
 > 🔄 **Авто-синхронизация:** из [Discussion #840](https://github.com/gonka-ai/gonka/discussions/840) каждые 6 часов. 
