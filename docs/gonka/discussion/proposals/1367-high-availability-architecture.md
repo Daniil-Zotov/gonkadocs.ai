@@ -3,7 +3,7 @@ title: "#1367 — High-Availability Architecture"
 source: https://github.com/gonka-ai/gonka/discussions/1367
 discussion_number: 1367
 category: proposals
-synced_at: 2026-06-25T15:15:43Z
+synced_at: 2026-06-25T20:23:13Z
 ---
 
 > 🔄 **Авто-синхронизация:** из [Discussion #1367](https://github.com/gonka-ai/gonka/discussions/1367) каждые 6 часов. 

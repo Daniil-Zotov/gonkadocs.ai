@@ -3,7 +3,7 @@ title: "#805 — Welcome to Gonka Discussions 👋"
 source: https://github.com/gonka-ai/gonka/discussions/805
 discussion_number: 805
 category: announcements
-synced_at: 2026-06-25T15:16:13Z
+synced_at: 2026-06-25T20:23:28Z
 ---
 
 > 🔄 **Авто-синхронизация:** из [Discussion #805](https://github.com/gonka-ai/gonka/discussions/805) каждые 6 часов. 
