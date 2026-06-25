@@ -3,7 +3,7 @@ title: "#1090 — Qwen3-235B-A22B-Instruct-2507-FP8 with FP8 KVcache as the firs
 source: https://github.com/gonka-ai/gonka/discussions/1090
 discussion_number: 1090
 category: proposals
-synced_at: 2026-06-25T04:35:04Z
+synced_at: 2026-06-25T09:46:03Z
 ---
 
 > 🔄 **Авто-синхронизация:** из [Discussion #1090](https://github.com/gonka-ai/gonka/discussions/1090) каждые 6 часов. 
