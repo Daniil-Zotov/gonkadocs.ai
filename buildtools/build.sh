@@ -59,7 +59,15 @@ trap _restore_intro EXIT
 _swap_intro ""
 _swap_intro "zh/"
 
-python3 -m mkdocs build --site-dir "$SITE_DIR/gonka/docs"
+# Переопределяем site_url для корректной работы i18n переключателя.
+# Оригинальный site_url указывает на gonka.ai — это ломает ссылки на zh/lang
+# при развёртывании под путём /gonkadocs/gonka/docs/. Создаём временную копию
+# конфига с исправленным site_url и собираем по ней.
+SITE_URL="https://daniil-zotov.github.io/gonkadocs/gonka/docs/"
+BUILD_CFG=".mkdocs.yml.build"
+sed "s|site_url: .*|site_url: ${SITE_URL}|" mkdocs.yml > "$BUILD_CFG"
+python3 -m mkdocs build --config-file "$BUILD_CFG" --site-dir "$SITE_DIR/gonka/docs"
+rm -f "$BUILD_CFG"
 
 _restore_intro
 trap - EXIT
