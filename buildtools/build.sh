@@ -107,6 +107,7 @@ rm -f "$SITE_DIR/gonka/docs/CNAME"
 # для каждого HTML-файла в зависимости от его пути.
 # -----------------------------------------------------------------------
 echo "==> [пост-обработка] Исправление путей к изображениям (/images/ -> ..N/images/)"
+echo "==> [пост-обработка] Исправление language switcher (LINK_EN/LINK_ZH -> реальные пути)"
 python3 - "$SITE_DIR/gonka/docs" <<'PYEOF'
 import os, re, sys
 
@@ -126,16 +127,43 @@ for dirpath, _, filenames in os.walk(docs_root):
         with open(fpath, 'r', encoding='utf-8') as f:
             content = f.read()
 
-        if '/images/' not in content:
-            continue
+        changed = False
 
-        new = content.replace('src="/images/', f'src="{prefix}images/')
-        new = new.replace('href="/images/', f'href="{prefix}images/')
+        # --- Fix 1: image paths ---
+        if '/images/' in content:
+            new = content.replace('src="/images/', f'src="{prefix}images/')
+            new = new.replace('href="/images/', f'href="{prefix}images/')
+            if new != content:
+                content = new
+                changed = True
+                print(f"  fixed images: {rel} ({depth} levels)")
 
-        if new != content:
+        # --- Fix 2: language switcher ---
+        # i18n plugin generates correct <link rel="alternate" href="..."> tags.
+        # Extract them and replace LINK_EN / LINK_ZH placeholders in our header.
+        if 'LINK_EN' in content or 'LINK_ZH' in content:
+            en_href = zh_href = None
+            for m in re.finditer(
+                r'<link\s+rel="alternate"\s+href="([^"]+)"\s+hreflang="(\w+)"',
+                content
+            ):
+                url, lang = m.group(1), m.group(2)
+                if lang == 'en':
+                    en_href = url
+                elif lang == 'zh':
+                    zh_href = url
+            if en_href:
+                content = content.replace('href="LINK_EN"', f'href="{en_href}"')
+                changed = True
+            if zh_href:
+                content = content.replace('href="LINK_ZH"', f'href="{zh_href}"')
+                changed = True
+            if en_href or zh_href:
+                print(f"  fixed i18n: {rel} (en={en_href}, zh={zh_href})")
+
+        if changed:
             with open(fpath, 'w', encoding='utf-8') as f:
-                f.write(new)
-            print(f"  fixed: {rel} ({depth} levels)")
+                f.write(content)
 PYEOF
 
 echo "==> Готово. Артефакт: $SITE_DIR"
