@@ -65,9 +65,20 @@ _swap_intro "zh/"
 # конфига с исправленным site_url и собираем по ней.
 SITE_URL="https://daniil-zotov.github.io/gonkadocs/gonka/docs/"
 BUILD_CFG=".mkdocs.yml.build"
-sed "s|site_url: .*|site_url: ${SITE_URL}|" mkdocs.yml > "$BUILD_CFG"
+
+# Мержим overrides: upstream originals + наши shared-шаблоны.
+# mkdocs-material подхватывает custom_dir как overlay поверх стандартной темы.
+# Наш overrides идёт вторым → перезаписывает header upstream'а на наш shared.
+OVR_DIR=".overrides.merged"
+rm -rf "$OVR_DIR"
+cp -r overrides "$OVR_DIR"
+cp -r "$ROOT/buildtools/gonka-overrides/"* "$OVR_DIR/"
+
+sed -e "s|site_url: .*|site_url: ${SITE_URL}|" \
+    -e "s|custom_dir: overrides|custom_dir: ${OVR_DIR}|" \
+    mkdocs.yml > "$BUILD_CFG"
 python3 -m mkdocs build --config-file "$BUILD_CFG" --site-dir "$SITE_DIR/gonka/docs"
-rm -f "$BUILD_CFG"
+rm -rf "$BUILD_CFG" "$OVR_DIR"
 
 _restore_intro
 trap - EXIT
