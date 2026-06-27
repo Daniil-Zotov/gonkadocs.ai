@@ -3,7 +3,7 @@ title: "#1354 — I would like to ask if the developers intentionally pushed inf
 source: https://github.com/gonka-ai/gonka/discussions/1354
 discussion_number: 1354
 category: q-a
-synced_at: 2026-06-26T20:10:45Z
+synced_at: 2026-06-27T04:17:03Z
 ---
 
 > 🔄 **Авто-синхронизация:** из [Discussion #1354](https://github.com/gonka-ai/gonka/discussions/1354) каждые 6 часов. 
