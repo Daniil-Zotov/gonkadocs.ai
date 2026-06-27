@@ -4,13 +4,14 @@ title: ":bulb: Proposals"
 
 # :bulb: Proposals
 
-Дискуссии в категории **:bulb: Proposals**. Всего: **40**. Обновлено: `2026-06-27 14:07 UTC`.
+Дискуссии в категории **:bulb: Proposals**. Всего: **41**. Обновлено: `2026-06-27 19:46 UTC`.
 
 [← ко всем категориям](../index.md)
 
 | # | Заголовок | Автор | Обновлено |
 |---:|---|---|---|
-| [1367](1367-high-availability-architecture.md) | [High-Availability Architecture](1367-high-availability-architecture.md) | [@a-kuprin](https://github.com/a-kuprin) | 2026-06-25 |
+| [1369](1369-finalization-protocol-proposal-host-initiated-collectors-com.md) | [Finalization protocol proposal (host-initiated, collectors, commit certificate)](1369-finalization-protocol-proposal-host-initiated-collectors-com.md) | [@akup](https://github.com/akup) | 2026-06-27 |
+| [1367](1367-high-availability-architecture.md) | [High-Availability Architecture](1367-high-availability-architecture.md) | [@a-kuprin](https://github.com/a-kuprin) | 2026-06-27 |
 | [1345](1345-network-documentation.md) | [Network Documentation](1345-network-documentation.md) | [@heitor-lassarote](https://github.com/heitor-lassarote) | 2026-06-16 |
 | [1340](1340-devshard-height-sync-protocol.md) | [`devshard` Height-sync protocol](1340-devshard-height-sync-protocol.md) | [@alexanderkuprin](https://github.com/alexanderkuprin) | 2026-06-22 |
 | [1335](1335-add-support-for-speech-to-text-asr-models.md) | [Add support for speech-to-text (ASR) models](1335-add-support-for-speech-to-text-asr-models.md) | [@ivan-smetannikov-serokell](https://github.com/ivan-smetannikov-serokell) | 2026-06-22 |

@@ -3,7 +3,7 @@ title: "#837 — High-availability / Fault-tolerance Setup"
 source: https://github.com/gonka-ai/gonka/discussions/837
 discussion_number: 837
 category: proposals
-synced_at: 2026-06-27T14:07:30Z
+synced_at: 2026-06-27T19:46:35Z
 ---
 
 > 🔄 **Авто-синхронизация:** из [Discussion #837](https://github.com/gonka-ai/gonka/discussions/837) каждые 6 часов. 

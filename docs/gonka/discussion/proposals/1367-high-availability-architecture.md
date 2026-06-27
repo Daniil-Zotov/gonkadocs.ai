@@ -3,14 +3,14 @@ title: "#1367 — High-Availability Architecture"
 source: https://github.com/gonka-ai/gonka/discussions/1367
 discussion_number: 1367
 category: proposals
-synced_at: 2026-06-27T14:07:06Z
+synced_at: 2026-06-27T19:46:10Z
 ---
 
 > 🔄 **Авто-синхронизация:** из [Discussion #1367](https://github.com/gonka-ai/gonka/discussions/1367) каждые 6 часов. 
 
 # High-Availability Architecture
 
-**Автор:** [@a-kuprin](https://github.com/a-kuprin) · **Категория:** :bulb: Proposals · **Создано:** 2026-06-25 08:16 UTC · **Обновлено:** 2026-06-25 08:16 UTC
+**Автор:** [@a-kuprin](https://github.com/a-kuprin) · **Категория:** :bulb: Proposals · **Создано:** 2026-06-25 08:16 UTC · **Обновлено:** 2026-06-27 18:12 UTC
 
 ---
 
@@ -357,4 +357,52 @@ for production Kubernetes** once Pillars A–B and phasing steps 1–5 are in pl
 - **Redis vs NATS JetStream KV** for the cursor/lock — avoid adding Redis if
   JetStream KV suffices. (Proposal assumes Redis per the stated direction.)
 - **Cache invalidation** for edge-api chain cache around epoch/phase boundaries. [This should be reused](https://github.com/gonka-ai/gonka/pull/1272)
+
+
+---
+
+## 💬 Комментарии (1)
+
+### Комментарий 1 — [@gmorgachev](https://github.com/gmorgachev)
+
+*2026-06-27 18:12 UTC*
+
+Hi @a-kuprin !
+
+Couple questions:
+
+
+>2. Target architecture (overview)
+1. Which serveses are expected to be publicly available?Based on graph i expect all 4:
+- edge-api
+- dapi: edge-srv
+- dapi: node-mgr
+- versiond
+
+Do we really need all of them to be not private?
+
+> 4. Pillar B — decentralized-api becomes single-purpose
+2. How do you think to scale service which handles PoC callback? It uses high performant local storage for PoC artifacts. This storage is merkle-tree like and requires high performance for r/w 
+
+Of we want single instance to be responsible for the whole single PoC cycle? 
+
+
+> 5. Rolling updates
+
+Definitely agree with part 1, let's do it 
+I think we can postpone part 2 
+
+
+> 6. Kubernetes & Helm (deployment target)
+
+I support the idea to allow kubernetes deployment. But i'd keep simplest single-instance-per-each-service as base deploy approach in `deploy/join`.  To not overcomplicate onboarding for small miners 
+
+
+----
+
+Overall, that's a solid long term goal. I'd try to split it in smaller steps for implementation and phases of deploy. And keep them compartible with deployed version:
+- rolling updated (i think highest)
+- separate event listered from node-manager / etc
+- ....
+
 
