@@ -3,7 +3,7 @@ title: "#1008 — Token-Based Governance: Splitting Technical and Community Deci
 source: https://github.com/gonka-ai/gonka/discussions/1008
 discussion_number: 1008
 category: proposals
-synced_at: 2026-06-28T09:33:35Z
+synced_at: 2026-06-28T14:17:08Z
 ---
 
 > 🔄 **Авто-синхронизация:** из [Discussion #1008](https://github.com/gonka-ai/gonka/discussions/1008) каждые 6 часов. 
