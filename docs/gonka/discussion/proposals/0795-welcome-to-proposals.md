@@ -3,7 +3,7 @@ title: "#795 — Welcome to Proposals 👋"
 source: https://github.com/gonka-ai/gonka/discussions/795
 discussion_number: 795
 category: proposals
-synced_at: 2026-06-29T05:00:40Z
+synced_at: 2026-06-29T11:24:26Z
 ---
 
 > 🔄 **Авто-синхронизация:** из [Discussion #795](https://github.com/gonka-ai/gonka/discussions/795) каждые 6 часов. 
