@@ -3,7 +3,7 @@ title: "#1369 — Finalization protocol proposal (host-initiated, collectors, co
 source: https://github.com/gonka-ai/gonka/discussions/1369
 discussion_number: 1369
 category: proposals
-synced_at: 2026-07-01T15:12:57Z
+synced_at: 2026-07-01T20:15:30Z
 ---
 
 > 🔄 **Авто-синхронизация:** из [Discussion #1369](https://github.com/gonka-ai/gonka/discussions/1369) каждые 6 часов. 

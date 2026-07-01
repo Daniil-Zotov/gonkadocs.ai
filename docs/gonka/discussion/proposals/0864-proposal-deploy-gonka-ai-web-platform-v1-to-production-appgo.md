@@ -3,7 +3,7 @@ title: "#864 — Proposal: Deploy Gonka AI Web Platform v1 to Production (app.go
 source: https://github.com/gonka-ai/gonka/discussions/864
 discussion_number: 864
 category: proposals
-synced_at: 2026-07-01T15:13:13Z
+synced_at: 2026-07-01T20:15:46Z
 ---
 
 > 🔄 **Авто-синхронизация:** из [Discussion #864](https://github.com/gonka-ai/gonka/discussions/864) каждые 6 часов. 

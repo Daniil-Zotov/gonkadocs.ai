@@ -3,7 +3,7 @@ title: "#1339 — Gonka x MiMoCode"
 source: https://github.com/gonka-ai/gonka/discussions/1339
 discussion_number: 1339
 category: show-and-tell
-synced_at: 2026-07-01T15:13:00Z
+synced_at: 2026-07-01T20:15:32Z
 ---
 
 > 🔄 **Авто-синхронизация:** из [Discussion #1339](https://github.com/gonka-ai/gonka/discussions/1339) каждые 6 часов. 

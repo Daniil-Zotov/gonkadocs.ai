@@ -3,7 +3,7 @@ title: "#811 — 🦞 OpenClaw + Gonka AI"
 source: https://github.com/gonka-ai/gonka/discussions/811
 discussion_number: 811
 category: show-and-tell
-synced_at: 2026-07-01T15:13:09Z
+synced_at: 2026-07-01T20:15:41Z
 ---
 
 > 🔄 **Авто-синхронизация:** из [Discussion #811](https://github.com/gonka-ai/gonka/discussions/811) каждые 6 часов. 
