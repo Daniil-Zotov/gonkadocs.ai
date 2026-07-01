@@ -3,14 +3,14 @@ title: "#1340 — `devshard` Height-sync protocol"
 source: https://github.com/gonka-ai/gonka/discussions/1340
 discussion_number: 1340
 category: proposals
-synced_at: 2026-07-01T04:54:41Z
+synced_at: 2026-07-01T10:15:22Z
 ---
 
 > 🔄 **Авто-синхронизация:** из [Discussion #1340](https://github.com/gonka-ai/gonka/discussions/1340) каждые 6 часов. 
 
 # `devshard` Height-sync protocol
 
-**Автор:** [@alexanderkuprin](https://github.com/alexanderkuprin) · **Категория:** :bulb: Proposals · **Создано:** 2026-06-12 12:35 UTC · **Обновлено:** 2026-06-22 03:30 UTC
+**Автор:** [@alexanderkuprin](https://github.com/alexanderkuprin) · **Категория:** :bulb: Proposals · **Создано:** 2026-06-12 12:35 UTC · **Обновлено:** 2026-07-01 10:14 UTC
 
 ---
 
@@ -869,3 +869,12 @@ Of course, the distribution is different (requests are usually aligned to some i
 Question:
 There is an attack vector, _attack model 13, Long inter-block time (feed quiet, cached tip still valid)_
 However, is there any specific attack/case about long inactivity of user?
+
+**↳ Ответ от [@akup](https://github.com/akup)** · *2026-07-01 10:14 UTC*
+
+> It was handles separately at cPoC protocol proposal. It was referenced from this doc at github repos, but I've just published it as a discussion:
+> https://github.com/gonka-ai/gonka/discussions/1384
+>
+> There are **Cases to handle paragraph** and especially **C14 — Low-load strategic delay (developer heartbeat mitigation)** discussing exactly this _long inactivity of user_
+>
+> As we discussed at DM, the proposal to mitigate such attack is heartbeating from the user, and also we should handle that this heartbeating is required at protocol level and if user stops heartbeat we should autosettle the shard.

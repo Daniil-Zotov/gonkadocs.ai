@@ -3,14 +3,14 @@ title: "#1369 — Finalization protocol proposal (host-initiated, collectors, co
 source: https://github.com/gonka-ai/gonka/discussions/1369
 discussion_number: 1369
 category: proposals
-synced_at: 2026-07-01T04:54:40Z
+synced_at: 2026-07-01T10:15:23Z
 ---
 
 > 🔄 **Авто-синхронизация:** из [Discussion #1369](https://github.com/gonka-ai/gonka/discussions/1369) каждые 6 часов. 
 
 # Finalization protocol proposal (host-initiated, collectors, commit certificate)
 
-**Автор:** [@akup](https://github.com/akup) · **Категория:** :bulb: Proposals · **Создано:** 2026-06-27 14:43 UTC · **Обновлено:** 2026-06-27 14:43 UTC
+**Автор:** [@akup](https://github.com/akup) · **Категория:** :bulb: Proposals · **Создано:** 2026-06-27 14:43 UTC · **Обновлено:** 2026-07-01 09:58 UTC
 
 ---
 
@@ -30,7 +30,7 @@ It is designed to:
 Related proposals:
 
 - [Height sync protocol](https://github.com/gonka-ai/gonka/discussions/1340) — one optional way to obtain the **collector randomness beacon** (see **Collector randomness beacon**).
-- [`VALIDATION_PROTOCOL_RANDOMNESS_PROPOSAL.md`](https://github.com/a-kuprin/gonka/blob/devshard-testenv/devshard/docs/proposals/VALIDATION_PROTOCOL_PROPOSAL.md) — Pedersen-style deterministic randomness (another beacon source).
+- Pedersen-style deterministic randomness (another beacon source). TODO: describe
 
 ---
 
