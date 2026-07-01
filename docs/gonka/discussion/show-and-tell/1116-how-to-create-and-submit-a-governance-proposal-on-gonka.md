@@ -3,7 +3,7 @@ title: "#1116 — HOW-TO: Create and Submit a Governance Proposal on Gonka"
 source: https://github.com/gonka-ai/gonka/discussions/1116
 discussion_number: 1116
 category: show-and-tell
-synced_at: 2026-06-30T20:19:55Z
+synced_at: 2026-07-01T04:54:46Z
 ---
 
 > 🔄 **Авто-синхронизация:** из [Discussion #1116](https://github.com/gonka-ai/gonka/discussions/1116) каждые 6 часов. 
