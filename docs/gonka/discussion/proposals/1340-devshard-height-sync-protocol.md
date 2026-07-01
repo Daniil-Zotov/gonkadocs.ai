@@ -3,14 +3,14 @@ title: "#1340 — `devshard` Height-sync protocol"
 source: https://github.com/gonka-ai/gonka/discussions/1340
 discussion_number: 1340
 category: proposals
-synced_at: 2026-07-01T10:15:22Z
+synced_at: 2026-07-01T15:12:57Z
 ---
 
 > 🔄 **Авто-синхронизация:** из [Discussion #1340](https://github.com/gonka-ai/gonka/discussions/1340) каждые 6 часов. 
 
 # `devshard` Height-sync protocol
 
-**Автор:** [@alexanderkuprin](https://github.com/alexanderkuprin) · **Категория:** :bulb: Proposals · **Создано:** 2026-06-12 12:35 UTC · **Обновлено:** 2026-07-01 10:14 UTC
+**Автор:** [@alexanderkuprin](https://github.com/alexanderkuprin) · **Категория:** :bulb: Proposals · **Создано:** 2026-06-12 12:35 UTC · **Обновлено:** 2026-07-01 10:32 UTC
 
 ---
 
@@ -30,8 +30,8 @@ This document is the **canonical, single-version** spec. The in-tree implementat
 
 Related docs:
 [`height-sync-tests.md`](https://github.com/a-kuprin/gonka/blob/devshard-testenv/devshard/docs/height-sync-tests.md) (test catalog — implemented and planned),
-[`CPOC_PROTOCOL.md`](https://github.com/a-kuprin/gonka/blob/devshard-testenv/devshard/docs/proposals/CPOC_PROTOCOL.md),
-[`FINALIZATION_COLLECTOR_PROTOCOL_PROPOSAL.md`](https://github.com/a-kuprin/gonka/blob/devshard-testenv/devshard/docs/proposals/FINALIZATION_COLLECTOR_PROTOCOL_PROPOSAL.md),
+[CPOC Protocol for devshard](https://github.com/gonka-ai/gonka/discussions/1384),
+[Finalization Protocol](https://github.com/gonka-ai/gonka/discussions/1369),
 [`VALIDATION_PROTOCOL_PROPOSAL.md`](https://github.com/a-kuprin/gonka/blob/devshard-testenv/devshard/docs/proposals/VALIDATION_PROTOCOL_PROPOSAL.md).
 
 ---
@@ -391,7 +391,7 @@ flowchart TD
     O -- yes --> O1[INVALID<br/>sync_turn_anchor_missing]
     O -- no --> O2[VALID_OMIT]
     B -- yes --> C{Anchor or Strong?}
-    C -- Anchor --> D{\|H − local_aligned\| > D?}
+    C -- Anchor --> D{"|H − local_aligned| > D?"}
     D -- yes --> D1[INVALID<br/>strong_required]
     D -- no --> E{carry-forward<br/>originator set?}
     E -- yes --> F{originator within F?}
@@ -477,7 +477,7 @@ sequenceDiagram
     H->>U: response Anchor [signed by Host A]
     Note over U: VerifyOrigin OK<br/>RecordOriginWithBlob(host_A, H, blob, sig)
     U->>H2: request Anchor (carry-forward, no inline sig)
-    Note over H2: trusts carrier;<br/>freshness gate F applies
+    Note over H2: trusts carrier<br/>freshness gate F applies
     Note over H2: later, follower advances<br/>compares hash to canonical
     H2-->>U: DEFERRED_FAIL? open dispute vs user
     U->>U: HeightSyncEvidenceFor(host_A, H) → blob + sig
@@ -810,7 +810,7 @@ the test scenario that proves it (full catalog in
 
 *2026-06-12 12:41 UTC*
 
-Important point according to this proposal is that consensus part is out of scope and should be here: [FINALIZATION_COLLECTOR_PROTOCOL_PROPOSAL.md](https://raw.githubusercontent.com/a-kuprin/gonka/1f0933ad9136cfbcf7070f8210e2c6694731ebaf/devshard/docs/proposals/FINALIZATION_COLLECTOR_PROTOCOL_PROPOSAL.md)
+Important point according to this proposal is that consensus part is out of scope and should be here: [Finalization protocol](https://github.com/gonka-ai/gonka/discussions/1369)
 
 It is the optimistic protocol - we trust while height is in some delta from our own known height. But we always have signed by originator block hash, so later, when we get same height from dapi, if we see block hash differs we can start the dispute, and originator of invalid data will be punished.
 
@@ -852,6 +852,12 @@ d) in case host AND user are adversary together, additional approaches can be pr
 
 
 
+**↳ Ответ от [@akup](https://github.com/akup)** · *2026-07-01 10:20 UTC*
+
+> I think we will start another discussion according to source of randomness.
+>
+> block hash could be source of randomness and rather natural when we have height sync protocol (that we anyway need for cPoC handling at devshard). But pederson-style source of randomness is very elegant, I think. Please write down that proposal
+
 ### Комментарий 3 — [@shd](https://github.com/shd)
 
 *2026-06-22 03:06 UTC*
@@ -861,6 +867,12 @@ Important update about D: elementary analysis shows that there is a big increase
 Very approximate actual data suggestions: epoch 263 had 590000 inference requests per 44 users, which gives T = 0.15 requests per second. We can consider (as the first guess) that inference requests follow Poisson distribution, it gives e^(-0.15 * 60) = 0.0001 probability of 60 seconds inactivity; and e^(-0.15 * 30) = 0.01 probability of 30 seconds inactivity.
 
 Of course, the distribution is different (requests are usually aligned to some inference process -- that is, they are not independent), and the exact numbers will be different. But D may influence performance in a very unusual way if moderate pause in inference leads to a new consensus round.
+
+**↳ Ответ от [@akup](https://github.com/akup)** · *2026-07-01 10:17 UTC*
+
+> D here is not related to nonces/blocks it is related to mainnet block height.
+>
+> If we are at height difference > D we should run the consensus round, and the block increment time of mainnet is rather stable around 5 seconds, but on heigh load at winter we have seen slow block building when one block was incrementing around 30-45 seconds
 
 ### Комментарий 4 — [@shd](https://github.com/shd)
 
@@ -872,7 +884,7 @@ However, is there any specific attack/case about long inactivity of user?
 
 **↳ Ответ от [@akup](https://github.com/akup)** · *2026-07-01 10:14 UTC*
 
-> It was handles separately at cPoC protocol proposal. It was referenced from this doc at github repos, but I've just published it as a discussion:
+> It was described separately at cPoC protocol proposal. It was referenced from this doc at github repos, but I've just published it as a discussion:
 > https://github.com/gonka-ai/gonka/discussions/1384
 >
 > There are **Cases to handle paragraph** and especially **C14 — Low-load strategic delay (developer heartbeat mitigation)** discussing exactly this _long inactivity of user_
