@@ -4,7 +4,7 @@ title: "GitHub Discussions"
 
 # GitHub Discussions — `gonka-ai/gonka`
 
-Срез всех обсуждений из репозитория [gonka-ai/gonka](https://github.com/gonka-ai/gonka/discussions). Всего: **71**. Обновлено: `2026-07-01 20:15 UTC`.
+Срез всех обсуждений из репозитория [gonka-ai/gonka](https://github.com/gonka-ai/gonka/discussions). Всего: **71**. Обновлено: `2026-07-02 04:31 UTC`.
 
 ## 📂 Категории
 
@@ -20,7 +20,7 @@ title: "GitHub Discussions"
 
 | # | Заголовок | Категория | Автор | Обновлено |
 |---:|---|---|---|---|
-| [1340](proposals/1340-devshard-height-sync-protocol.md) | [`devshard` Height-sync protocol](proposals/1340-devshard-height-sync-protocol.md) | :bulb: Proposals | [@alexanderkuprin](https://github.com/alexanderkuprin) | 2026-07-01 |
+| [1340](proposals/1340-devshard-height-sync-protocol.md) | [`devshard` Height-sync protocol](proposals/1340-devshard-height-sync-protocol.md) | :bulb: Proposals | [@alexanderkuprin](https://github.com/alexanderkuprin) | 2026-07-02 |
 | [1384](proposals/1384-devshard-cpoc-skip-protocol.md) | [`devshard` cPoC skip protocol](proposals/1384-devshard-cpoc-skip-protocol.md) | :bulb: Proposals | [@akup](https://github.com/akup) | 2026-07-01 |
 | [1369](proposals/1369-finalization-protocol-proposal-host-initiated-collectors-com.md) | [Finalization protocol proposal (host-initiated, collectors, commit certificate)](proposals/1369-finalization-protocol-proposal-host-initiated-collectors-com.md) | :bulb: Proposals | [@akup](https://github.com/akup) | 2026-07-01 |
 | [1374](show-and-tell/1374-gonka-ai-dune-dashboard.md) | [Gonka AI Dune Dashboard](show-and-tell/1374-gonka-ai-dune-dashboard.md) | :raised_hands: Show and Tell | [@genkisudo](https://github.com/genkisudo) | 2026-06-29 |

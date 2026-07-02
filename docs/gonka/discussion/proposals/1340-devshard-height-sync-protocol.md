@@ -3,14 +3,14 @@ title: "#1340 — `devshard` Height-sync protocol"
 source: https://github.com/gonka-ai/gonka/discussions/1340
 discussion_number: 1340
 category: proposals
-synced_at: 2026-07-01T20:15:29Z
+synced_at: 2026-07-02T04:31:26Z
 ---
 
 > 🔄 **Авто-синхронизация:** из [Discussion #1340](https://github.com/gonka-ai/gonka/discussions/1340) каждые 6 часов. 
 
 # `devshard` Height-sync protocol
 
-**Автор:** [@alexanderkuprin](https://github.com/alexanderkuprin) · **Категория:** :bulb: Proposals · **Создано:** 2026-06-12 12:35 UTC · **Обновлено:** 2026-07-01 10:32 UTC
+**Автор:** [@alexanderkuprin](https://github.com/alexanderkuprin) · **Категория:** :bulb: Proposals · **Создано:** 2026-06-12 12:35 UTC · **Обновлено:** 2026-07-02 01:50 UTC
 
 ---
 
@@ -804,7 +804,7 @@ the test scenario that proves it (full catalog in
 
 ---
 
-## 💬 Комментарии (4)
+## 💬 Комментарии (5)
 
 ### Комментарий 1 — [@a-kuprin](https://github.com/a-kuprin)
 
@@ -890,3 +890,102 @@ However, is there any specific attack/case about long inactivity of user?
 > There are **Cases to handle paragraph** and especially **C14 — Low-load strategic delay (developer heartbeat mitigation)** discussing exactly this _long inactivity of user_
 >
 > As we discussed at DM, the proposal to mitigate such attack is heartbeating from the user, and also we should handle that this heartbeating is required at protocol level and if user stops heartbeat we should autosettle the shard.
+
+### Комментарий 5 — [@shd](https://github.com/shd)
+
+*2026-07-02 01:50 UTC*
+
+Generating random numbers
+==========================
+
+Generation of random numbers from blockchain hash of the most recent main net block has a lot of advantages, however, it has the following problems:
+
+1. it does not allow to generate the number "on spot" --- it requires delay till  the new main net block arrives.
+
+2. synchronization delays: a generating party has some possibility to choose from several headers (in the range of D consecutive headers), and therefore has some influence on the  number.
+
+The both problems can be addressed, but that comes with price, so it's a good idea to consider different approaches.
+
+Alternative approach
+--------------------
+
+As a simple alternative approach, we'd propose to use a standard commitment scheme. Let's take some reliable hash function (e.g., sha256) --- let's call it F(x), where x is a binary string.
+
+Then a random number generation (for user U and host H) could follow the following scheme:
+
+1. Each party (U and H) generates one random number --- let it be R_U and R_H. It should be a long number, e.g. 128 or 256 bits, to prevent guessing of the number.
+
+2. Then the parties exchanges hashes of the number --- H sends F(R_H) to U, and U sends F(R_U) to H.
+
+3. After the values are exchanged, the parties exchange the original random numbers: so each of the parties knows R_U, R_H, F(R_U) and F(R_H).
+
+4. The value Xor(R_U,R_H) is the desired random value.
+
+What are the properties of this protocol, its security analysis
+---------------------------------------------------------------------------------------------
+
+1. If numbers R_U and R_H are generated without knowledge of each other, and at least one of the parties generated it randomly, then the resulting value is also random.
+
+2. Values F(R_U) and F(R_H) do not disclose any information about R_U, R_H, although brute force attack may be possible in case of short numbers (that's why we have requirement of 128 or 256 bits).
+
+3. The parties cannot change their mind after hashes are exchanged.
+
+Hash collisions
+--------------------------
+
+Sha256 is still considered to be resistant to collisions, however, for the completeness of the text, it is necessary to note that this scheme can be made more resistant to such attacks even if such collisions are found (or a weaker hash function is used). 
+
+For example, one has a pair of numbers, which share the same hash, but have different values: A,B such that F(A) = F(B). So, at the moment of the numbers reveal, an adversary party may have a choice (either A or B), which may lead to some control over the resulting random number.
+
+To prevent this, one can prepend the scheme with exchange of nonces:
+
+0. Parties exchange two random numbers (N_U and N_U respectively) and the random numbers being generated at step 1 should include these numbers as prefixes:  R'_U = N_H ++ R_U, and R'_H = N_U ++ R_H, where ++ is concatenation of binary strings.
+
+This modification should prohibit another party from use of previously computed collisions in hash functions. The need for this complication of the randomness generation is debatable.
+
+General analysis
+--------------------------
+
+1. This scheme is secure, and resistant to adversary behavior of the parties, and generates good random if at least one of the sides is interested in that.
+
+2. This scheme can be activated on-demand at any moment, and it's rather cheap. Although, it requires 2 elementary messages (or 3, in more secure variant) from each party.
+
+3. However, it does not resist cooperative random generation: when both U and H are together trying to forge a desired number. The blockchain hash scheme also has this problem to some extent.
+
+Cooperation-resistant inference verification (draft proposal)
+=============================================
+
+The need of multiple-host devshards is dictated by the need to distribute control over the inference process, and make it transparent and honest. However, cooperative behavior of the user and some of the hosts may damage the guarantees. In particular, such cooperation may easily assign verification of compromised inferences to adversarial hosts, thus damaging
+the whole scheme.
+
+To prevent this from happening, the following idea is proposed.
+
+1. Each host must keep the last 32 (by the size of devshard) inferences, ready for future verification. The actual verifier and the actual inference which will be verified are not known to anyone at this point.
+   
+2. The host and the verifier for a given inference are determined by a random number generation.
+
+3. Then the verifier asks the inferencing host its past task (one of 32) and performs necessary verification. If the random number is not always generated by adversary parties, and at least sometimes (in fact, in 2/3 cases) is really random, it gives a good guarantees against cheating.
+
+This idea does not solve all problems with honesty of user and hosts, but it gives additional layer of protection.
+
+The main question here is how to generate random numbers. The text below explains that.  
+
+Random number generation
+------------------------------------------------
+
+If the user and the host are not from the same adversary teams, then the commitment random generation scheme above already gives a good algorithm for that. The main issue is how to add this non-adversary party into random number generation, if the user and the host are from the same team.
+
+Imagine, user U with host H generate a number, and this number determines the verifier (and they abuse the protocol to select the verifier from their team). It guides us to conclusion that the number should be generated by all other hosts in the devshard. For example, it could be consecutive generation: for 1st inference of H_0 the number is generated by U and H_1. For the 2nd inference of H_0 -- by U and H_2, and so on. So, after 32 rounds (or, 32 inferences by each host) at least 20 of them will be randomly selected
+by non-cooperative party.
+
+So, we should have two round-robin cycles: an inference cycle (all nodes are requested to make inferences consequently, to minimize room for node shadowing), and verification cycle.
+
+The particular details are yet to be determined, but the main idea that this cycle should deliberately go in different speed (in comparison with inference cycle). So that during one inference cycle (so that inference starting from H_0 returned back to H_0), the verification cycle hosts should be shifted (verificatoin.H_0 with inference.H0 -- they start at the same host, but at the moment
+of inference returning back to H_0, the verification should be at H_k with k /= 0).
+
+Since there are 2/3 honest hosts in the network, then in 2 of 3 cycles a host will be paired with a host, which is not in his adversary team. And after 11 cycles each host will have at least one verification, controlled by an independent host.
+
+The inference cycle can be light-weight (that is, it may have no independent blockchain), and all the transactions may be added to the same diff sequence; the two cycles may be interlaced in the single devshard blockchain in determenistic fashion.
+
+Also, this verification cycle can be used for block height propagation (to avoid frequent consensus invocation).
+
